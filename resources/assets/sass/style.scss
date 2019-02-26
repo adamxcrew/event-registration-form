@@ -1,0 +1,56 @@
+$fa-font-path: "../webfonts";
+
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+
+// AdminLTE
+@import "~bootstrap/scss/bootstrap";
+@import "~admin-lte/build/scss/AdminLTE-raw";
+
+body {
+  background-color: #eee
+}
+
+.app-shadow {
+    box-shadow: 0 2px 3px rgba(0,0,0,.16);
+}
+
+// .brand-link {
+//     border-bottom: 0 !important;
+// }
+
+.content-wrapper {
+    overflow: auto;
+}
+
+.card {
+    border: 0;
+    box-shadow: 0 2px 3px rgba(0,0,0,.16) !important;
+}
+
+.modal-body {
+    max-height: calc(100vh - 210px) !important;
+    overflow: auto !important;
+}
+
+@media only screen and (max-width: 700px){
+    .btn-block-xs {
+        display: block;
+        width: 100%;
+    }
+
+    .modal-dialog {
+        margin: 0 !important;
+    }
+
+    .modal-content {
+        border: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 133px) !important;
+        overflow-y: auto !important;
+    }
+}
