@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Registration;
+
 class HomeController extends Controller
 {
     /**
@@ -21,8 +23,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        if ($request->user()->hasRole('participant')) {
+            $user = $request->user();
+            return view('home', compact('user'));
+        }
+
+        $registrations = Registration::all();
+        $allRegistrations = $registrations->count();
+        $waitingVerifications = $registrations->where('status', 1)->count();
+        $totalPayments = $registrations->where('status', 2)->sum('paybill');
+
+        return view('admin.dashboard', compact('allRegistrations', 'waitingVerifications', 'totalPayments'));
     }
 }

@@ -15,7 +15,7 @@ class UsersSeeder extends Seeder
     public function run()
     {
         DB::table('users')->delete();
-        $user = User::updateOrCreate(
+        $su = User::updateOrCreate(
             ['username' => 'caesarali', 'email' => 'caesaralilamondo@gmail.com'],
             [
                 'name' => 'Caesar Ali L.',
@@ -25,6 +25,18 @@ class UsersSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ]
         );
-        $user->assignRole('superadmin');
+        $su->assignRole('superadmin');
+
+        $su = User::updateOrCreate(
+            ['username' => 'admin', 'email' => 'admin@gmail.com'],
+            [
+                'name' => 'Administrator.',
+                'email_verified_at' => Carbon::now(),
+                'password' => bcrypt('admin'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        );
+        $su->assignRole('superadmin');
     }
 }

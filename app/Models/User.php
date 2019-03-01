@@ -12,6 +12,14 @@ class User extends Authenticatable
     protected $fillable = ['name', 'username', 'email', 'password', 'last_login_ip', 'last_login_at'];
     protected $hidden = ['password', 'remember_token'];
 
+    public function participant() {
+        return $this->hasOne(Participant::class);
+    }
+
+    public function registration() {
+        return $this->hasOne(Registration::class);
+    }
+
     public function roles() {
         return $this->belongsToMany(Role::class);
     }

@@ -1,21 +1,30 @@
 @extends('layouts.auth')
 
+@section('body', 'login-page')
+
 @section('content')
-<div class="container">
+<div class="container" style="margin: 5% auto">
+    <div class="register-logo">
+        <a href="{{ url('/') }}" class="font-weight-bold">Event Registration</a>
+        <p class="lead">
+            8 Annual Scientific Meeting Indonesia Society of Thoracic Radiology <br>
+            <b class="text-uppercase">Comprehensive Thoracic Imaging</b>
+        </p>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header border-bottom-0">{{ __('Login') }}</div>
 
-                <div class="card-body">
+                <div class="card-body bg-light">
                     <form method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">

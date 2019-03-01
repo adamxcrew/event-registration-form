@@ -6,8 +6,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }}</title>
 
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -51,22 +49,38 @@
 
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        @if (Auth::user()->hasRole(['superadmin', 'admin']))
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link close-sidebar">
+                                    <i class="fas fa-tachometer-alt nav-icon"></i>
+                                    <p class="ml-1">Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('participants.index') }}" class="nav-link close-sidebar">
+                                    <i class="fas fa-user-plus nav-icon"></i>
+                                    <p class="ml-1">Participant</p>
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link close-sidebar">
+                                    <i class="fas fa-home nav-icon"></i>
+                                    <p class="ml-1">Home</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('profile.index') }}" class="nav-link close-sidebar">
+                                    <i class="fas fa-user-circle nav-icon"></i>
+                                    <p class="ml-1">Profile</p>
+                                </a>
+                            </li>
+                        @endif
+
                         <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link close-sidebar">
-                                <i class="fas fa-tachometer-alt nav-icon"></i>
-                                <p class="ml-1">Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link close-sidebar">
-                                <i class="far fa-calendar-check nav-icon"></i>
-                                <p class="ml-1">Event</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link close-sidebar">
-                                <i class="fas fa-user-plus nav-icon"></i>
-                                <p class="ml-1">Registration</p>
+                            <a href="{{ route('modules.index') }}" class="nav-link close-sidebar">
+                                <i class="fas fa-book nav-icon"></i>
+                                <p class="ml-1">Module</p>
                             </a>
                         </li>
 
@@ -98,5 +112,19 @@
             </div>
         </aside>
     </div>
+
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Sukses!',
+                text: "{{ session('success') }}",
+                type: 'success',
+            })
+        </script>
+    @endif
+    @yield('scripts')
 </body>
 </html>
