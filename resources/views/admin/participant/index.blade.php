@@ -85,6 +85,13 @@
                                             <a href="{{ route('participants.show', $item->id) }}" class="text-secondary mx-2 text-decoration-none">
                                                 <i class="fas fa-user-circle"></i>
                                             </a>
+                                            <form action="{{ route('participants.destroy', $item->id) }}" method="POST" class="d-inline">
+                                                {{ csrf_field() }}
+                                                {{ method_field('delete') }}
+                                                <a href="javascript:;" class="text-secondary ml-2 text-decoration-none" onclick="$(this).parent().submit()">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </a>
+                                            </form>
                                             {{-- <a href="#" class="text-secondary ml-2 text-decoration-none">
                                                 <i class="far fa-trash-alt"></i>
                                             </a> --}}
