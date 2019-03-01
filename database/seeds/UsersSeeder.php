@@ -31,7 +31,7 @@ class UsersSeeder extends Seeder
         $admin = User::updateOrCreate(
             ['username' => 'admin', 'email' => 'admin@gmail.com'],
             [
-                'name' => 'Administrator.',
+                'name' => 'Administrator',
                 'email_verified_at' => Carbon::now(),
                 'password' => bcrypt('admin'),
                 'created_at' => Carbon::now(),
