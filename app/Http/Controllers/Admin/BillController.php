@@ -35,7 +35,7 @@ class BillController extends Controller
     public function verified(User $user)
     {
         Mail::to($user)->send(new PaymentVerified($user));
-        // $user->registration->update(['status' => 2]);
+        $user->registration->update(['status' => 2]);
         return redirect()->back()->with('success', 'Pembayaran telah diverifikasi.');
     }
 }
