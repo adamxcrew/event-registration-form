@@ -48,4 +48,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('modules', 'ModuleController');
+
+    Route::get('/test-email', function() {
+        $user = Auth::user();
+        $password = 'caesarali';
+        $mail = Mail::to($user)->send(new App\Mail\UserRegistered($user, $password));
+        return 'Success';
+    });
 });

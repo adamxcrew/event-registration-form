@@ -35,9 +35,9 @@ class UserRegistered extends Mailable
                 'name' => $this->user->name,
                 'username' => $this->user->username,
                 'password' => $this->password,
-                'package' => $this->user->registration->package->description,
-                'category' => $this->user->registration->category->name,
-                'paybill' => $this->user->registration->paybill,
+                'package' => $this->user->registration->package->description ?? '-',
+                'category' => $this->user->registration->category->name ?? '-',
+                'paybill' => $this->user->registration->paybill ?? 0,
             ]);
     }
 }

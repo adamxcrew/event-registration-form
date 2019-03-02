@@ -96,7 +96,7 @@ class RegisterController extends Controller
             'paybill' => $fee
         ]);
 
-        Mail::to($user)->send(new UserRegistered($user, $password));
+        Mail::to($user)->queue(new UserRegistered($user, $password));
 
         return view('auth.verify');
     }
