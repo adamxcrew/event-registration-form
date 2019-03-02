@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/test-email', function() {
         $user = Auth::user();
         $password = 'caesarali';
-        $mail = Mail::to($user)->send(new App\Mail\UserRegistered($user, $password));
+        Mail::to($user)->send(new App\Mail\UserRegistered($user, $password));
         return 'Success';
     });
 });
