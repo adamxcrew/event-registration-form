@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model
 {
     protected $fillable = ['name', 'description'];
-    protected $dates = ['deleted_at'];
+    public $timestamps = false;
 
     public function fee() {
         return $this->hasMany(RegistrationFee::class, 'package_id');

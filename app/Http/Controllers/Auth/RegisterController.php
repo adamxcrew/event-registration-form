@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Models\Participant;
 use App\Models\Package;
 use App\Models\PackageCategory;
 use App\Models\Registration;
 use App\Models\RegistrationDate;
 use App\Models\RegistrationFee;
+use App\Models\Event;
+use App\Models\Level;
 
 use App\Mail\UserRegistered;
 
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Accommodation;
+use App\Models\BookingAccommodation;
 
 class RegisterController extends Controller
 {
@@ -30,31 +33,15 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
+        $request->session()->forget('registration');
         $categories = PackageCategory::all();
         $packages = Package::all();
+        $levels = Level::all();
         $date = RegistrationDate::all()->first();
-        return view('auth.register', compact('categories', 'packages', 'date'));
+        return view('auth.register.step1', compact('categories', 'packages', 'levels', 'date', 'accommodations'));
     }
-
-    // protected function validator(array $data)
-    // {
-    //     return Validator::make($data, [
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|string|email|max:255|unique:users',
-    //         'password' => 'required|string|min:6|confirmed',
-    //     ]);
-    // }
-
-    // protected function create(array $data)
-    // {
-    //     return User::create([
-    //         'name' => $data['name'],
-    //         'email' => $data['email'],
-    //         'password' => Hash::make($data['password']),
-    //     ]);
-    // }
 
     public function register(Request $request)
     {
@@ -62,12 +49,35 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'company' => 'required|string|max:255',
-            'profession' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:13',
             'category_id' => 'required|integer',
-            'package_id' => 'required|integer'
+            'package_id' => 'required|integer',
+            'level_id' => 'required|integer',
+            'workshop' => 'required|array'
         ]);
+        $request->session()->put('registration', $request->except('_token'));
+        return redirect()->route('accommodation');
+    }
+
+    public function showAccommodationForm(Request $request) {
+        if (!$request->session()->has('registration')) {
+            return redirect()->route('register');
+        }
+        $accommodations = Accommodation::all();
+        return view('auth.register.step2', compact('accommodations'));
+    }
+
+    public function registerFinal(Request $request)
+    {
+        $this->validate($request, [
+            'accommodation_id' => 'sometimes|integer',
+            'check_in' => 'sometimes|date',
+            'check_out' => 'sometimes|date|after:' . $request->check_in
+        ]);
+
+        $request->request->add($request->session()->get('registration'));
+        $request->session()->forget('registration');
 
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -85,16 +95,33 @@ class RegisterController extends Controller
         $user->assignRole('participant');
         $user->participant()->create($request->all());
 
-        $fee = RegistrationFee::where('package_id', $request->package_id)
-                ->where('category_id', $request->category_id)
-                ->first()->fee;
+        $paybill = RegistrationFee::where('package_id', $request->package_id)->where('category_id', $request->category_id)->first()->fee ?? 0;
 
         $registration = Registration::create([
             'user_id' => $user->id,
             'package_id' => $request->package_id,
             'category_id' => $request->category_id,
-            'paybill' => $fee
+            'paybill' => $paybill
         ]);
+
+        $registration->events()->attach($request->workshop);
+
+        if ($request->has('accommodation_id')) {
+            $checkIn = date_create($request->check_in);
+            $checkOut = date_create($request->check_out);
+            $duration = $checkIn->diff($checkOut)->d;
+            $accommodation = Accommodation::find($request->accommodation_id);
+            $price = str_replace('.', '', $accommodation->price);
+            $total = $price * $duration;
+            $booking = BookingAccommodation::create([
+                'registration_id' => $registration->id,
+                'accommodation_id' => $accommodation->id,
+                'check_in' => $request->check_in,
+                'check_out' => $request->check_out,
+                'duration' => $duration,
+                'fee' => $total
+            ]);
+        }
 
         Mail::to($user)->send(new UserRegistered($user, $password));
 

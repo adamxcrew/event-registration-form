@@ -37,7 +37,7 @@
             <div class="col-lg-6 col-12 d-none d-sm-inline-block">
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>Rp. {{ number_format($totalPayments) }},-</h3>
+                        <h3>Rp. {{ number_format($totalPayments, '0', ',', '.') }},-</h3>
                         <p>Total Payment</p>
                     </div>
                     <div class="icon">

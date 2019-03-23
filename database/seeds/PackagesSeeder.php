@@ -21,10 +21,10 @@ class PackagesSeeder extends Seeder
 
         $packagesReset = DB::table('packages')->delete();
         $packages = DB::table('packages')->insert([
-            ['name' => 'Package 1', 'description' => 'Symposium', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['name' => 'Package 2', 'description' => '1 Workshop', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['name' => 'Package 3', 'description' => 'Symposium + 1 Workshop', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['name' => 'Package 4', 'description' => 'Symposium + 2 Workshop', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Package 1', 'description' => 'Symposium'],
+            ['name' => 'Package 2', 'description' => '1 Workshop'],
+            ['name' => 'Package 3', 'description' => 'Symposium + 1 Workshop'],
+            ['name' => 'Package 4', 'description' => 'Symposium + 2 Workshop'],
         ]);
     }
 }

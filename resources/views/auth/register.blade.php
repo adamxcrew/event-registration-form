@@ -89,9 +89,9 @@
                         </div>
                     </div>
                     <div class="p-3 d-flex">
-                        <h5 class="m-0 font-weight-normal">Billing</h5>
+                        <h5 class="m-0 font-weight-normal">Registration</h5>
                         <a href="#" class="text-decoration-none text-muted ml-auto" data-toggle="modal" data-target="#registrationFeeModal">
-                            <i class="far fa-question-circle"></i>
+                            <i class="far fa-question-circle"></i> Detail
                         </a>
                         <div class="modal fade" id="registrationFeeModal" role="dialog" aria-labelledby="registrationFeeModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
@@ -148,31 +148,32 @@
                             <label for="category_id" class="col-md-3 col-form-label text-md-right">Category</label>
                             <div class="col-md-8">
                                 <select v-model="category" name="category_id" id="category_id" class="form-control" required>
+                                    <option value="" hidden>Pilih</option>
                                     @foreach ($categories as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" v-if="category">
                             <label for="package_id" class="col-md-3 col-form-label text-md-right">Package</label>
-                            <div class="col-md-9">
+                            <div class="col-md-9 pt-2">
                                 <template v-if="category == {{ $categories[0]->id }}">
                                     @foreach ($packages as $item)
-                                        <div class="form-check pb-2">
-                                            <input id="category{{ $loop->iteration }}" class="form-check-input" type="radio" name="package_id" value="{{ $item->id }}" {{ $loop->first ? 'checked' : '' }}>
-                                            <label class="form-check-label pl-2" for="category{{ $loop->iteration }}">
-                                                {{ $item->description }} (<b>Rp. {{ number_format($item->fee[0]->fee) }} - {{ $item->fee[0]->category->name }}</b>)
+                                        <div class="custom-control custom-radio pb-2">
+                                            <input id="category{{ $loop->iteration }}" v-model="package" class="custom-control-input" type="radio" name="package_id" value="{{ $item->id }}" {{ $loop->first ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="category{{ $loop->iteration }}">
+                                                {{ $item->description }} (<b>Rp. {{ number_format($item->fee[0]->fee) }}</b>)
                                             </label>
                                         </div>
                                     @endforeach
                                 </template>
                                 <template v-if="category == {{ $categories[1]->id }}">
                                     @foreach ($packages as $item)
-                                        <div class="form-check pb-2">
-                                            <input id="category{{ $loop->iteration }}" class="form-check-input" type="radio" name="package_id" value="{{ $item->id }}" {{ $loop->first ? 'checked' : '' }}>
-                                            <label class="form-check-label pl-2" for="category{{ $loop->iteration }}">
-                                                {{ $item->description }} (<b>Rp. {{ number_format($item->fee[1]->fee) }} - {{ $item->fee[1]->category->name }}</b>)
+                                        <div class="custom-control custom-radio pb-2">
+                                            <input id="category{{ $loop->iteration }}" v-model="package" class="custom-control-input" type="radio" name="package_id" value="{{ $item->id }}" {{ $loop->first ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="category{{ $loop->iteration }}">
+                                                {{ $item->description }} (<b>Rp. {{ number_format($item->fee[1]->fee) }}</b>)
                                             </label>
                                         </div>
                                     @endforeach
@@ -184,7 +185,31 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group row mb-0">
+                        <template v-if="category && package">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label text-md-right">Stairs</label>
+                                <div class="col-md-8">
+                                    <select v-model="level" name="level_id" class="form-control" v-on:change="getWorkshop()" required>
+                                        <option value="" hidden>Pilih</option>
+                                        @foreach ($levels as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" v-if="haveWorkshop">
+                                <label class="col-md-3 col-form-label text-md-right">Workshop</label>
+                                <div class="col-md-8 pt-2">
+                                    <div class="custom-control custom-checkbox" v-for="item in workshops">
+                                        <input class="custom-control-input" :class="item.category" v-model="form.workshop" name="workshop[]" type="checkbox" :value="item.id" :id="item.id" :onclick="item.id == 1 ? 'return false' : ''">
+                                        <label class="custom-control-label" :for="item.id">
+                                            @{{ item.name }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="form-group row pt-3 mb-0">
                             <div class="col-md-8 offset-md-3">
                                 <button type="submit" class="btn btn-primary btn-block-xs">
                                     {{ __('Register') }}
@@ -204,12 +229,60 @@
 
 @section('scripts')
     <script>
-        var category_id = "{{ $categories[0]->id }}"
         new Vue({
             el: '#app',
             data: {
-                category: category_id
-            }
+                category: '',
+                package: '1',
+                level: '',
+                workshops: [],
+                form: {
+                    workshop: [1]
+                }
+            },
+            watch: {
+                package() {
+                    this.getWorkshop()
+                },
+                'form.workshop'(value) {
+                    if (value.length > 1 && value.length >= this.maxWorkshop) {
+                        $('.workshop:not(:checked)').attr('disabled', 'disabled');
+                    } else {
+                        $('.workshop').removeAttr('disabled');
+                    }
+                }
+            },
+            computed: {
+                haveWorkshop() {
+                    return Object.keys(this.workshops).length > 0
+                },
+                maxWorkshop() {
+                    let value = parseInt(this.package)
+                    if (value > 1) {
+                        value = value-1
+                    }
+                    return value;
+                }
+            },
+            methods: {
+                getWorkshop() {
+                    this.form.workshop = []
+                    if (this.package != 2) {
+                        this.form.workshop = [1]
+                    }
+                    if (this.package && this.level) {
+                        axios.get('/workshops', {
+                            params: {
+                                package: this.package,
+                                level: this.level,
+                            }
+                        })
+                        .then(({ data }) => {
+                            this.workshops = data
+                        });
+                    }
+                }
+            },
         });
     </script>
 @endsection

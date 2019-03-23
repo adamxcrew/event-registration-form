@@ -1,29 +1,42 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Models\User;
 
-// Route::get('/', function () {
-//     return redirect('/register');
+// Route::get('/render-email', function() {
+//     $user = User::find(8);
+//     $password = 'password';
+//     $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+//     return $markdown->render('mails.registered', [
+//         'name' => $user->name,
+//         'username' => $user->username,
+//         'password' => $password,
+//         'registration' => $user->registration,
+//         'booking' => $user->registration->accommodation
+//     ]);
 // });
 
-// Route::get('/thanks', function () {
-//     return view('auth.verify');
-// });
+Route::get('/ticket', function() {
+    $user = User::findOrFail(8);
+    $registration = $user->registration;
+    return view('reports.ticket', compact('registration'));
+});
 
-// Auth::routes();
+Route::get('/ticket2', function() {
+    $user = User::findOrFail(8);
+    $registration = $user->registration;
+    $pdf = PDF::loadView('reports.ticket2', compact('registration'));
+    return $pdf->stream();
+    // return view('reports.ticket2', compact('registration'));
+});
+
+Route::get('/workshops', 'AjaxController@workshop');
+
 Route::namespace('Auth')->group(function () {
     Route::get('/', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
     Route::get('/register', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
+    Route::get('/accommodation', 'RegisterController@showAccommodationForm')->middleware('guest')->name('accommodation');
     Route::post('/register', 'RegisterController@register')->middleware('guest');
+    Route::post('/register/final', 'RegisterController@registerFinal')->middleware('guest');
     Route::get('/login', 'LoginController@showLoginForm')->middleware('guest')->name('login');
     Route::post('/login', 'LoginController@login')->middleware('guest');
     Route::post('/logout', 'LoginController@logout')->name('logout');
@@ -48,11 +61,4 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('modules', 'ModuleController');
-
-    Route::get('/test-email', function() {
-        $user = Auth::user();
-        $password = 'caesarali';
-        Mail::to($user)->send(new App\Mail\UserRegistered($user, $password));
-        return 'Success';
-    });
 });

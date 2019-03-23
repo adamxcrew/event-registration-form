@@ -12,55 +12,124 @@
 </div>
 <section class="content">
     <div class="container-fluid">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">
-                    Billing
-                </h5>
-            </div>
-            <div class="card-body p-0 table-responsive">
-                <table class="table mb-2">
-                    <tbody>
-                        <tr>
-                            <td nowrap class="border-top-0" width="20%">Kode Registrasi <span class="float-right">:</span></td>
-                            <td class="border-top-0 pl-2">{{ $user->registration->code }}</td>
-                        </tr>
-                        <tr>
-                            <td nowrap>Tanggal Registrasi <span class="float-right">:</span></td>
-                            <td class="pl-2">{{ $user->registration->created_at->format('d/m/Y') }}</td>
-                        </tr>
-                        <tr>
-                            <td nowrap>Paket <span class="float-right">:</span></td>
-                            <td class="pl-2">{{ $user->registration->package->description }} - <b>{{ $user->registration->category->name }}</b></td>
-                        </tr>
-                        <tr>
-                            <td nowrap>Biaya <span class="float-right">:</span></td>
-                            <td class="pl-2">Rp. {{ number_format($user->registration->paybill) }}</td>
-                        </tr>
-                        <tr>
-                            <td nowrap>Status <span class="float-right">:</span></td>
-                            <td class="pl-2">
-                                {!! $user->registration->status() !!}
-                                <a href="#" class="text-decoration-none text-muted" data-toggle="modal" data-target="#paymentInformation">
-                                    <i class="far fa-question-circle"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td nowrap>Pembayaran <span class="float-right">:</span></td>
-                            <td class="pl-2">
-                                @if ($user->registration->receipt()->exists())
-                                    <a href="#" class="text-decoration-none text-muted" data-toggle="modal" data-target="#paymentConfirmation">
-                                        <i class="far fa-image mr-1"></i>
-                                        {{ $user->registration->receipt->paid_at->format('d/m/Y') }}
-                                    </a>
-                                @else
-                                    <button class="btn btn-sm btn-primary px-4" data-toggle="modal" data-target="#paymentConfirmation">Upload</button>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header font-weight-bold"><i class="far fa-money-bill-alt"></i> Bill</div>
+                    <div class="card-body p-0 table-responsive">
+                        <table class="table mb-2">
+                            <tbody>
+                                <tr>
+                                    <td nowrap class="border-top-0" width="20%">Kode Registrasi <span class="float-right">:</span></td>
+                                    <td class="border-top-0 pl-2">{{ $user->registration->code }}</td>
+                                </tr>
+                                <tr>
+                                    <td nowrap>Tanggal Registrasi <span class="float-right">:</span></td>
+                                    <td class="pl-2">{{ $user->registration->created_at->format('d/m/Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <td nowrap>Paket Workshop<span class="float-right">:</span></td>
+                                    <td class="pl-2">Rp. {{ $user->registration->paybill }} - "{{ $user->registration->package->description }}" <i>for <b>{{ $user->registration->category->name }}</b></i></td>
+                                </tr>
+                                @if ($user->registration->booking)
+                                    <tr>
+                                        <td nowrap>Akomodasi <span class="float-right">:</span></td>
+                                        <td class="pl-2">
+                                            Rp. {{ $user->registration->booking->fee }} -
+                                            Hotel {{ $user->registration->booking->accommodation->hotel }}.
+                                            Tipe kamar <i><u>{{ $user->registration->booking->accommodation->rate }}</u></i>.
+                                            Selama {{ $user->registration->booking->duration }} hari
+                                        </td>
+                                    </tr>
+                                    <tr class="">
+                                        <td nowrap>Workshop + Akomodasi <span class="float-right">:</span></td>
+                                        <td class="pl-2">
+                                            <b>Rp. {{ number_format(($user->registration->booking->getOriginal('fee') + $user->registration->getOriginal('paybill')), 0,',','.') }},-</b>
+                                        </td>
+                                    </tr>
                                 @endif
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                <tr>
+                                    <td nowrap>Status <span class="float-right">:</span></td>
+                                    <td class="pl-2">
+                                        {!! $user->registration->status() !!}
+                                        <a href="#" class="text-decoration-none text-muted" data-toggle="modal" data-target="#paymentInformation">
+                                            <i class="far fa-question-circle"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap>Pembayaran <span class="float-right">:</span></td>
+                                    <td nowrap class="pl-2">
+                                        @if ($user->registration->receipt()->exists())
+                                            @if ($user->registration->receipt->fileInfo()['extension'] == 'pdf')
+                                                <a href="{{ asset($user->registration->receipt->file) }}" class="text-decoration-none text-muted" target="_blank">
+                                                    <i class="far fa-file-pdf"></i>
+                                                    {{ $user->registration->receipt->fileInfo()['filename'] }} ({{ strtoupper($user->registration->receipt->fileInfo()['extension']) }})
+                                                </a>
+                                            @else
+                                                <a href="#" class="text-decoration-none text-muted" v-on:click.prevent="showPhoto('{{ asset($user->registration->receipt->file) }}')">
+                                                    <i class="far fa-image"></i>
+                                                    {{ $user->registration->receipt->fileInfo()['filename'] }} ({{ strtoupper($user->registration->receipt->fileInfo()['extension']) }})
+                                                </a>
+                                            @endif
+                                            | <a href="#" class="ml-1 text-decoration-none text-muted" data-toggle="modal" data-target="#paymentConfirmation">
+                                                <i class="far fa-edit"></i> edit
+                                            </a>
+                                        @else
+                                            <button class="btn btn-sm btn-primary px-4" data-toggle="modal" data-target="#paymentConfirmation">
+                                                <i class="fas fa-upload mr-1"></i> Upload Bukti Pembayaran
+                                            </button>
+                                        @endif
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Workshop</div>
+                    <div class="card-body p-2">
+                        <ol>
+                            @foreach ($user->registration->events as $item)
+                                <li>{{ $item->name }}</li>
+                            @endforeach
+                        </ol>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Accommodation</div>
+                    <div class="card-body">
+                        <table>
+                            <tr>
+                                <td class="px-2"> - </td>
+                                <td>Hotel <span class="float-right"> :</span></td>
+                                <td class="px-2">{{ $user->registration->booking->accommodation->hotel }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-2"> - </td>
+                                <td>Room Type <span class="float-right ml-4"> :</span></td>
+                                <td class="px-2">{{ $user->registration->booking->accommodation->rate }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-2"> - </td>
+                                <td>Durasi <span class="float-right"> :</span></td>
+                                <td class="px-2">{{ $user->registration->booking->duration }} malam</td>
+                            </tr>
+                            <tr>
+                                <td class="px-2"> - </td>
+                                <td>Check In <span class="float-right"> :</span></td>
+                                <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_in)) }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-2"> - </td>
+                                <td>Check Out <span class="float-right"> :</span></td>
+                                <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_out)) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -84,9 +153,6 @@
                             152-00-5223240-8
                         </p>
                     </div>
-                </div>
-                <div class="modal-footer border-top-0">
-                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
                 </div>
             </div>
         </div>
@@ -124,7 +190,7 @@
                         </div>
                         <div class="form-group">
                             <label for="paid_at">Tanggal Transfer</label>
-                            <input type="text" name="paid_at" id="paid_at" class="form-control{{ $errors->has('paid_at') ? ' is-invalid' : '' }}" value="{{ old('paid_at', $user->registration->receipt ? $user->registration->receipt->paid_at->format('d/m/Y') : '') }}" placeholder="Format: DD/MM/YYYY" required>
+                            <input type="date" name="paid_at" id="paid_at" class="form-control{{ $errors->has('paid_at') ? ' is-invalid' : '' }}" value="{{ old('paid_at', $user->registration->receipt ? $user->registration->receipt->getOriginal('paid_at') : '') }}" placeholder="Tanggal Transfer sesuai dengan struk." required>
                             @if ($errors->has('paid_at'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('paid_at') }}</strong>
@@ -132,16 +198,12 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="struk">Bukti Transfer <small class="text-muted"><i>(maks: 2048 KB)</i></small></label>
-                            <input id="struk" type="file" class="{{ $errors->has('struk') ? 'form-control is-invalid' : '' }}" accept=".png,.jpeg,.jpg" name="struk" value="{{ old('struk') }}" placeholder="Foto Bukti Pembayaran" required>
+                            <label for="struk">Bukti Transfer <small class="text-muted">(JPG/PDF, maks: 2048 KB)</small></label>
+                            <input id="struk" type="file" class="{{ $errors->has('struk') ? 'form-control is-invalid' : '' }}" accept=".png,.jpeg,.jpg,.pdf" name="struk" value="{{ old('struk') }}" placeholder="Foto Bukti Pembayaran" required>
                             @if ($errors->has('struk'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('struk') }}</strong>
                                 </span>
-                            @endif
-                            @if ($user->registration->receipt)
-                                <br>
-                                <img src="{{ asset($user->registration->receipt->file) }}" v-on:click.prevent="showPhoto('{{ asset($user->registration->receipt->file) }}')" class="img-fluid mt-3" style="height: 200px; cursor:pointer">
                             @endif
                         </div>
                     </div>
@@ -163,7 +225,7 @@
 @section('scripts')
     @if ($errors->any())
         <script>
-            $('#paymentConfirmation').modal('show')
+            // $('#paymentConfirmation').modal('show')
         </script>
     @endif
     <script>

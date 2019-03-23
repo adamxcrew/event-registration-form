@@ -10,7 +10,7 @@ class PaymentReceipt extends Model
     protected $fillable = ['registration_id', 'name', 'bank', 'account', 'nominal', 'paid_at', 'file'];
     protected $dates = ['paid_at'];
 
-    public function setPaidAtAttribute($value) {
-        $this->attributes['paid_at'] = Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d');
+    public function fileInfo() {
+        return pathinfo(asset($this->file));
     }
 }

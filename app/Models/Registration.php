@@ -15,6 +15,14 @@ class Registration extends Model
         return $this->has('receipt');
     }
 
+    public function getPaybillAttribute($value) {
+        return number_format($value,0,',','.');
+    }
+
+    public function setPaybillAttribute($value) {
+        $this->attributes['paybill'] = str_replace('.', '', $value);
+    }
+
     public function status() {
         $status = $this->attributes['status'];
         switch ($status) {
@@ -47,7 +55,13 @@ class Registration extends Model
         return $this->hasOne(PaymentReceipt::class, 'registration_id');
     }
 
+    public function booking() {
+        return $this->hasOne(BookingAccommodation::class);
+    }
 
+    public function events() {
+        return $this->belongsToMany(Event::class, 'registration_event', 'registration_id', 'event_id');
+    }
 
     public static function boot() {
         parent::boot();

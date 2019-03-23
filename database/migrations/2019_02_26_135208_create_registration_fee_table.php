@@ -19,7 +19,6 @@ class CreateRegistrationFeeTable extends Migration
             $table->integer('category_id')->unsigned();
             $table->integer('early_fee')->unsigned();
             $table->integer('normal_fee')->unsigned();
-            $table->timestamps();
 
             $table->foreign('package_id')->references('id')->on('packages')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('package_categories')->onDelete('cascade');

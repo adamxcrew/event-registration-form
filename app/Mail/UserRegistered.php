@@ -32,12 +32,11 @@ class UserRegistered extends Mailable
     public function build()
     {
         return $this->markdown('mails.registered')->with([
-                'name' => $this->user->name,
-                'username' => $this->user->username,
-                'password' => $this->password,
-                'package' => $this->user->registration->package->description ?? '-',
-                'category' => $this->user->registration->category->name ?? '-',
-                'paybill' => $this->user->registration->paybill ?? 0,
-            ]);
+            'name' => $this->user->name,
+            'username' => $this->user->username,
+            'password' => $this->password,
+            'registration' => $this->user->registration,
+            'booking' => $this->user->registration->booking
+        ]);
     }
 }

@@ -18,16 +18,16 @@ class PaymentController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'bank' => 'required|string|max:255',
-            'paid_at' => 'required|date_format:"d/m/Y"',
-            'struk' => 'required|file|image|mimes:jpg,jpeg,png|max:2048'
+            'paid_at' => 'required|date',
+            'struk' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048'
         ]);
 
         $file = $request->file('struk');
         $ext = $file->getClientOriginalExtension();
         $name = 'receipt-' . Carbon::now()->format('Y-m-d-') . $user->id;
         $filename = $name  . '.' . $ext;
-        $path = 'images/receipts/' . $filename;
-        $file->move('images/receipts', $filename);
+        $path = 'receipts/' . $filename;
+        $file->move('receipts', $filename);
 
         $request->request->add(['file' => $path]);
 

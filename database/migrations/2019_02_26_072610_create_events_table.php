@@ -18,11 +18,9 @@ class CreateEventsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('additional_information')->nullable();
-            $table->integer('type_id')->unsigned();
-            $table->timestamps();
+            $table->string('category')->nullable();
+            $table->enum('time', ['day', 'night', 'none'])->default('none');
             $table->softDeletes();
-
-            $table->foreign('type_id')->references('id')->on('event_types')->onDelete('cascade');
         });
     }
 

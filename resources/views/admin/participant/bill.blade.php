@@ -19,13 +19,30 @@
                             <td class="pl-2">@{{ bill.date }}</td>
                         </tr>
                         <tr>
-                            <td nowrap>Paket <span class="float-right">:</span></td>
+                            <td nowrap>Paket Workshop <span class="float-right">:</span></td>
                             <td class="pl-2">@{{ bill.package }} - <b>@{{ bill.category }}</b></td>
                         </tr>
                         <tr>
                             <td nowrap>Biaya <span class="float-right">:</span></td>
-                            <td class="pl-2">Rp. @{{ bill.fee }}</td>
+                            <td class="pl-2">Rp. @{{ bill.fee }},-</td>
                         </tr>
+                        <template v-if="bill.accommodation">
+                            <tr>
+                                <td nowrap>Akomodasi Hotel<span class="float-right">:</span></td>
+                                <td class="pl-2">
+                                    Rate @{{ bill.accommodation.roomtype }}, @{{ bill.accommodation.duration }} malam.
+                                    (@{{ bill.accommodation.check_in }} - @{{ bill.accommodation.check_out }})
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap>Tarif <span class="float-right">:</span></td>
+                                <td class="pl-2">Rp. @{{ bill.accommodation.fee }},-</td>
+                            </tr>
+                            <tr>
+                                <td nowrap>Workshop + Akomodasi <span class="float-right">:</span></td>
+                                <td class="pl-2"><b>Rp. @{{ bill.accommodation.total }},-</b></td>
+                            </tr>
+                        </template>
                         <tr>
                             <td nowrap>Status <span class="float-right">:</span></td>
                             <td class="pl-2"><span v-html="bill.status"></span></td>
@@ -33,9 +50,13 @@
                         <tr v-if="bill.paid_at">
                             <td nowrap>Pembayaran <span class="float-right">:</span></td>
                             <td class="pl-2">
-                                @{{ bill.paid_at }} - @{{ bill.paid_by }} (@{{ bill.paid_bank }})
-                                <a href="#" class="text-decoration-none text-secondary" v-on:click.prevent="showPhoto(bill.paid_struk)">
+                                <a v-if="bill.struk_ext == 'pdf'" :href="bill.paid_struk" class="text-decoration-none text-secondary" target="_blank">
+                                    <i class="far fa-file-pdf"></i>
+                                    @{{ bill.paid_at }} - @{{ bill.paid_by }} (@{{ bill.paid_bank }})
+                                </a>
+                                <a v-else href="#" class="text-decoration-none text-secondary" v-on:click.prevent="showPhoto(bill.paid_struk)">
                                     <i class="far fa-image"></i>
+                                    @{{ bill.paid_at }} - @{{ bill.paid_by }} (@{{ bill.paid_bank }})
                                 </a>
                             </td>
                         </tr>

@@ -8,6 +8,7 @@ class RegistrationFee extends Model
 {
     protected $table = 'registration_fee';
     protected $appends = ['fee', 'formated_fee'];
+    public $timestamps = false;
 
     public function getFeeAttribute() {
         $registration = RegistrationDate::all()->first();

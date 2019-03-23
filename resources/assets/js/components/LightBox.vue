@@ -1,10 +1,17 @@
 <template>
     <div class="lightbox" :class="show ? 'd-block' : 'd-none'">
         <span id="close" @click="close">&times;</span>
-        <img class="image" :src="image.src">
-        <div class="caption">
-            <span v-html="image.caption"></span>
-        </div>
+        <template v-if="image.ext == 'pdf'">
+            <div class="d-flex">
+            <embed :src="image.src" type="application/pdf" width="75%" height="550px" class="mx-auto"/>
+            </div>
+        </template>
+        <template v-else>
+            <img class="image" :src="image.src">
+            <div class="caption">
+                <span v-html="image.caption"></span>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -15,6 +22,7 @@ export default {
             show: false,
             image: {
                 src: '',
+                ext: '',
                 caption: '',
             }
         }

@@ -8,16 +8,7 @@ use Carbon\Carbon;
 class Participant extends Model
 {
     protected $fillable = [
-        'name',
-        'birth_place',
-        'birth_date',
-        'gender',
-        'address',
-        'phone',
-        'profession',
-        'company',
-        'information',
-        'user_id'
+        'name', 'birth_place', 'birth_date', 'gender', 'address', 'phone', 'profession', 'company', 'information', 'user_id'
     ];
     protected $dates = ['birth_date'];
     protected $appends = ['birth'];

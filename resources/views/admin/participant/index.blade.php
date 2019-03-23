@@ -147,9 +147,10 @@
                     $('#billModal .modal-footer form').attr('action', data.verification)
                 })
             },
-            showPhoto(src) {
+            showPhoto(src, ext=null) {
                 let image = {
-                    src: src
+                    src: src,
+                    ext: ext
                 }
                 this.$refs.lightbox.open(image)
             }
