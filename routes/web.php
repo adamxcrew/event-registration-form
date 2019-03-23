@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Registration;
 
 // Route::get('/render-email', function() {
 //     $user = User::find(8);
@@ -16,18 +17,21 @@ use App\Models\User;
 // });
 
 Route::get('/ticket', function() {
-    $user = User::findOrFail(11);
-    $registration = $user->registration;
-    return view('reports.ticket', compact('registration'));
+    $code = request()->c;
+    $registration = Registration::where('code', $code)->first();
+    if ($registration) {
+        return view('reports.ticket', compact('registration'));
+    }
+    abort(404);
 });
 
-Route::get('/ticket2', function() {
-    $user = User::findOrFail(8);
-    $registration = $user->registration;
-    $pdf = PDF::loadView('reports.ticket2', compact('registration'));
-    return $pdf->stream();
-    // return view('reports.ticket2', compact('registration'));
-});
+// Route::get('/ticket2', function() {
+//     $user = User::findOrFail(8);
+//     $registration = $user->registration;
+//     $pdf = PDF::loadView('reports.ticket2', compact('registration'));
+//     return $pdf->stream();
+//     // return view('reports.ticket2', compact('registration'));
+// });
 
 Route::get('/workshops', 'AjaxController@workshop');
 Route::get('/room-types', 'AjaxController@roomTypes');
