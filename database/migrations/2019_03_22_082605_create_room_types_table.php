@@ -15,7 +15,11 @@ class CreateRoomTypesTable extends Migration
     {
         Schema::create('room_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('accommodation_id')->unsigned();
+            $table->string('type');
+            $table->integer('price')->unsigned()->default(0);
+
+            $table->foreign('accommodation_id')->references('id')->on('accommodations')->onDelete('cascade');
         });
     }
 

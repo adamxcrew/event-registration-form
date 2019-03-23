@@ -36,9 +36,9 @@
                                         <td nowrap>Akomodasi <span class="float-right">:</span></td>
                                         <td class="pl-2">
                                             Rp. {{ $user->registration->booking->fee }} -
-                                            Hotel {{ $user->registration->booking->accommodation->hotel }}.
-                                            Tipe kamar <i><u>{{ $user->registration->booking->accommodation->rate }}</u></i>.
-                                            Selama {{ $user->registration->booking->duration }} hari
+                                            {{ $user->registration->booking->roomType->accommodation->hotel }}.
+                                            Tipe <i><u>{{ $user->registration->booking->roomType->type }}</u></i>.
+                                            Selama {{ $user->registration->booking->duration }} malam.
                                         </td>
                                     </tr>
                                     <tr class="">
@@ -72,9 +72,11 @@
                                                     {{ $user->registration->receipt->fileInfo()['filename'] }} ({{ strtoupper($user->registration->receipt->fileInfo()['extension']) }})
                                                 </a>
                                             @endif
-                                            | <a href="#" class="ml-1 text-decoration-none text-muted" data-toggle="modal" data-target="#paymentConfirmation">
-                                                <i class="far fa-edit"></i> edit
-                                            </a>
+                                            @if ($user->registration->status <= 1)
+                                                | <a href="#" class="ml-1 text-decoration-none text-muted" data-toggle="modal" data-target="#paymentConfirmation">
+                                                    <i class="far fa-edit"></i> edit
+                                                </a>
+                                            @endif
                                         @else
                                             <button class="btn btn-sm btn-primary px-4" data-toggle="modal" data-target="#paymentConfirmation">
                                                 <i class="fas fa-upload mr-1"></i> Upload Bukti Pembayaran
@@ -82,6 +84,17 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @if ($user->registration->status > 1)
+                                    <tr>
+                                        <td nowrap>Kupon <span class="float-right">:</span></td>
+                                        <td nowrap class="pl-2">
+                                            <a href="{{ route('my.ticket') }}" class="text-decoration-none text-muted" target="_blank">
+                                                <i class="fas fa-print mr-1"></i>
+                                                Cetak Kupon
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -101,30 +114,23 @@
                 <div class="card">
                     <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Accommodation</div>
                     <div class="card-body">
+                        <b>{{ $user->registration->booking->roomType->accommodation->hotel }}</b>
+                        <p>{{ $user->registration->booking->roomType->accommodation->address }}</p>
                         <table>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Hotel <span class="float-right"> :</span></td>
-                                <td class="px-2">{{ $user->registration->booking->accommodation->hotel }}</td>
+                                <th>Room Type <span class="float-right ml-4"> :</span></th>
+                                <td class="px-2">{{ $user->registration->booking->roomType->type }}</td>
                             </tr>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Room Type <span class="float-right ml-4"> :</span></td>
-                                <td class="px-2">{{ $user->registration->booking->accommodation->rate }}</td>
-                            </tr>
-                            <tr>
-                                <td class="px-2"> - </td>
-                                <td>Durasi <span class="float-right"> :</span></td>
+                                <th>Durasi <span class="float-right"> :</span></th>
                                 <td class="px-2">{{ $user->registration->booking->duration }} malam</td>
                             </tr>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Check In <span class="float-right"> :</span></td>
+                                <th>Check In <span class="float-right"> :</span></th>
                                 <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_in)) }}</td>
                             </tr>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Check Out <span class="float-right"> :</span></td>
+                                <th>Check Out <span class="float-right"> :</span></th>
                                 <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_out)) }}</td>
                             </tr>
                         </table>
@@ -199,7 +205,7 @@
                         </div>
                         <div class="form-group">
                             <label for="struk">Bukti Transfer <small class="text-muted">(JPG/PDF, maks: 2048 KB)</small></label>
-                            <input id="struk" type="file" class="{{ $errors->has('struk') ? 'form-control is-invalid' : '' }}" accept=".png,.jpeg,.jpg,.pdf" name="struk" value="{{ old('struk') }}" placeholder="Foto Bukti Pembayaran" required>
+                            <input id="struk" type="file" class="{{ $errors->has('struk') ? 'form-control is-invalid' : '' }}" accept=".png,.jpeg,.jpg,.pdf" name="struk" value="{{ old('struk') }}" placeholder="Foto Bukti Pembayaran" {{ !$user->registration->receipt ? 'required' : '' }}>
                             @if ($errors->has('struk'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('struk') }}</strong>

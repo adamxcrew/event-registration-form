@@ -11,7 +11,7 @@ Biaya : <b>Rp. {{ $registration->paybill }}</b>
 
 @if (isset($booking))
 Akomodasi hotel selama {{ $booking->duration }} hari.<br>
-Rate kamar  : <b>{{ $booking->accommodation->rate }}</b> <br>
+Rate kamar  : <b>{{ $booking->roomType->type }}</b> <br>
 Tarif kamar : <b>Rp. {{ $booking->fee }}</b>
 
 <br>

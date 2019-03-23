@@ -16,7 +16,7 @@ class CreateBookingAccommodationsTable extends Migration
         Schema::create('booking_accommodations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('registration_id')->unsigned();
-            $table->integer('accommodation_id')->unsigned();
+            $table->integer('room_type_id')->unsigned();
             $table->date('check_in');
             $table->date('check_out');
             $table->integer('duration')->unsigned()->default(0);
@@ -24,7 +24,7 @@ class CreateBookingAccommodationsTable extends Migration
             $table->timestamps();
 
             $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
-            $table->foreign('accommodation_id')->references('id')->on('accommodations')->onDelete('cascade');
+            $table->foreign('room_type_id')->references('id')->on('room_types')->onDelete('cascade');
         });
     }
 

@@ -6,14 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Accommodation extends Model
 {
-    protected $fillable = ['hotel', 'rate', 'price'];
+    protected $fillable = ['hotel', 'rate', 'address'];
     public $timestamps = false;
 
-    public function getPriceAttribute($value) {
-        return number_format($value,0,',','.');
-    }
-
-    public function setPriceAttribute($value) {
-        $this->attributes['price'] = str_replace('.', '', $value);
+    public function types() {
+        return $this->hasMany(RoomType::class, 'room_type_id');
     }
 }

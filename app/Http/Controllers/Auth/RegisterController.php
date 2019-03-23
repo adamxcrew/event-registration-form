@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Models\Accommodation;
 use App\Models\BookingAccommodation;
+use App\Models\RoomType;
 
 class RegisterController extends Controller
 {
@@ -72,6 +73,7 @@ class RegisterController extends Controller
     {
         $this->validate($request, [
             'accommodation_id' => 'sometimes|integer',
+            'room_type_id' => 'sometimes|integer',
             'check_in' => 'sometimes|date',
             'check_out' => 'sometimes|date|after:' . $request->check_in
         ]);
@@ -106,16 +108,16 @@ class RegisterController extends Controller
 
         $registration->events()->attach($request->workshop);
 
-        if ($request->has('accommodation_id')) {
+        if ($request->has('room_type_id')) {
             $checkIn = date_create($request->check_in);
             $checkOut = date_create($request->check_out);
             $duration = $checkIn->diff($checkOut)->d;
-            $accommodation = Accommodation::find($request->accommodation_id);
-            $price = str_replace('.', '', $accommodation->price);
+            $roomType = RoomType::find($request->room_type_id);
+            $price = $roomType->getOriginal('price');
             $total = $price * $duration;
             $booking = BookingAccommodation::create([
                 'registration_id' => $registration->id,
-                'accommodation_id' => $accommodation->id,
+                'room_type_id' => $roomType->id,
                 'check_in' => $request->check_in,
                 'check_out' => $request->check_out,
                 'duration' => $duration,

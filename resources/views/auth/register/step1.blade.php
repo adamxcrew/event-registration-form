@@ -169,7 +169,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-3">
                                 <button type="submit" class="btn btn-primary btn-block-xs">
-                                    Next Step <i class="fas fa-arrow-right ml-1"></i>
+                                    Register
                                 </button>
                             </div>
                         </div>

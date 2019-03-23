@@ -33,7 +33,8 @@ class BillController extends Controller
         if ($user->registration->booking) {
             $booking = $user->registration->booking;
             $bill = array_add($bill, 'accommodation', [
-                'roomtype' => $booking->accommodation->rate,
+                'hotel' => $booking->roomType->accommodation->hotel,
+                'roomtype' => $booking->roomType->type,
                 'duration' => $booking->duration,
                 'check_in' => date('d.m.Y', strtotime($booking->check_in)),
                 'check_out' => date('d.m.Y', strtotime($booking->check_out)),

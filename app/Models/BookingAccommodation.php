@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class BookingAccommodation extends Model
 {
     protected $fillable = [
-        'registration_id', 'accommodation_id', 'check_in', 'check_out', 'duration', 'fee'
+        'registration_id', 'room_type_id', 'check_in', 'check_out', 'duration', 'fee'
     ];
 
     public function getFeeAttribute($value) {
@@ -22,7 +22,7 @@ class BookingAccommodation extends Model
         return $this->belongsTo(Registration::class);
     }
 
-    public function accommodation() {
-        return $this->belongsTo(Accommodation::class);
+    public function roomType() {
+        return $this->belongsTo(RoomType::class);
     }
 }

@@ -14,22 +14,28 @@ class PaymentController extends Controller
     public function pay(Request $request)
     {
         $user = Auth::user();
-        $paybill = $user->registration->paybill;
+        if (!$user->registration->receipt) {
+            $strukRule = 'required';
+        } else {
+            $strukRule = 'nullable';
+        }
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'bank' => 'required|string|max:255',
             'paid_at' => 'required|date',
-            'struk' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048'
+            'struk' => $strukRule . '|file|mimes:jpg,jpeg,png,pdf|max:2048'
         ]);
 
         $file = $request->file('struk');
-        $ext = $file->getClientOriginalExtension();
-        $name = 'receipt-' . Carbon::now()->format('Y-m-d-') . $user->id;
-        $filename = $name  . '.' . $ext;
-        $path = 'receipts/' . $filename;
-        $file->move('receipts', $filename);
+        if ($file) {
+            $ext = $file->getClientOriginalExtension();
+            $name = 'receipt-' . Carbon::now()->format('Y-m-d-') . $user->id;
+            $filename = $name  . '.' . $ext;
+            $path = 'receipts/' . $filename;
+            $file->move('receipts', $filename);
 
-        $request->request->add(['file' => $path]);
+            $request->request->add(['file' => $path]);
+        }
 
         $receipt = PaymentReceipt::updateOrCreate(
             ['registration_id' => $user->registration->id],
@@ -38,5 +44,12 @@ class PaymentController extends Controller
         $user->registration->update(['status' => 1]);
 
         return redirect()->back()->with('success','Bukti pembayaran telah di-upload dan menunggu verifikasi Admin.');
+    }
+
+    public function ticket()
+    {
+        $user = Auth::user();
+        $registration = $user->registration;
+        return view('reports.ticket', compact('registration'));
     }
 }

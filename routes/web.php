@@ -16,7 +16,7 @@ use App\Models\User;
 // });
 
 Route::get('/ticket', function() {
-    $user = User::findOrFail(8);
+    $user = User::findOrFail(11);
     $registration = $user->registration;
     return view('reports.ticket', compact('registration'));
 });
@@ -30,6 +30,7 @@ Route::get('/ticket2', function() {
 });
 
 Route::get('/workshops', 'AjaxController@workshop');
+Route::get('/room-types', 'AjaxController@roomTypes');
 
 Route::namespace('Auth')->group(function () {
     Route::get('/', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::namespace('User')->middleware('role:participant')->group(function () {
+        Route::get('/my-ticket', 'PaymentController@ticket')->name('my.ticket');
         Route::post('/upload-payment-receipt', 'PaymentController@pay')->name('payment.receipt');
         Route::get('/profile', 'ProfileController@index')->name('profile.index');
         Route::patch('/profile', 'ProfileController@update')->name('profile.update');

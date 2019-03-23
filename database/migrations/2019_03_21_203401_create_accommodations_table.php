@@ -16,8 +16,8 @@ class CreateAccommodationsTable extends Migration
         Schema::create('accommodations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('hotel');
-            $table->string('rate');
-            $table->integer('price')->default(0);
+            $table->string('address');
+            $table->smallInteger('rate')->unsigned()->default(0);
         });
     }
 

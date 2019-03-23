@@ -30,7 +30,7 @@
                             <tr>
                                 <td nowrap>Akomodasi Hotel<span class="float-right">:</span></td>
                                 <td class="pl-2">
-                                    Rate @{{ bill.accommodation.roomtype }}, @{{ bill.accommodation.duration }} malam.
+                                    @{{ bill.accommodation.hotel }}. Tipe @{{ bill.accommodation.roomtype }}, @{{ bill.accommodation.duration }} malam.
                                     (@{{ bill.accommodation.check_in }} - @{{ bill.accommodation.check_out }})
                                 </td>
                             </tr>

@@ -220,30 +220,23 @@
                 <div class="card">
                     <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Accommodation</div>
                     <div class="card-body">
+                        <b>{{ $user->registration->booking->roomType->accommodation->hotel }}</b>
+                        <p>{{ $user->registration->booking->roomType->accommodation->address }}</p>
                         <table>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Hotel <span class="float-right"> :</span></td>
-                                <td class="px-2">{{ $user->registration->booking->accommodation->hotel }}</td>
+                                <th>Room Type <span class="float-right ml-4"> :</span></th>
+                                <td class="px-2">{{ $user->registration->booking->roomType->type }}</td>
                             </tr>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Room Type <span class="float-right ml-4"> :</span></td>
-                                <td class="px-2">{{ $user->registration->booking->accommodation->rate }}</td>
-                            </tr>
-                            <tr>
-                                <td class="px-2"> - </td>
-                                <td>Durasi <span class="float-right"> :</span></td>
+                                <th>Durasi <span class="float-right"> :</span></th>
                                 <td class="px-2">{{ $user->registration->booking->duration }} malam</td>
                             </tr>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Check In <span class="float-right"> :</span></td>
+                                <th>Check In <span class="float-right"> :</span></th>
                                 <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_in)) }}</td>
                             </tr>
                             <tr>
-                                <td class="px-2"> - </td>
-                                <td>Check Out <span class="float-right"> :</span></td>
+                                <th>Check Out <span class="float-right"> :</span></th>
                                 <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_out)) }}</td>
                             </tr>
                         </table>
