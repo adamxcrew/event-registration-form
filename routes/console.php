@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,14 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('password:reset', function () {
+    $admin = User::whereHas('roles', function ($query) {
+        $query->where('name', 'admin');
+    })->first();
+    $admin->update([
+        'username' => 'pitthorax',
+        'password' => 'tidakpakepassword'
+    ]);
+    $this->comment('Password reseted.');
+});
