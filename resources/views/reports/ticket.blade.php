@@ -128,7 +128,7 @@
             var link = document.createElement('a');
             link.download = "{{ $registration->code }}" + '.jpeg';
             link.href = dataUrl;
-            // link.click();
+            link.click();
         })
         .catch(function (error) {
             console.error('oops, something went wrong!', error);
