@@ -24,7 +24,7 @@ Artisan::command('password:reset', function () {
     })->first();
     $admin->update([
         'username' => 'pitthorax',
-        'password' => 'tidakpakepassword'
+        'password' => bcrypt('tidakpakepassword')
     ]);
     $this->comment('Password reseted.');
 });
