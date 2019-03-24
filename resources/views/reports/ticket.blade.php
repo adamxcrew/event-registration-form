@@ -19,14 +19,42 @@
         .table tr {
             border-bottom: black 1px dashed;
         }
+
+        .triangles{
+            overflow: hidden;
+            padding: 20px;
+            margin: 20px;
+            border: 2px solid #000;
+        }
+
+        .triangle{
+            margin: -16px;
+            float: left;
+            position: fixed;
+        }
+
+        .topleft{
+			width: 0;
+			height: 0;
+
+			border-top: 50px solid #333;
+			border-right: 50px solid transparent;
+		}
     </style>
 </head>
 <body>
     <div class="container mt-3">
         <div id="ticket" class="row m-0 p-0 ticket border" style="width: 900px">
-            <div class="col-4 p-3" style="height: 280px">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid">
-                <span class="d-block text-center mt-3 mb-1 font-weight-bold">
+            <div class="col-4 p-3 text-center" style="height: 280px">
+                {{-- <div class="triangle topleft">
+                    Kupon
+                </div> --}}
+                <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="d-block mx-auto" height="100px">
+                <span>
+                    8<sup>th</sup>Annual Scientific Meeting
+                    Indonesia Society of Thoracic
+                </span>
+                <span class="d-block text-center mt-2 mb-1 font-weight-bold">
                     <u>KUPON</u>
                 </span>
                 <div class="form-group" style="border-bottom: grey 1px dashed">
@@ -40,7 +68,7 @@
             <div class="col p-3" style="border-left: dashed black 2px">
                 <div class="row">
                     <div class="col-auto">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" height="60px">
+                        <img src="{{ asset('images/logo2.png') }}" alt="Logo" height="60px">
                     </div>
                     <div class="col text-center">
                         <h5 class="mb-0">
@@ -100,13 +128,13 @@
             var link = document.createElement('a');
             link.download = "{{ $registration->code }}" + '.jpeg';
             link.href = dataUrl;
-            link.click();
+            // link.click();
         })
         .catch(function (error) {
             console.error('oops, something went wrong!', error);
         })
         .then(function () {
-            window.close()
+            // window.close()
         });
     </script>
 </body>

@@ -33,8 +33,8 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="overflow-x: hidden;">
             <a href="{{ url('/') }}" class="brand-link">
-                <img src="{{ asset('images/calendar.png') }}" alt="{{ config('app.name') }}" class="brand-image img-circle">
-                <span class="brand-text font-weight-bold">MY EVENT</span>
+                <img src="{{ asset('images/logo2.png') }}" alt="{{ config('app.name') }}" class="brand-image img-circle">
+                <span class="brand-text">PIT-THORAX 2019</span>
             </a>
 
             <div class="sidebar">
