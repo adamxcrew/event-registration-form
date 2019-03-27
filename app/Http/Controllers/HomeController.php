@@ -42,7 +42,7 @@ class HomeController extends Controller
 
     public function ticket(Request $request)
     {
-        $code = request()->c;
+        $code = $request->c;
         $registration = Registration::where('code', $code)->first();
         if ($registration) {
             $pdf = PDF::loadView('reports.ticket2', compact('registration'))->setPaper('A4');

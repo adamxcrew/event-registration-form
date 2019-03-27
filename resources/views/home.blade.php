@@ -88,7 +88,7 @@
                                     <tr>
                                         <td nowrap>Kupon <span class="float-right">:</span></td>
                                         <td nowrap class="pl-2">
-                                            <a href="{{ route('my.ticket') }}" class="text-decoration-none text-muted" target="_blank">
+                                            <a href="{{ route('my.ticket') }}" class="text-decoration-none text-muted" download="true">
                                                 <i class="fas fa-print mr-1"></i>
                                                 Cetak Kupon
                                             </a>

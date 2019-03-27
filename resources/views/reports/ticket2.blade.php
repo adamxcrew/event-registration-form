@@ -74,7 +74,7 @@
 <body>
     <div class="header">
         {{-- <p><b>ACCREDTED BY</b></p> --}}
-        <img src="{{ asset('/images/logo2.png') }}" alt="" style="height: 80px; float: left">
+        <img src="{{ public_path("images/logo2.png") }}" alt="" style="height: 80px; float: left">
         <div>
             <h3 class="text-center" style="margin-bottom: 5px; margin-top: 5px;">
                 8<sup>th</sup> Annual Scientific Meeting <br> Indonesia Society of Thoracic Radiology <br>
@@ -168,7 +168,7 @@
         <table>
             <tr>
                 <td width="1%" nowrap>
-                    <img src="{{ asset('/images/logo2.png') }}" alt="" style="height: 80px">
+                    <img src="{{ public_path('/images/logo2.png') }}" alt="" style="height: 80px">
                 </td>
                 <td style="padding:10px">
                     <h3 style="text-align: left; margin: 0">KUPON</h3>

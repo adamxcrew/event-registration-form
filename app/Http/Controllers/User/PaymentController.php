@@ -51,8 +51,7 @@ class PaymentController extends Controller
     {
         $user = Auth::user();
         $registration = $user->registration;
-        // return view('reports.ticket2', compact('registration'));
         $pdf = PDF::loadView('reports.ticket2', compact('registration'))->setPaper('A4');
-        return $pdf->download($registration->code);
+        return $pdf->download($registration->code . '.pdf');
     }
 }
