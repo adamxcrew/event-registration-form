@@ -217,6 +217,7 @@
                         </ol>
                     </div>
                 </div>
+                @if ($user->registration->booking)
                 <div class="card">
                     <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Accommodation</div>
                     <div class="card-body">
@@ -242,6 +243,7 @@
                         </table>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>

@@ -4,204 +4,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Kupon</title>
+    <title>Invoice</title>
     <style>
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #212529;
-            text-align: left;
-            background-color: #fff;
-        }
-        .ticket {
-            background-image: url('/images/polygon.png')
         }
 
-        .table th,
+        table {
+			width: 100%;
+            border-collapse: collapse;
+        }
+
+        .float-right {
+            display: inline-block;
+            float: right;
+        }
+
+        .personal td {
+            padding: 3px 0px;
+        }
+
+        td.divider {
+            padding: 10px 0;
+        }
+
+        .table thead > tr {
+			height: 100px;
+		}
+
+        .table th {
+            border: 1px solid black;
+			text-align: center;
+            padding: 10px 10px;
+            background-color: lightsteelblue;
+        }
+
         .table td {
-            padding: 0.25rem;
-        }
-
-        .container {
-            max-width: 960px;
-        }
-
-        .container {
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        .pt-5,
-        .py-5 {
-            padding-top: 3rem !important;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-right: -15px;
-            margin-left: -15px;
-        }
-
-        .col,
-        .col-3, .col-auto {
-            position: relative;
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-
-        .col-auto {
-            flex: 0 0 auto;
-            width: auto;
-            max-width: 100%;
-        }
-
-        .col-3 {
-            flex: 0 0 25%;
-            max-width: 25%;
-        }
-
-        .col {
-            flex-basis: 0;
-            flex-grow: 1;
-            max-width: 100%;
-        }
-
-        .shadow-lg {
-            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-        }
-
-        .rounded {
-            border-radius: 0.25rem !important;
-        }
-
-        .bg-light {
-            background-color: #f8f9fa !important;
-        }
-
-        .border {
-            border: 1px solid #dee2e6 !important;
-        }
-
-        .p-3 {
-            padding: 1rem !important;
-        }
-
-        .img-fluid {
-            max-width: 100%;
-            height: auto;
-        }
-
-        img {
-            vertical-align: middle;
-            border-style: none;
-        }
-
-        .font-weight-bold {
-            font-weight: 700 !important;
+            padding: 5px 15px;
+            border: 1px solid black;
         }
 
         .text-center {
-            text-align: center !important;
+            text-align: center;
         }
 
-        .mt-3,
-        .my-3 {
-            margin-top: 1rem !important;
+        .text-right {
+            text-align: right;
         }
 
-        .mb-3,
-        .my-3 {
-            margin-bottom: 1rem !important;
+        div.absolute {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            border-top: 2px dashed black;
+            padding: 20px 50px;
         }
 
-        .mb-1,
-        .my-1 {
-            margin-bottom: 0.25rem !important;
-        }
-
-        .d-block {
-            display: block !important;
-        }
-
-        h5,
-        .h5 {
-            font-size: 1.25rem;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .h1,
-        .h2,
-        .h3,
-        .h4,
-        .h5,
-        .h6 {
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            line-height: 1.2;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
+        .box {
+            display: inline-block;
+            border: 1px solid black;
+            width: 10px;
+            height: 10px
+            margin-right: 5px;
+            margin-left: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container pt-5">
-        <div class="row shadow-lg bg-light rounded ticket border">
-            <div class="col-3 p-3" style="height: 270px">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="img-fluid">
-                <span class="d-block text-center mt-3 mb-1 font-weight-bold">
-                    <u>KUPON</u>
-                </span>
-                <div class="mb-3" style="border-bottom: grey 1px dashed; background-color: white; padding: 5px; text-align: center">
-                    <b>No: {{ $registration->code }}</b>
-                </div>
-                <div class="text-center font-weight-bold">
-                    <i>23-24<sup>th</sup> AGUSTUS 2019</i> <br>
-                    CLARO HOTEL, MAKASSAR
-                </div>
-            </div>
-            <div class="col p-3" style="border-left: dashed black 2px">
-                <div class="row">
-                    <div class="col-auto">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" height="60px">
-                    </div>
-                    <div class="col text-center">
-                        <h5 style="margin-bottom: 0">
-                            8<sup>th</sup> Annual Scientific Meeting <br> Indonesia Society of Thoracic Radiology
-                        </h5>
-                        <small>
-                            <i>23-24<sup>th</sup> AGUSTUS 2019, CLARO HOTEL, MAKASSAR.</i>
-                        </small>
-                    </div>
-                </div>
-            </div>
+    <div class="header">
+        {{-- <p><b>ACCREDTED BY</b></p> --}}
+        <img src="{{ asset('/images/logo2.png') }}" alt="" style="height: 80px; float: left">
+        <div>
+            <h3 class="text-center" style="margin-bottom: 5px; margin-top: 5px;">
+                8<sup>th</sup> Annual Scientific Meeting <br> Indonesia Society of Thoracic Radiology <br>
+            </h3>
+            <small class="text-center" style="display: block">
+                <span class="font-italic">23-24<sup>th</sup> AGUSTUS 2019,
+                CLARO HOTEL, MAKASSAR.</span>
+            </small>
         </div>
+    </div>
+    <br style="clear: both">
+    <div>
+        <h3>Invoice / Kwitansi</h3>
+        <table class="personal">
+            <tr>
+                <td width="30%">No. Invoice <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->code }}</td>
+                <td style="text-align: right">Date : {{ $registration->created_at->format('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Full Name <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->name }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Company <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->company }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Address <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->address }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Contact <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->phone }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Email <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->email }}</td>
+            </tr>
+            <tr>
+                <td class="divider" colspan="2"></td>
+            </tr>
+            <tr>
+                <td nowrap>Registration <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->package->description }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Registration Fee <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>Rp. {{ $registration->paybill }},-</td>
+            </tr>
+            <tr>
+                <td nowrap style="vertical-align: top">Workshop <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>
+                    @foreach ($registration->events as $item)
+                        {{ $loop->iteration }}. {{ $item->name }} <br>
+                    @endforeach
+                </td>
+            </tr>
+        </table>
+
+        <br>
+        <h3>Detail Payment</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="1%">No.</th>
+                    <th>Payment Date</th>
+                    <th>Bank</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">1.</td>
+                    <td class="text-center">{{ $registration->receipt->paid_at->format('d/m/Y') }}</td>
+                    <td class="text-center" nowrap>{{ $registration->receipt->bank }} - A/N: {{ $registration->receipt->name }}</td>
+                    <td class="text-center">Rp. {{ $registration->paybill }},-</td>
+                </tr>
+                <tr>
+                    <td class="text-right" colspan="3">Total :</td>
+                    <td class="text-center">Rp. {{ $registration->paybill }},-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <br><br><br><br><br>
+    <div class="absolute" style="margin: 0 -50px">
+        <table>
+            <tr>
+                <td width="1%" nowrap>
+                    <img src="{{ asset('/images/logo2.png') }}" alt="" style="height: 80px">
+                </td>
+                <td style="padding:10px">
+                    <h3 style="text-align: left; margin: 0">KUPON</h3>
+                    <sup>*</sup>ket: harap bawa kupon ini untuk ditukarkan dengan seminar kit.
+                </td>
+                <td width="1%" nowrap>
+                    <div class="box"></div> ID Card <br>
+                    <div class="box"></div> Seminar Kid <br>
+                    <div class="box"></div> Certificate <br>
+                    <div class="box"></div> Materi Presentasi <br>
+                    <div class="box"></div> Invoice <br>
+                </td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

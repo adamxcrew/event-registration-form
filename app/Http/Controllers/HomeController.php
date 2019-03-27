@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Registration;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
+use PDF;
 
 class HomeController extends Controller
 {
@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('ticket');
     }
 
     /**
@@ -38,5 +38,16 @@ class HomeController extends Controller
         $totalPayments = DB::table('registrations')->where('status', 2)->sum('paybill');
 
         return view('admin.dashboard', compact('allRegistrations', 'waitingVerifications', 'totalPayments'));
+    }
+
+    public function ticket(Request $request)
+    {
+        $code = request()->c;
+        $registration = Registration::where('code', $code)->first();
+        if ($registration) {
+            $pdf = PDF::loadView('reports.ticket2', compact('registration'))->setPaper('A4');
+            return $pdf->download($registration->code . '.pdf');
+        }
+        abort(404);
     }
 }

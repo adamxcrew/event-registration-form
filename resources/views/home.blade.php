@@ -111,31 +111,33 @@
                         </ol>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Accommodation</div>
-                    <div class="card-body">
-                        <b>{{ $user->registration->booking->roomType->accommodation->hotel }}</b>
-                        <p>{{ $user->registration->booking->roomType->accommodation->address }}</p>
-                        <table>
-                            <tr>
-                                <th>Room Type <span class="float-right ml-4"> :</span></th>
-                                <td class="px-2">{{ $user->registration->booking->roomType->type }}</td>
-                            </tr>
-                            <tr>
-                                <th>Durasi <span class="float-right"> :</span></th>
-                                <td class="px-2">{{ $user->registration->booking->duration }} malam</td>
-                            </tr>
-                            <tr>
-                                <th>Check In <span class="float-right"> :</span></th>
-                                <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_in)) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Check Out <span class="float-right"> :</span></th>
-                                <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_out)) }}</td>
-                            </tr>
-                        </table>
+                @if ($user->registration->booking)
+                    <div class="card">
+                        <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Accommodation</div>
+                        <div class="card-body">
+                            <b>{{ $user->registration->booking->roomType->accommodation->hotel }}</b>
+                            <p>{{ $user->registration->booking->roomType->accommodation->address }}</p>
+                            <table>
+                                <tr>
+                                    <th>Room Type <span class="float-right ml-4"> :</span></th>
+                                    <td class="px-2">{{ $user->registration->booking->roomType->type }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Durasi <span class="float-right"> :</span></th>
+                                    <td class="px-2">{{ $user->registration->booking->duration }} malam</td>
+                                </tr>
+                                <tr>
+                                    <th>Check In <span class="float-right"> :</span></th>
+                                    <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_in)) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Check Out <span class="float-right"> :</span></th>
+                                    <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_out)) }}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>
