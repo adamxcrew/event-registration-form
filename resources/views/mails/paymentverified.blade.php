@@ -4,7 +4,7 @@
 
 Terimakasih telah melakukan pembayaran registrasi <b>"8th Annual Scientific Meeting Indonesia Society of Thoracic Radiology"</b>.
 
-<a href="{{ config('app.url') }}ticket?c={{ $user->registration->code }}">Download kuitansi kamu disini.</a>
+<a href="{{ config('app.url') }}invoice?c={{ $user->registration->code }}">Download kwitansi kamu disini.</a>
 
 <br>
 Untuk informasi lebih lanjut seputan kegiatan ini, silahkan kunjungi website kami. <br>

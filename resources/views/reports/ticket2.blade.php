@@ -176,7 +176,7 @@
                 </td>
                 <td width="1%" nowrap>
                     <div class="box"></div> ID Card <br>
-                    <div class="box"></div> Seminar Kid <br>
+                    <div class="box"></div> Seminar Kit <br>
                     <div class="box"></div> Certificate <br>
                     <div class="box"></div> Materi Presentasi <br>
                     <div class="box"></div> Invoice <br>

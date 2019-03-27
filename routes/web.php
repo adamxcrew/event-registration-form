@@ -15,7 +15,7 @@ Route::namespace('Auth')->group(function () {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/ticket', 'InvoiceController@index');
+Route::get('/invoice', 'InvoiceController@index');
 
 Route::middleware('auth')->group(function () {
     Route::namespace('Admin')->middleware('role:admin|superadmin')->group(function () {
