@@ -33,6 +33,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="title" class="col-md-3 col-form-label text-md-right">Academic Title</label>
+                            <div class="col-md-8">
+                                <input id="title" type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ old('title') }}" placeholder="Academic Title" required>
+                                @if ($errors->has('title'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('title') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="email" class="col-md-3 col-form-label text-md-right">Email</label>
                             <div class="col-md-8">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Email" required>
@@ -43,17 +54,6 @@
                                 @endif
                             </div>
                         </div>
-                        {{-- <div class="form-group row">
-                            <label for="profession" class="col-md-3 col-form-label text-md-right">Profession</label>
-                            <div class="col-md-8">
-                                <input id="profession" type="text" class="form-control{{ $errors->has('profession') ? ' is-invalid' : '' }}" name="profession" value="{{ old('profession') }}" placeholder="Profession" required>
-                                @if ($errors->has('profession'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('profession') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div> --}}
                         <div class="form-group row">
                             <label for="company" class="col-md-3 col-form-label text-md-right">Company</label>
                             <div class="col-md-8">

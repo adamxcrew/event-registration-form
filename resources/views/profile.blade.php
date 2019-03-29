@@ -36,6 +36,10 @@
                                         <td class="border-top-0 pl-2">{{ $user->participant->name }}</td>
                                     </tr>
                                     <tr>
+                                        <td nowrap>Gelar <span class="float-right">:</span></td>
+                                        <td class="pl-2">{{ $user->participant->title }}</td>
+                                    </tr>
+                                    <tr>
                                         <td nowrap>Email <span class="float-right">:</span></td>
                                         <td class="pl-2">{{ $user->email }}</td>
                                     </tr>
@@ -64,10 +68,6 @@
                                         <td class="pl-2">{{ $user->participant->company }}</td>
                                     </tr>
                                     <tr>
-                                        <td nowrap>Profesi <span class="float-right">:</span></td>
-                                        <td class="pl-2">{{ $user->participant->profession ?? '-' }}</td>
-                                    </tr>
-                                    <tr>
                                         <td nowrap>Keterangan <span class="float-right">:</span></td>
                                         <td class="pl-2">{!! $user->participant->information ?? '<i class="text-muted">Kosong</i>' !!}</td>
                                     </tr>
@@ -88,6 +88,17 @@
                                             @if ($errors->has('name'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('name') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="title" class="col-md-3 col-form-label text-md-right">Gelar</label>
+                                        <div class="col-md-7">
+                                            <input id="title" type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ $user->participant->title }}" placeholder="Gelar" required>
+                                            @if ($errors->has('title'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('title') }}</strong>
                                                 </span>
                                             @endif
                                         </div>
@@ -114,7 +125,7 @@
                                             @endif
                                         </div>
                                         <div class="col-md-3">
-                                            <input id="birth_date" type="text" class="form-control{{ $errors->has('birth_date') ? ' is-invalid' : '' }}" name="birth_date" value="{{ $user->participant->birth_date ? $user->participant->birth_date->format('d/m/Y') : '' }}" placeholder="Tanggal: DD/MM/TTTT" required>
+                                            <input id="birth_date" type="date" class="form-control{{ $errors->has('birth_date') ? ' is-invalid' : '' }}" name="birth_date" value="{{ $user->participant->birth_date ? $user->participant->birth_date->format('Y-m-d') : '' }}" placeholder="Tanggal: DD/MM/TTTT" required>
                                             @if ($errors->has('birth_date'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('birth_date') }}</strong>
@@ -164,17 +175,6 @@
                                             @if ($errors->has('company'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('company') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="profession" class="col-md-3 col-form-label text-md-right">Profesi</label>
-                                        <div class="col-md-7">
-                                            <input id="profession" type="text" class="form-control{{ $errors->has('profession') ? ' is-invalid' : '' }}" name="profession" value="{{ $user->participant->profession }}" placeholder="Profesi" required>
-                                            @if ($errors->has('profession'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('profession') }}</strong>
                                                 </span>
                                             @endif
                                         </div>

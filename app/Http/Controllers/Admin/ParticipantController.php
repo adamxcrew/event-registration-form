@@ -47,11 +47,11 @@ class ParticipantController extends Controller
         $user = $participant->user;
         $this->validate($request, [
             'name' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'birth_place' => 'required|string|max:255',
-            'birth_date' => 'required|date_format:"d/m/Y"',
+            'birth_date' => 'required|date',
             'gender' => 'required|in:L,P',
-            'profession' => 'required|string|max:255',
             'company' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:13',

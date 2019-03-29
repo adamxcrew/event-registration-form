@@ -16,6 +16,7 @@ class CreateParticipantsTable extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('title')->nullable();
             $table->string('birth_place')->nullable();
             $table->date('birth_date')->nullable();
             $table->enum('gender', ['L','P'])->default('L');

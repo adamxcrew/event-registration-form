@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Participant extends Model
 {
     protected $fillable = [
-        'name', 'birth_place', 'birth_date', 'gender', 'address', 'phone', 'profession', 'company', 'information', 'user_id'
+        'name', 'title', 'birth_place', 'birth_date', 'gender', 'address', 'phone', 'profession', 'company', 'information', 'user_id'
     ];
     protected $dates = ['birth_date'];
     protected $appends = ['birth'];
@@ -24,9 +24,9 @@ class Participant extends Model
         return null;
     }
 
-    public function setBirthDateAttribute($value) {
-        $this->attributes['birth_date'] = Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d');
-    }
+    // public function setBirthDateAttribute($value) {
+    //     $this->attributes['birth_date'] = Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d');
+    // }
 
     public function gender() {
         if ($this->gender == 'P') {

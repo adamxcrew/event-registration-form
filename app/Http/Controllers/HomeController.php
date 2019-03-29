@@ -40,14 +40,14 @@ class HomeController extends Controller
         return view('admin.dashboard', compact('allRegistrations', 'waitingVerifications', 'totalPayments'));
     }
 
-    public function ticket(Request $request)
-    {
-        $code = $request->c;
-        $registration = Registration::where('code', $code)->first();
-        if ($registration) {
-            $pdf = PDF::loadView('reports.ticket2', compact('registration'))->setPaper('A4');
-            return $pdf->download($registration->code . '.pdf');
-        }
-        abort(404);
-    }
+    // public function invoice(Request $request)
+    // {
+    //     $code = $request->c;
+    //     $registration = Registration::where('code', $code)->first();
+    //     if ($registration) {
+    //         $pdf = PDF::loadView('reports.ticket2', compact('registration'))->setPaper('A4');
+    //         return $pdf->download($registration->code . '.pdf');
+    //     }
+    //     abort(404);
+    // }
 }

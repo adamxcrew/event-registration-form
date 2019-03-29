@@ -16,13 +16,21 @@
             border-collapse: collapse;
         }
 
+        hr.header {
+            border: 0;
+            height: 2px;
+            border-top: solid black 2px;
+            border-bottom: solid black 0.5px;
+            margin-top: 20px;
+        }
+
         .float-right {
             display: inline-block;
             float: right;
         }
 
         .personal td {
-            padding: 3px 0px;
+            padding: 1px 0px;
         }
 
         td.divider {
@@ -36,7 +44,7 @@
         .table th {
             border: 1px solid black;
 			text-align: center;
-            padding: 10px 10px;
+            padding: 5px 10px;
             background-color: lightsteelblue;
         }
 
@@ -57,8 +65,6 @@
             position: absolute;
             bottom: 0;
             width: 100%;
-            border-top: 2px dashed black;
-            padding: 20px 50px;
         }
 
         .box {
@@ -73,9 +79,9 @@
 </head>
 <body>
     <div class="header">
-        {{-- <p><b>ACCREDTED BY</b></p> --}}
         <img src="{{ public_path("images/logo2.png") }}" alt="" style="height: 80px; float: left">
-        <div>
+        <img src="{{ public_path("images/logo3.png") }}" alt="" style="height: 80px; float: left; margin-left: 10px">
+        <div style="margin-left: -80px">
             <h3 class="text-center" style="margin-bottom: 5px; margin-top: 5px;">
                 8<sup>th</sup> Annual Scientific Meeting <br> Indonesia Society of Thoracic Radiology <br>
             </h3>
@@ -85,9 +91,9 @@
             </small>
         </div>
     </div>
-    <br style="clear: both">
+    <hr class="header" style="clear: both;">
     <div>
-        <h3>Invoice / Kwitansi</h3>
+        <h3 style="margin-top: 10px; margin-bottom: 5px">Invoice / Kwitansi</h3>
         <table class="personal">
             <tr>
                 <td width="30%">No. Invoice <span class="float-right" style="padding-right: 10px">:</span></td>
@@ -97,6 +103,10 @@
             <tr>
                 <td nowrap>Full Name <span class="float-right" style="padding-right: 10px">:</span></td>
                 <td>{{ $registration->user->participant->name }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Academic Title <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->title ?? '-' }}</td>
             </tr>
             <tr>
                 <td nowrap>Company <span class="float-right" style="padding-right: 10px">:</span></td>
@@ -115,28 +125,30 @@
                 <td>{{ $registration->user->email }}</td>
             </tr>
             <tr>
-                <td class="divider" colspan="2"></td>
+                <td nowrap>Profession <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->level->name }}</td>
             </tr>
             <tr>
-                <td nowrap>Registration <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td>{{ $registration->package->description }}</td>
+                <td nowrap style="vertical-align: top">Registration <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>
+                    {{ $registration->package->description }} <br>
+                    @foreach ($registration->events->groupBy('category') as $key => $item)
+                        {{ $loop->iteration }}. {{ ucwords($key) }} <br>
+                        @if ($key == 'workshop')
+                            @foreach ($item as $workshop)
+                                <div style="padding-left: 20px">- {{ $workshop->name }}</div>
+                            @endforeach
+                        @endif
+                    @endforeach
+                </td>
             </tr>
             <tr>
                 <td nowrap>Registration Fee <span class="float-right" style="padding-right: 10px">:</span></td>
                 <td>Rp. {{ $registration->paybill }},-</td>
             </tr>
-            <tr>
-                <td nowrap style="vertical-align: top">Workshop <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td>
-                    @foreach ($registration->events as $item)
-                        {{ $loop->iteration }}. {{ $item->name }} <br>
-                    @endforeach
-                </td>
-            </tr>
         </table>
 
-        <br>
-        <h3>Detail Payment</h3>
+        <h3 style="margin-bottom: 5px">Detail Payment</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -154,21 +166,34 @@
                     <td class="text-center">Rp. {{ $registration->paybill }},-</td>
                 </tr>
                 <tr>
-                    <td class="text-right" colspan="3">Total :</td>
-                    <td class="text-center">Rp. {{ $registration->paybill }},-</td>
+                    <td class="text-right" colspan="3"><b>Total :</b></td>
+                    <td class="text-center"><b>Rp. {{ $registration->paybill }},-</b></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
+    <div class="absolute">
+        <table>
+            <tr>
+                <td></td>
+                <td width="1%" class="text-center" nowrap>
+                    Bendahara
+                    <div style="margin: 8px 0">
+                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 60px;">
+                    </div>
+                    dr. Erlin Sjahril, Sp.Rad(K)TR
+                </td>
+            </tr>
+        </table>
+        <br>
 
+        <hr style="margin: 10px -50px; border-style: dashed">
 
-    <br><br><br><br><br>
-    <div class="absolute" style="margin: 0 -50px">
         <table>
             <tr>
                 <td width="1%" nowrap>
-                    <img src="{{ public_path('/images/logo2.png') }}" alt="" style="height: 80px">
+                    <img src="{{ public_path('/images/logo3.png') }}" alt="" style="height: 80px">
                 </td>
                 <td style="padding:10px">
                     <h3 style="text-align: left; margin: 0">KUPON</h3>
@@ -178,9 +203,45 @@
                     <div class="box"></div> ID Card <br>
                     <div class="box"></div> Seminar Kit <br>
                     <div class="box"></div> Certificate <br>
-                    <div class="box"></div> Materi Presentasi <br>
-                    <div class="box"></div> Invoice <br>
                 </td>
+            </tr>
+        </table>
+        <br>
+        <table>
+            <tr>
+                <td width="25%">No. Invoice <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->code }}</td>
+                <td style="vertical-align: bottom" rowspan="7" width="1%" class="text-center" nowrap>
+                    Bendahara
+                    <div style="margin: 8px 0">
+                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 60px;">
+                    </div>
+                    dr. Erlin Sjahril, Sp.Rad(K)TR
+                </td>
+            </tr>
+            <tr>
+                <td nowrap>Full Name <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->name }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Academic Title <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->title ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Company <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->company }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Address <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->address }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Contact <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->participant->phone }}</td>
+            </tr>
+            <tr>
+                <td nowrap>Email <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td>{{ $registration->user->email }}</td>
             </tr>
         </table>
     </div>

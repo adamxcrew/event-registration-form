@@ -48,6 +48,7 @@ class RegisterController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'company' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -82,6 +83,7 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'package_id' => $request->package_id,
             'category_id' => $request->category_id,
+            'level_id' => $request->level_id,
             'paybill' => $paybill
         ]);
 

@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Registration extends Model
 {
     protected $table = 'registrations';
-    protected $fillable = ['code', 'user_id', 'package_id', 'category_id', 'paybill', 'status'];
+    protected $fillable = ['code', 'user_id', 'package_id', 'category_id', 'level_id', 'paybill', 'status'];
     protected $appends = ['is_paid'];
 
     public function getIsPaidAttribute() {
@@ -49,6 +49,10 @@ class Registration extends Model
 
     public function category() {
         return $this->belongsTo(PackageCategory::class, 'category_id');
+    }
+
+    public function level() {
+        return $this->belongsTo(Level::class);
     }
 
     public function receipt() {
