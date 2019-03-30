@@ -62,7 +62,6 @@
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Telp.</th>
-                                    <th>Profesi</th>
                                     <th class="text-center">Pembayaran</th>
                                     <th></th>
                                 </tr>
@@ -76,7 +75,6 @@
                                         <td nowrap>{{ $item->name }}</td>
                                         <td>{{ $item->user->email }}</td>
                                         <td>{{ $item->phone }}</td>
-                                        <td nowrap>{{ $item->profession ?? '-' }}</td>
                                         <td class="text-center">{!! $item->user->registration->status() !!}</td>
                                         <td class="text-right" nowrap>
                                             <a href="#" v-on:click.prevent="showBilling('{{ route('bill', $item->user->id) }}')" class="text-secondary mx-2 text-decoration-none">
