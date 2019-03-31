@@ -192,14 +192,17 @@
 
         <table>
             <tr>
-                <td width="1%" nowrap>
-                    <img src="{{ public_path('/images/logo3.png') }}" alt="" style="height: 80px">
+                <td width="160px">
+                    <div style="margin-top: 20px">
+                        <img src="{{ public_path('/images/logo2.png') }}" alt="" style="width: 75px">
+                        <img src="{{ public_path('/images/logo3.png') }}" alt="" style="width: 75px">
+                    </div>
                 </td>
-                <td style="padding:10px">
+                <td style="padding:10px; vertical-align: top">
                     <h3 style="text-align: left; margin: 0">KUPON</h3>
                     <sup>*</sup>ket: harap bawa kupon ini untuk ditukarkan dengan seminar kit.
                 </td>
-                <td width="1%" nowrap>
+                <td width="1%" nowrap style="padding:10px; vertical-align: top">
                     <div class="box"></div> ID Card <br>
                     <div class="box"></div> Seminar Kit <br>
                     <div class="box"></div> Certificate <br>
