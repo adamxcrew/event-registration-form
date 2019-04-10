@@ -18,6 +18,11 @@
                     </div>
                 </form>
             </div>
+            <div class="col-auto">
+                <a href="{{ route('registrations.export') }}" target="_blank" class="btn btn-success">
+                    <img src="{{ asset('images/excel.png') }}" height="20px" class="mr-1"> EXPORT
+                </a>
+            </div>
         </div>
     </div>
 </div>
