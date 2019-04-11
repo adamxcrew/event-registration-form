@@ -209,7 +209,6 @@
                 </td>
             </tr>
         </table>
-        <br>
         <table>
             <tr>
                 <td width="25%">No. Invoice <span class="float-right" style="padding-right: 10px">:</span></td>
