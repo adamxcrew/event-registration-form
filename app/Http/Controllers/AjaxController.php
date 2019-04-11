@@ -13,7 +13,7 @@ class AjaxController extends Controller
         $package = $request->package;
         $id = $request->level;
         $level = Level::find($id);
-        $workshops = $level->events;
+        $workshops = $level->events->where('id', '!=', 5);
         if ($package == 1) {
             $workshops = $workshops->where('category', 'symposium');
         } elseif ($package == 2) {
