@@ -186,9 +186,8 @@
                 </td>
             </tr>
         </table>
-        <br>
 
-        <hr style="margin: 10px -50px; border-style: dashed">
+        <hr style="margin: 15px -50px 10px; border-style: dashed">
 
         <table>
             <tr>
