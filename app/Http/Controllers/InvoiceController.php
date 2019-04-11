@@ -14,7 +14,7 @@ class InvoiceController extends Controller
         $code = $request->c;
         $registration = Registration::where('code', $code)->first();
         if ($registration) {
-            $pdf = PDF::loadView('reports.ticket2', compact('registration'))->setPaper('A4');
+            $pdf = PDF::loadView('reports.invoice', compact('registration'))->setPaper('A4');
             return $pdf->download($registration->code . '.pdf');
         }
         abort(404);

@@ -179,8 +179,8 @@
                 <td></td>
                 <td width="1%" class="text-center" nowrap>
                     Bendahara
-                    <div style="margin: 8px 0">
-                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 60px;">
+                    <div style="margin: 8px 0 0">
+                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 80px;">
                     </div>
                     dr. Erlin Sjahril, Sp.Rad(K)TR
                 </td>
@@ -216,8 +216,8 @@
                 <td>{{ $registration->code }}</td>
                 <td style="vertical-align: bottom" rowspan="7" width="1%" class="text-center" nowrap>
                     Bendahara
-                    <div style="margin: 8px 0">
-                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 60px;">
+                    <div style="margin: 8px 0 0">
+                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 80px;">
                     </div>
                     dr. Erlin Sjahril, Sp.Rad(K)TR
                 </td>
