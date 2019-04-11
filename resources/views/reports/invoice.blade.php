@@ -179,16 +179,15 @@
                 <td></td>
                 <td width="1%" class="text-center" nowrap>
                     Bendahara
-                    <div style="margin: 8px 0">
-                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 60px;">
+                    <div style="margin: 8px 0 0">
+                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 80px;">
                     </div>
                     dr. Erlin Sjahril, Sp.Rad(K)TR
                 </td>
             </tr>
         </table>
-        <br>
 
-        <hr style="margin: 10px -50px; border-style: dashed">
+        <hr style="margin: 15px -50px 10px; border-style: dashed">
 
         <table>
             <tr>
@@ -209,15 +208,14 @@
                 </td>
             </tr>
         </table>
-        <br>
         <table>
             <tr>
                 <td width="25%">No. Invoice <span class="float-right" style="padding-right: 10px">:</span></td>
                 <td>{{ $registration->code }}</td>
                 <td style="vertical-align: bottom" rowspan="7" width="1%" class="text-center" nowrap>
                     Bendahara
-                    <div style="margin: 8px 0">
-                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 60px;">
+                    <div style="margin: 8px 0 0">
+                        <img src="{{ public_path("images/marker.png") }}" alt="" style="height: 80px;">
                     </div>
                     dr. Erlin Sjahril, Sp.Rad(K)TR
                 </td>
