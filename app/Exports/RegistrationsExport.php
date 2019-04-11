@@ -5,6 +5,9 @@ namespace App\Exports;
 use App\Models\Registration;
 use Illuminate\Contracts\View\View;
 
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -15,7 +18,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Sheet;
 
-class RegistrationsExport implements FromView, ShouldAutoSize, WithHeadings, WithMapping, WithEvents
+class RegistrationsExport implements FromView, ShouldAutoSize, WithEvents
 {
     public function registerEvents(): array
     {
@@ -29,14 +32,32 @@ class RegistrationsExport implements FromView, ShouldAutoSize, WithHeadings, Wit
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
-                $event->sheet->styleCells('A1:E1', [
-                    'borders' => [
-                        'outline' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
-                            'color' => ['argb' => 'FFFF0000'],
-                        ],
+
+                $event->sheet->styleCells('A1:J1', [
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+                    'font' => [
+                        'bold' => true,
+                        'color' => ['argb' => Color::COLOR_BLACK]
                     ]
                 ]);
+
+                $event->sheet->styleCells("A2:J" . $event->sheet->getHighestRow(), [
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP
+                    ]
+                ]);
+
+                $event->sheet->styleCells("G2:G" . $event->sheet->getHighestRow(), [
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+                    ]
+                ]);
+
+                $event->sheet->getDelegate()->getStyle('A2:J' . $event->sheet->getHighestRow())->getAlignment()->setWrapText(true);
             },
         ];
     }
@@ -44,28 +65,6 @@ class RegistrationsExport implements FromView, ShouldAutoSize, WithHeadings, Wit
     public function collection()
     {
         return Registration::all();
-    }
-
-    public function map($registration): array
-    {
-        return [
-            $registration->id,
-            $registration->code,
-            $registration->created_at->format('d/m/Y'),
-            $registration->user->participant->name,
-            $registration->user->participant->phone
-        ];
-    }
-
-    public function headings(): array
-    {
-        return [
-            'No.',
-            'Registrasi',
-            'Tanggal',
-            'Peserta',
-            'Kontak'
-        ];
     }
 
     public function view(): View

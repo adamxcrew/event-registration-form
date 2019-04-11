@@ -90,6 +90,8 @@ class ParticipantController extends Controller
 
     public function export()
     {
-        return Excel::download(new RegistrationsExport, 'registrations.xlsx');
+        $date = date('d-m-Y');
+        $filename = 'registrations-' . $date . '.xlsx';
+        return Excel::download(new RegistrationsExport, $filename);
     }
 }
