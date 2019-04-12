@@ -46,7 +46,7 @@ class RegistrationsExport implements FromView, ShouldAutoSize, WithEvents
                 $event->sheet->styleCells("A2:J" . $event->sheet->getHighestRow(), [
                     'alignment' => [
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP
+                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
                     ]
                 ]);
 
