@@ -30,9 +30,6 @@
                 </div>
             </div>
             <div class="col-auto">
-                {{-- <a href="{{ route('registrations.export') }}" target="_blank" class="btn btn-success">
-                    <img src="{{ asset('images/excel.png') }}" height="20px" class="mr-1"> EXPORT
-                </a> --}}
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exportModal">
                     <img src="{{ asset('images/excel.png') }}" height="20px" class="mr-1"> EXPORT
                 </button>
@@ -53,7 +50,15 @@
                             <span class="badge badge-pill badge-warning">{{ $waiting }}</span>
                             <span class="badge badge-pill badge-success">{{ $paid }}</span>
                         </span>
-                        <div class="dropdown ml-auto mr-1">
+                        <form class="form-inline ml-auto mr-2">
+                            <select name="e" class="form-control form-control-sm" onchange="this.form.submit()">
+                                <option value="">Semua Seminar</option>
+                                @foreach ($events as $event)
+                                    <option value="{{ $event->id }}" {{ $request->e == $event->id ? 'selected' : '' }}>{{ $event->name }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                        <div class="dropdown mr-1">
                             <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-filter mr-2"></i>
                             </button>
@@ -117,9 +122,6 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="text-center">
-                    {{ $participants->links() }}
-                </div>
             </div>
         </div>
     </div>
@@ -136,6 +138,8 @@
     new Vue({
         el: '#app',
         data: {
+            exportAll: true,
+            exports: [],
             bill: {
                 id: '',
                 code: '',
@@ -176,7 +180,7 @@
         "ordering": true,
         "info": true,
         "paging": true,
-        "pageLength": 25,
+        "pageLength": 15,
         "searching": true,
         "dom": "<'table-responsive't><'card-footer px-3'<'row'<'col'i><'col'p>>>",
     });

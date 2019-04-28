@@ -17,27 +17,23 @@ class ParticipantController extends Controller
 {
     public function index(Request $request)
     {
-        $keyword = $request->keyword;
         $filter = $request->has('filter') ? [$request->filter] : [0,1,2];
+        $event = $request->e;
 
-        $participants = Participant::when($keyword, function($query, $keyword) {
-            return $query->whereHas('user.registration', function ($query) use ($keyword) {
-                $query->where('code', $keyword);
-            })
-            ->orWhere('name', 'like', "%{$keyword}%")
-            ->orWhere('profession', 'like', "%{$keyword}%");
-        })
-        ->whereHas('user.registration', function ($query) use ($filter) {
+        $participants = Participant::when($event, function ($query, $event) {
+            return $query->whereHas('user.registration.events', function ($query) use ($event) {
+                $query->where('id', $event);
+            });
+        })->whereHas('user.registration', function ($query) use ($filter) {
             $query->whereIn('status', $filter);
-        })
-        ->orderBy('created_at', 'desc')->paginate(25);
+        })->orderBy('created_at', 'desc')->get();
 
         $events = Event::all();
         $notpaid = DB::table('registrations')->where('status', 0)->count();
         $waiting = DB::table('registrations')->where('status', 1)->count();
         $paid = DB::table('registrations')->where('status', 2)->count();
 
-        return view('admin.participant.index', compact('participants', 'notpaid', 'waiting', 'paid', 'events'));
+        return view('admin.participant.index', compact('participants', 'notpaid', 'waiting', 'paid', 'events', 'request'));
     }
 
     public function show(Participant $participant)
@@ -72,33 +68,16 @@ class ParticipantController extends Controller
         return redirect()->back()->with('success','Data registrasi peserta dihapus.');
     }
 
-    // public function bill(User $user)
-    // {
-    //     $bill = [
-    //         'id' => $user->registration->id,
-    //         'date' => $user->registration->created_at->format('d/m/Y'),
-    //         'package' => $user->registration->package->description,
-    //         'category' => $user->registration->category->name,
-    //         'fee' => number_format($user->registration->paybill),
-    //         'status' => $user->registration->status(),
-    //         'paid_at' => $user->registration->receipt ? $user->registration->receipt->paid_at->format('d/m/Y') : null,
-    //         'paid_by' => $user->registration->receipt->name ?? null,
-    //         'paid_bank' => $user->registration->receipt->bank ?? null,
-    //         'paid_struk' => $user->registration->receipt ? asset($user->registration->receipt->file) : null
-    //     ];
-
-    //     return response()->json($bill);
-    // }
-
     public function export(Request $request)
     {
-        if (!empty($request->events)) {
-            $registration = Registration::whereIn('id', $request->events)->orderBy('created_at', 'desc')->get();
-        } else {
-            $registration = Registration::orderBy('created_at', 'desc')->get();
+        $events = $request->events;
+        if (!empty($events)) {
+            $registration = Registration::whereHas('events', function ($query) use ($events) {
+                $query->whereIn('id', $events);
+            })->orderBy('created_at', 'desc')->get();
         }
 
-        if ($registration->count() > 0) {
+        if (isset($registration) && $registration->count() > 0) {
             $date = date('d-m-Y');
             $filename = 'registrations-' . $date . '.xlsx';
             $export = new RegistrationsExport($registration);
