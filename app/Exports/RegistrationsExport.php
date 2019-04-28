@@ -20,6 +20,13 @@ use Maatwebsite\Excel\Sheet;
 
 class RegistrationsExport implements FromView, ShouldAutoSize, WithEvents
 {
+    protected $registrations;
+
+    public function __construct($registrations)
+    {
+        $this->registrations = $registrations;
+    }
+
     public function registerEvents(): array
     {
         Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
@@ -69,8 +76,9 @@ class RegistrationsExport implements FromView, ShouldAutoSize, WithEvents
 
     public function view(): View
     {
+        $registration = $this->registrations;
         return view('exports.registration', [
-            'registrations' => Registration::orderBy('created_at', 'desc')->get()
+            'registrations' => $registration
         ]);
     }
 }

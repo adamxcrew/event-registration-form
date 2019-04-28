@@ -11,6 +11,7 @@ use App\Exports\RegistrationsExport;
 use App\Models\Participant;
 use App\Models\User;
 use App\Models\Registration;
+use App\Models\Event;
 
 class ParticipantController extends Controller
 {
@@ -31,11 +32,12 @@ class ParticipantController extends Controller
         })
         ->orderBy('created_at', 'desc')->paginate(25);
 
+        $events = Event::all();
         $notpaid = DB::table('registrations')->where('status', 0)->count();
         $waiting = DB::table('registrations')->where('status', 1)->count();
         $paid = DB::table('registrations')->where('status', 2)->count();
 
-        return view('admin.participant.index', compact('participants', 'notpaid', 'waiting', 'paid'));
+        return view('admin.participant.index', compact('participants', 'notpaid', 'waiting', 'paid', 'events'));
     }
 
     public function show(Participant $participant)
@@ -88,10 +90,20 @@ class ParticipantController extends Controller
     //     return response()->json($bill);
     // }
 
-    public function export()
+    public function export(Request $request)
     {
-        $date = date('d-m-Y');
-        $filename = 'registrations-' . $date . '.xlsx';
-        return Excel::download(new RegistrationsExport, $filename);
+        if (!empty($request->events)) {
+            $registration = Registration::whereIn('id', $request->events)->orderBy('created_at', 'desc')->get();
+        } else {
+            $registration = Registration::orderBy('created_at', 'desc')->get();
+        }
+
+        if ($registration->count() > 0) {
+            $date = date('d-m-Y');
+            $filename = 'registrations-' . $date . '.xlsx';
+            $export = new RegistrationsExport($registration);
+            return Excel::download($export, $filename);
+        }
+        return redirect()->back()->with('error', 'Tidak ada peserta untuk seminar yang kamu pilih.');
     }
 }

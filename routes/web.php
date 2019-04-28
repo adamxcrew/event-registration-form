@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/participants/{participant}/show', 'ParticipantController@show')->name('participants.show');
         Route::patch('/participants/{participant}', 'ParticipantController@update')->name('participants.update');
         Route::delete('/participants/{participant}', 'ParticipantController@destroy')->name('participants.destroy');
-        Route::get('/registrations/export', 'ParticipantController@export')->name('registrations.export');
+        Route::post('/registrations/export', 'ParticipantController@export')->name('registrations.export');
         Route::get('/user/{user}/bill', 'BillController@show')->name('bill');
         Route::patch('/user/{user}/bill', 'BillController@verified')->name('bill.verified');
     });

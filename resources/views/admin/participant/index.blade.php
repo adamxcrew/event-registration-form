@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <form action="{{ url()->full() }}" method="GET">
+                {{-- <form action="{{ url()->full() }}" method="GET">
                     <div class="form-inline">
                         <div class="input-group app-shadow">
                             <input type="search" name="keyword" placeholder="Search" aria-label="Search" class="form-control form-control-navbar border-0" value="{{ request()->keyword }}">
@@ -16,12 +16,26 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form> --}}
+
+                <div class="form-inline">
+                    <div class="input-group app-shadow">
+                        <input type="text" id="keyword" name="keyword" placeholder="Search" aria-label="Search" class="form-control form-control-navbar border-0">
+                        <div class="input-group-append">
+                            <div class="input-group-text bg-white border-0">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-auto">
-                <a href="{{ route('registrations.export') }}" target="_blank" class="btn btn-success">
+                {{-- <a href="{{ route('registrations.export') }}" target="_blank" class="btn btn-success">
                     <img src="{{ asset('images/excel.png') }}" height="20px" class="mr-1"> EXPORT
-                </a>
+                </a> --}}
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exportModal">
+                    <img src="{{ asset('images/excel.png') }}" height="20px" class="mr-1"> EXPORT
+                </button>
             </div>
         </div>
     </div>
@@ -57,57 +71,51 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body p-0 table-responsive">
-                        <table class="table table-hover">
-                            <thead>
+                    <table id="datatable" class="table table-hover">
+                        <thead class="bg-light">
+                            <tr>
+                                <th width="1%">#</th>
+                                <th>Kode Reg.</th>
+                                <th>Tanggal</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Telp.</th>
+                                <th class="text-center">Pembayaran</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($participants as $item)
                                 <tr>
-                                    <th width="1%">#</th>
-                                    <th>Kode Reg.</th>
-                                    <th>Tanggal</th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>Telp.</th>
-                                    <th class="text-center">Pembayaran</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($participants as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}.</td>
-                                        <td>{{ $item->user->registration->code }}</td>
-                                        <td>{{ $item->user->registration->created_at->format("d/m/Y") }}</td>
-                                        <td nowrap>{{ $item->name }}</td>
-                                        <td>{{ $item->user->email }}</td>
-                                        <td>{{ $item->phone }}</td>
-                                        <td class="text-center">{!! $item->user->registration->status() !!}</td>
-                                        <td class="text-right" nowrap>
-                                            <a href="#" v-on:click.prevent="showBilling('{{ route('bill', $item->user->id) }}')" class="text-secondary mx-2 text-decoration-none">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                            <a href="{{ route('participants.show', $item->id) }}" class="text-secondary mx-2 text-decoration-none">
-                                                <i class="fas fa-user-circle"></i>
-                                            </a>
-                                            <form action="{{ route('participants.destroy', $item->id) }}" method="POST" class="d-inline">
-                                                {{ csrf_field() }}
-                                                {{ method_field('delete') }}
-                                                <a href="javascript:;" class="text-secondary ml-2 text-decoration-none" onclick="$(this).parent().submit()">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </a>
-                                            </form>
-                                            {{-- <a href="#" class="text-secondary ml-2 text-decoration-none">
+                                    <td>{{ $loop->iteration }}.</td>
+                                    <td>{{ $item->user->registration->code }}</td>
+                                    <td>{{ $item->user->registration->created_at->format("d/m/Y") }}</td>
+                                    <td nowrap>{{ $item->name }}</td>
+                                    <td>{{ $item->user->email }}</td>
+                                    <td>{{ $item->phone }}</td>
+                                    <td class="text-center">{!! $item->user->registration->status() !!}</td>
+                                    <td class="text-right" nowrap>
+                                        <a href="#" v-on:click.prevent="showBilling('{{ route('bill', $item->user->id) }}')" class="text-secondary mx-2 text-decoration-none">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                        <a href="{{ route('participants.show', $item->id) }}" class="text-secondary mx-2 text-decoration-none">
+                                            <i class="fas fa-user-circle"></i>
+                                        </a>
+                                        <form action="{{ route('participants.destroy', $item->id) }}" method="POST" class="d-inline">
+                                            {{ csrf_field() }}
+                                            {{ method_field('delete') }}
+                                            <a href="javascript:;" class="text-secondary ml-2 text-decoration-none" onclick="$(this).parent().submit()">
                                                 <i class="far fa-trash-alt"></i>
-                                            </a> --}}
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                       <td colspan="8" class="text-center text-muted"><i>Tidak ada data...</i></td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                            </a>
+                                        </form>
+                                        {{-- <a href="#" class="text-secondary ml-2 text-decoration-none">
+                                            <i class="far fa-trash-alt"></i>
+                                        </a> --}}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
                 <div class="text-center">
                     {{ $participants->links() }}
@@ -118,6 +126,7 @@
 </section>
 
 @include('admin.participant.bill')
+@include('admin.participant.export')
 
 <light-box ref="lightbox"></light-box>
 @endsection
@@ -159,5 +168,23 @@
             }
         }
     })
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    let table = $('#datatable').DataTable({
+        "ordering": true,
+        "info": true,
+        "paging": true,
+        "pageLength": 25,
+        "searching": true,
+        "dom": "<'table-responsive't><'card-footer px-3'<'row'<'col'i><'col'p>>>",
+    });
+    $('#keyword').on('keyup', function () {
+        table.search( this.value ).draw();
+    });
+
+    $('#datatable_info').addClass('py-2');
+    $('#datatable').addClass('mt-0')
 </script>
 @endsection

@@ -8,7 +8,15 @@
 
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <style>
+        table.dataTable {
+            clear: both;
+            margin-top: 0 !important;
+            border-collapse: collapse !important;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
     <div id="app" class="wrapper">
@@ -122,6 +130,15 @@
                 title: 'Sukses!',
                 text: "{{ session('success') }}",
                 type: 'success',
+            })
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                title: 'Gagal!',
+                text: "{{ session('error') }}",
+                type: 'error',
             })
         </script>
     @endif
