@@ -21,10 +21,12 @@ use Maatwebsite\Excel\Sheet;
 class RegistrationsExport implements FromView, ShouldAutoSize, WithEvents
 {
     protected $registrations;
+    protected $events;
 
-    public function __construct($registrations)
+    public function __construct($registrations, $events = NULL)
     {
         $this->registrations = $registrations;
+        $this->events = $events;
     }
 
     public function registerEvents(): array
@@ -76,9 +78,10 @@ class RegistrationsExport implements FromView, ShouldAutoSize, WithEvents
 
     public function view(): View
     {
-        $registration = $this->registrations;
+        // $registration = $this->registrations;
         return view('exports.registration', [
-            'registrations' => $registration
+            'registrations' => $this->registrations,
+            'events' => $this->events
         ]);
     }
 }

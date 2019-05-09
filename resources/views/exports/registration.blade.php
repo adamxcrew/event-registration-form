@@ -1,4 +1,4 @@
-<table>
+<table style="width: 100%">
     <thead>
         <tr>
             <th>NO.</th>
@@ -15,16 +15,19 @@
     </thead>
     <tbody>
         @foreach ($registrations as $item)
+            @php
+                $regEvents = $item->events->whereIn('id', $events);
+            @endphp
             <tr>
-                <td rowspan="{{ $item->events->count() }}">{{ $loop->iteration }}</td>
-                <td rowspan="{{ $item->events->count() }}">{{ $item->code }}</td>
-                <td rowspan="{{ $item->events->count() }}">{{ $item->created_at->format('d/m/Y') }}</td>
-                <td rowspan="{{ $item->events->count() }}">{{ $item->user->participant->name }}</td>
-                <td rowspan="{{ $item->events->count() }}">{{ $item->user->participant->phone }}</td>
-                <td rowspan="{{ $item->events->count() }}">{{ $item->package->description }} - {{ $item->category->name }}</td>
-                <td>1. {{ $item->events[0]->name }}</td>
-                <td rowspan="{{ $item->events->count() }}">{{ $item->getOriginal('paybill') }}</td>
-                <td rowspan="{{ $item->events->count() }}">
+                <td rowspan="{{ $regEvents->count() }}">{{ $loop->iteration }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->code }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->created_at->format('d/m/Y') }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->name }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->phone }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->package->description }} - {{ $item->category->name }}</td>
+                <td>{{ $regEvents->first()->name }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->getOriginal('paybill') }}</td>
+                <td rowspan="{{ $regEvents->count() }}">
                     @switch($item->status)
                         @case(1)
                             MENUNGGU VERIFIKASI
@@ -36,18 +39,16 @@
                             BELUM MEMBAYAR
                     @endswitch
                 </td>
-                <td rowspan="{{ $item->events->count() }}">
+                <td rowspan="{{ $regEvents->count() }}">
                     @if ($item->receipt)
                         {{ $item->receipt->paid_at->format('d/m/Y') }} - {{ $item->receipt->name }} ({{ $item->receipt->bank }})
                     @endif
                 </td>
             </tr>
-            @foreach ($item->events as $event)
-                @if ($loop->index > 0)
+            @foreach ($regEvents as $event)
+                @if (!$loop->first)
                     <tr>
-                        <td>
-                            {{ $loop->iteration }}. {{ $event->name }}
-                        </td>
+                        <td>{{ $event->name }}</td>
                     </tr>
                 @endif
             @endforeach

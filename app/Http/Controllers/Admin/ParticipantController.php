@@ -80,8 +80,10 @@ class ParticipantController extends Controller
         if (isset($registration) && $registration->count() > 0) {
             $date = date('d-m-Y');
             $filename = 'registrations-' . $date . '.xlsx';
-            $export = new RegistrationsExport($registration);
+            $export = new RegistrationsExport($registration, $events);
             return Excel::download($export, $filename);
+            // $registrations = $registration;
+            // return view('exports.registration', compact('registrations', 'events'));
         }
         return redirect()->back()->with('error', 'Tidak ada peserta untuk seminar yang kamu pilih.');
     }
