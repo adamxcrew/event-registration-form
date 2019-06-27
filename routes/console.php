@@ -2,6 +2,8 @@
 
 use Illuminate\Foundation\Inspiring;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestSendingMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +29,10 @@ Artisan::command('password:reset', function () {
         'password' => bcrypt('tidakpakepassword')
     ]);
     $this->comment('Password reseted.');
+});
+
+Artisan::command('testmail', function () {
+    $user = User::where('email', 'caesaralilamondo@gmail.com')->first();
+    Mail::to($user)->send(new TestSendingMail($user));
+    $this->info('Email Sended.');
 });

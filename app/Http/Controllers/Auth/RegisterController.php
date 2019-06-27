@@ -8,7 +8,7 @@ use App\Models\PackageCategory;
 use App\Models\Registration;
 use App\Models\RegistrationDate;
 use App\Models\RegistrationFee;
-use App\Models\Event;
+// use App\Models\Event;
 use App\Models\Level;
 
 use App\Mail\UserRegistered;
@@ -16,12 +16,12 @@ use App\Mail\UserRegistered;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Models\Accommodation;
-use App\Models\BookingAccommodation;
-use App\Models\RoomType;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Validator;
+// use Illuminate\Foundation\Auth\RegistersUsers;
+// use App\Models\Accommodation;
+// use App\Models\BookingAccommodation;
+// use App\Models\RoomType;
 
 class RegisterController extends Controller
 {
@@ -49,7 +49,7 @@ class RegisterController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'company' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:13',
