@@ -21,14 +21,15 @@ class EventLevelsSeeder extends Seeder
             ['id' => 5, 'name' => 'GP'],
             ['id' => 6, 'name' => 'Resident'],
             ['id' => 7, 'name' => 'Senior Medical Student'],
+            ['id' => 8, 'name' => 'Internist'],
         ]);
 
         $eventLevels = [
-            [1,2,3,4,5,6,7],
+            [1,2,3,4,5,6,7,8],
             [1,2],
             [1,2],
-            [1,3,4,6],
-            [1,3,4,6],
+            [1,3,4,6,8],
+            [1,3,4,6,8],
             [5,6,7]
         ];
 
