@@ -71,7 +71,7 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'username' => explode("@", $request->email)[0],
+            // 'username' => explode("@", $request->email)[0],
             'password' => bcrypt($password),
         ]);
         $user->assignRole('participant');
