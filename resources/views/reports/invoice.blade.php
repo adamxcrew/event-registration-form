@@ -153,7 +153,7 @@
             <thead>
                 <tr>
                     <th width="1%">No.</th>
-                    <th>Payment Date</th>
+                    <th width="1%" nowrap>Payment Date</th>
                     <th>Bank</th>
                     <th>Amount</th>
                 </tr>
@@ -162,12 +162,12 @@
                 <tr>
                     <td class="text-center">1.</td>
                     <td class="text-center">{{ $registration->receipt->paid_at->format('d/m/Y') }}</td>
-                    <td class="text-center" nowrap>{{ $registration->receipt->bank }} - A/N: {{ $registration->receipt->name }}</td>
-                    <td class="text-center">Rp. {{ $registration->paybill }},-</td>
+                    <td class="text-center">{{ $registration->receipt->bank }} - A/N: {{ $registration->receipt->name }}</td>
+                    <td class="text-center"  width="1%" nowrap>Rp. {{ $registration->paybill }},-</td>
                 </tr>
                 <tr>
                     <td class="text-right" colspan="3"><b>Total :</b></td>
-                    <td class="text-center"><b>Rp. {{ $registration->paybill }},-</b></td>
+                    <td class="text-center"  width="1%" nowrap><b>Rp. {{ $registration->paybill }},-</b></td>
                 </tr>
             </tbody>
         </table>
