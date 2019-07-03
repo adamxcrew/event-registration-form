@@ -7,7 +7,7 @@ Ini adalah email sampel dari sistem kami, silahkan diabaikan.
 <br>
 Untuk informasi lebih lanjut seputan kegiatan ini, silahkan kunjungi website kami. <br>
 Atau hubungi kontak person berikut:
-- dr. Erlin Sjaril, Sp.Rad(K)TR, M.Kes. 085255148999.
+- dr. Suciati Damopolii, Sp.Rad (K). 085255148999.
 - Suryani Azis, S.Kom. 081342095484 (WA).
 
 <br>
