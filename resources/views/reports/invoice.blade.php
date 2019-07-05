@@ -102,35 +102,35 @@
             </tr>
             <tr>
                 <td nowrap>Full Name <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2"{ $registration->user->participant->name }}</td>
+                <td colspan="2">{{ $registration->user->participant->name }}</td>
             </tr>
             <tr>
                 <td nowrap>Academic Title <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2"{ $registration->user->participant->title ?? '-' }}</td>
+                <td colspan="2">{{ $registration->user->participant->title ?? '-' }}</td>
             </tr>
             <tr>
                 <td nowrap>Company <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2"{ $registration->user->participant->company }}</td>
+                <td colspan="2">{{ $registration->user->participant->company }}</td>
             </tr>
             <tr>
                 <td nowrap>Address <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2"{ $registration->user->participant->address }}</td>
+                <td colspan="2">{{ $registration->user->participant->address }}</td>
             </tr>
             <tr>
                 <td nowrap>Contact <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2"{ $registration->user->participant->phone }}</td>
+                <td colspan="2">{{ $registration->user->participant->phone }}</td>
             </tr>
             <tr>
                 <td nowrap>Email <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2"{ $registration->user->email }}</td>
+                <td colspan="2">{{ $registration->user->email }}</td>
             </tr>
             <tr>
                 <td nowrap>Profession <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2"{ $registration->level->name }}</td>
+                <td colspan="2">{{ $registration->level->name }}</td>
             </tr>
             <tr>
                 <td nowrap style="vertical-align: top">Registration <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2">
+                <td colspan="2">{>
                     {{ $registration->package->description }} <br>
                     @foreach ($registration->events->groupBy('category') as $key => $item)
                         {{ $loop->iteration }}. {{ ucwords($key) }} <br>
@@ -144,7 +144,7 @@
             </tr>
             <tr>
                 <td nowrap>Registration Fee <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2">Rp. {{ $registration->paybill }},-</td>
+                <td colspan="2">{>Rp. {{ $registration->paybill }},-</td>
             </tr>
         </table>
 
