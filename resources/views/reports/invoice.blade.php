@@ -233,7 +233,7 @@
                 <td>{{ $registration->user->participant->company }}</td>
             </tr>
             <tr>
-                <td nowrap>Address <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td nowrap style="vertical-align: top">Address <span class="float-right" style="padding-right: 10px">:</span></td>
                 <td>{{ $registration->user->participant->address }}</td>
             </tr>
             <tr>
