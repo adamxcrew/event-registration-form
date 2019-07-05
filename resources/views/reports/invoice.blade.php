@@ -113,7 +113,7 @@
                 <td colspan="2">{{ $registration->user->participant->company }}</td>
             </tr>
             <tr>
-                <td nowrap>Address <span class="float-right" style="padding-right: 10px">:</span></td>
+                <td nowrap style="vertical-align: top">Address <span class="float-right" style="padding-right: 10px">:</span></td>
                 <td colspan="2">{{ $registration->user->participant->address }}</td>
             </tr>
             <tr>
@@ -130,7 +130,7 @@
             </tr>
             <tr>
                 <td nowrap style="vertical-align: top">Registration <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2">{>
+                <td colspan="2">
                     {{ $registration->package->description }} <br>
                     @foreach ($registration->events->groupBy('category') as $key => $item)
                         {{ $loop->iteration }}. {{ ucwords($key) }} <br>
@@ -144,7 +144,7 @@
             </tr>
             <tr>
                 <td nowrap>Registration Fee <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2">{>Rp. {{ $registration->paybill }},-</td>
+                <td colspan="2">Rp. {{ $registration->paybill }},-</td>
             </tr>
         </table>
 
