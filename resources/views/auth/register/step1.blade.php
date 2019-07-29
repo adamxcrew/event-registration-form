@@ -157,7 +157,7 @@
                                 <label class="col-md-3 col-form-label text-md-right">Workshop</label>
                                 <div class="col-md-8 pt-2">
                                     <div class="custom-control custom-checkbox" v-for="item in workshops">
-                                        <input class="custom-control-input" :class="item.category" v-model="form.workshop" name="workshop[]" type="checkbox" :value="item.id" :id="item.id" :onclick="item.id == 1 ? 'return false' : ''">
+                                        <input class="custom-control-input" :class="[item.category, item.time]" v-model="form.workshop" name="workshop[]" type="checkbox" :value="item.id" :id="item.id" v-on:change="checkElement" :onclick="item.id == 1 ? 'return false' : ''">
                                         <label class="custom-control-label" :for="item.id">
                                             @{{ item.name }}
                                         </label>
@@ -205,10 +205,33 @@
                     this.getWorkshop()
                 },
                 'form.workshop'(value) {
-                    if (value.length >= this.maxWorkshop) {
-                        $('.workshop:not(:checked)').attr('disabled', 'disabled');
+                    if (this.maxWorkshop < 3) {
+                        if (value.length >= this.maxWorkshop) {
+                            $('.workshop:not(:checked)').attr('disabled', 'disabled');
+                        } else {
+                            $('.workshop').removeAttr('disabled');
+                        }
                     } else {
-                        $('.workshop').removeAttr('disabled');
+                        let dayWorkshop = $('.day').length
+                        let nightWorkshop = $('.night').length
+
+                        if (dayWorkshop > 1) {
+                            let dayInCheck = $('.day:checked').length
+                            if (dayInCheck > 0) {
+                                $('.day:not(:checked)').attr('disabled', 'disabled');
+                            } else {
+                                $('.day:disabled').removeAttr('disabled');;
+                            }
+                        }
+
+                        if (nightWorkshop > 1) {
+                            let nightInCheck = $('.night:checked').length
+                            if (nightInCheck > 0) {
+                                $('.night:not(:checked)').attr('disabled', 'disabled');
+                            } else {
+                                $('.night:disabled').removeAttr('disabled');;
+                            }
+                        }
                     }
                 }
             },
@@ -241,8 +264,19 @@
                             this.workshops = data
                         });
                     }
+                },
+                checkElement() {
+                    // let el = event.target
+                    // let inDay = $(el).hasClass('day')
+                    // let inNight = $(el).hasClass('night')
+                    // if (inDay) {
+                    //     $('.day:not(:checked)').attr('disabled', 'disabled')
+                    // }
+                    // if (inNight) {
+                    //     $('.night:not(:checked)').attr('disabled', 'disabled')
+                    // }
                 }
-            },
+            }
         });
     </script>
 @endsection

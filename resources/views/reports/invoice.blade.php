@@ -98,7 +98,7 @@
             <tr>
                 <td width="30%">No. Invoice <span class="float-right" style="padding-right: 10px">:</span></td>
                 <td>{{ $registration->code }}</td>
-                <td style="text-align: right">Date : {{ $registration->created_at->format('d/m/Y') }}</td>
+                <td style="text-align: right">Date : {{ $registration->updated_at->format('d/m/Y') }}</td>
             </tr>
             <tr>
                 <td nowrap>Full Name <span class="float-right" style="padding-right: 10px">:</span></td>
