@@ -6,6 +6,7 @@
             <th>TANGGAL</th>
             <th>PESERTA</th>
             <th>KONTAK</th>
+            <th>RS</th>
             <th>PAKET</th>
             <th>KEGIATAN</th>
             <th>BIAYA</th>
@@ -24,6 +25,7 @@
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->created_at->format('d/m/Y') }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->name }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->phone }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->company }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->package->description }} - {{ $item->category->name }}</td>
                 <td>{{ $regEvents->first()->name }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->getOriginal('paybill') }}</td>
