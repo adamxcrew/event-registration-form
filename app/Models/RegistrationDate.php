@@ -12,6 +12,6 @@ class RegistrationDate extends Model
     protected $dates = ['early_bird', 'normal'];
 
     public function isEarlyBird() {
-        return Carbon::now() <= $this->early_bird;
+        return Carbon::now() < $this->normal;
     }
 }
