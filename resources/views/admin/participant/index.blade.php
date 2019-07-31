@@ -98,8 +98,19 @@
                                     <td nowrap>{{ $item->name }}</td>
                                     <td>{{ $item->user->email }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td class="text-center">{!! $item->user->registration->status() !!}</td>
+                                    <td class="text-center">
+                                        @if ($item->user->registration->expired)
+                                            <span class="badge badge-danger">Expired</span>
+                                        @else
+                                            {!! $item->user->registration->status() !!}
+                                        @endif
+                                    </td>
                                     <td class="text-right" nowrap>
+                                        @if ($item->user->registration->expired)
+                                            <a href="{{ route('participant.resend', $item->id) }}" class="text-danger mx-2 text-decoration-none">
+                                                <i class="fas fa-sync mr-1"></i> Update Tagihan
+                                            </a>
+                                        @endif
                                         <a href="#" v-on:click.prevent="showBilling('{{ route('bill', $item->user->id) }}')" class="text-secondary mx-2 text-decoration-none">
                                             <i class="fas fa-shopping-cart"></i>
                                         </a>

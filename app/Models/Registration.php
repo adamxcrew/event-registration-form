@@ -15,6 +15,11 @@ class Registration extends Model
         return $this->has('receipt');
     }
 
+    public function getExpiredAttribute() {
+        $date = RegistrationDate::all()->first();
+        return now() >= $date->normal && $this->updated_at < $date->normal && $this->status == 0;
+    }
+
     public function getPaybillAttribute($value) {
         return number_format($value,0,',','.');
     }

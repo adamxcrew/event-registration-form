@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -12,6 +13,8 @@ use App\Models\Participant;
 use App\Models\User;
 use App\Models\Registration;
 use App\Models\Event;
+use App\Mail\ResendPaybill;
+use App\Models\RegistrationFee;
 
 class ParticipantController extends Controller
 {
@@ -86,5 +89,27 @@ class ParticipantController extends Controller
             // return view('exports.registration', compact('registrations', 'events'));
         }
         return redirect()->back()->with('error', 'Tidak ada peserta untuk seminar yang kamu pilih.');
+    }
+
+    public function resendPaybill(Participant $participant)
+    {
+        $registration = Registration::where('user_id', $participant->user_id)->first();
+        $paybill = RegistrationFee::where('package_id', $registration->package_id)->where('category_id', $registration->category_id)->first()->fee ?? 0;
+        $registration->update(['paybill' => $paybill]);
+        $registration->touch();
+
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $password = '';
+        for ($i = 0; $i <= 12; $i++) {
+            $password .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        $user = $registration->user;
+        $user->update(['password' => bcrypt($password)]);
+
+        Mail::to($user)->send(new ResendPaybill($user, $password));
+
+        return redirect()->back()->with('success', 'Tagihan pembayaran peserta telah diperbarui menjadi tarif normal.');
     }
 }
