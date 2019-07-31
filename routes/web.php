@@ -3,6 +3,10 @@
 Route::get('/workshops', 'AjaxController@workshop');
 Route::get('/room-types', 'AjaxController@roomTypes');
 
+Route::get('/datetime', function() {
+    dd(now());
+});
+
 Route::namespace('Auth')->group(function () {
     Route::get('/', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
     Route::get('/register', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
