@@ -5,6 +5,7 @@
             <th>REGISTRASI</th>
             <th>TANGGAL</th>
             <th>PESERTA</th>
+            <th>GELAR</th>
             <th>KONTAK</th>
             <th>RS</th>
             <th>PAKET</th>
@@ -24,6 +25,7 @@
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->code }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->created_at->format('d/m/Y') }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->name }}</td>
+                <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->title }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->phone }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->user->participant->company }}</td>
                 <td rowspan="{{ $regEvents->count() }}">{{ $item->package->description }} - {{ $item->category->name }}</td>
