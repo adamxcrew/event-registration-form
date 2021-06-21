@@ -41,7 +41,7 @@ class RegisterController extends Controller
         $packages = Package::all();
         $levels = Level::all();
         $date = RegistrationDate::all()->first();
-        return view('auth.register.step1', compact('categories', 'packages', 'levels', 'date', 'accommodations'));
+        return view('auth.register.step1', compact('categories', 'packages', 'levels', 'date'));
     }
 
     public function register(Request $request)
