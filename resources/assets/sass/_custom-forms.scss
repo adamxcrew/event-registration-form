@@ -1,0 +1,15 @@
+.custom-control {
+    padding-left: 1.5rem !important;
+
+    &-label::before, &-label::after {
+        left: -1.5rem !important;
+    }
+}
+
+.custom-switch .custom-control {
+    padding-left: 2rem !important;
+
+    &-label::before, &-label::after {
+        left: -2rem !important;
+    }
+}

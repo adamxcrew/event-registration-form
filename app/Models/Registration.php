@@ -64,10 +64,6 @@ class Registration extends Model
         return $this->hasOne(PaymentReceipt::class, 'registration_id');
     }
 
-    public function booking() {
-        return $this->hasOne(BookingAccommodation::class);
-    }
-
     public function events() {
         return $this->belongsToMany(Event::class, 'registration_event', 'registration_id', 'event_id');
     }

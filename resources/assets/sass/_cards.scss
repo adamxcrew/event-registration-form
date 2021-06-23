@@ -1,0 +1,41 @@
+.card {
+    border: 0;
+    box-shadow: $box-shadow-sm;
+
+    .table-responsive .table {
+        margin-bottom: 0;
+
+        thead, tbody {
+            >tr {
+                >th, >td {
+                    &:first-of-type {
+                        padding-left: 1rem;
+                    }
+                    &:last-of-type {
+                        padding-right: 1rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .card-body.p-0 .table {
+        thead, tbody {
+            >tr {
+                >th, >td {
+                    &:first-of-type {
+                        padding-left: 1.25rem;
+                    }
+                    &:last-of-type {
+                        padding-right: 1.25rem;
+                    }
+                }
+            }
+        }
+	}
+
+    .card-footer.bg-white {
+        border-bottom-left-radius: $card-border-radius;
+        border-bottom-right-radius: $card-border-radius;
+    }
+}

@@ -1,14 +1,59 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
+// Fontawesome
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+
+// Customs
 @import 'variables';
+@import 'mixins';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// AdminLTE
+@import '~admin-lte/build/scss/adminlte.scss';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// Components
+@import 'buttons';
+@import 'cards';
+@import 'glassmorphism';
+@import "images";
+@import 'modal';
+@import 'navs';
+@import 'pagination';
+@import 'summernote';
+@import 'table';
+@import 'text';
+
+.custom-footer {
+    background-color: #f4f6f9;
+    border-top: none;
+    margin-left: 0;
 }
+
+svg.icon {
+    text-align: center;
+    width: 1.25em;
+    vertical-align: text-top !important;
+}
+
+.app-shadow {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .16);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.nav-compact .nav-header {
+    padding-top: 16px !important;
+}
+
+// .login-page, .register-page {
+//     align-items: center;
+//     background-color: #e9ecef;
+//     display: flex;
+//     flex-direction: column;
+//     height: 100vh;
+//     justify-content: center;
+// }

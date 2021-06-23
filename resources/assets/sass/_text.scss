@@ -1,0 +1,13 @@
+$colors: (
+    'primary': $primary,
+    'danger': $danger,
+    'success': $success
+);
+
+a {
+    @each $name, $color in $colors {
+        &.text-#{$name}-hover:hover {
+            color: $color !important;
+        }
+    }
+}

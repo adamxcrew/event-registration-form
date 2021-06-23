@@ -10,9 +10,7 @@ Route::get('/datetime', function() {
 Route::namespace('Auth')->group(function () {
     Route::get('/', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
     Route::get('/register', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
-    // Route::get('/accommodation', 'RegisterController@showAccommodationForm')->middleware('guest')->name('accommodation');
     Route::post('/register', 'RegisterController@register')->middleware('guest');
-    // Route::post('/register/final', 'RegisterController@registerFinal')->middleware('guest');
     Route::get('/login', 'LoginController@showLoginForm')->middleware('guest')->name('login');
     Route::post('/login', 'LoginController@login')->middleware('guest');
     Route::post('/logout', 'LoginController@logout')->name('logout');
@@ -31,6 +29,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/registrations/export', 'ParticipantController@export')->name('registrations.export');
         Route::get('/user/{user}/bill', 'BillController@show')->name('bill');
         Route::patch('/user/{user}/bill', 'BillController@verified')->name('bill.verified');
+
+        Route::resource('category', 'CategoryController')->except('show');
+        Route::resource('event', 'EventController')->except('show');
+        Route::resource('package', 'PackageController')->except('show');
     });
 
     Route::namespace('User')->middleware('role:participant')->group(function () {

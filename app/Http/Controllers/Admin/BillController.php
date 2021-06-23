@@ -30,18 +30,18 @@ class BillController extends Controller
             'verification' => $user->registration->receipt ? route('bill.verified', $user->id) : ''
         ];
 
-        if ($user->registration->booking) {
-            $booking = $user->registration->booking;
-            $bill = array_add($bill, 'accommodation', [
-                'hotel' => $booking->roomType->accommodation->hotel,
-                'roomtype' => $booking->roomType->type,
-                'duration' => $booking->duration,
-                'check_in' => date('d.m.Y', strtotime($booking->check_in)),
-                'check_out' => date('d.m.Y', strtotime($booking->check_out)),
-                'fee' => $booking->fee,
-                'total' => number_format(($user->registration->getOriginal('paybill') + $booking->getOriginal('fee')), 0, ',', '.')
-            ]);
-        }
+        // if ($user->registration->booking) {
+        //     $booking = $user->registration->booking;
+        //     $bill = array_add($bill, 'accommodation', [
+        //         'hotel' => $booking->roomType->accommodation->hotel,
+        //         'roomtype' => $booking->roomType->type,
+        //         'duration' => $booking->duration,
+        //         'check_in' => date('d.m.Y', strtotime($booking->check_in)),
+        //         'check_out' => date('d.m.Y', strtotime($booking->check_out)),
+        //         'fee' => $booking->fee,
+        //         'total' => number_format(($user->registration->getOriginal('paybill') + $booking->getOriginal('fee')), 0, ',', '.')
+        //     ]);
+        // }
 
         return response()->json($bill);
     }

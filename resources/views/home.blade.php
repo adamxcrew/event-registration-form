@@ -5,8 +5,7 @@
     <div class="container-fluid">
         <h1 class="display-4">Hi, {{ explode(" ", Auth::user()->name)[0] }}!</h1>
         <p class="lead mb-1 d-none d-md-block">
-            8th Annual Scientific Meeting Indonesia Society of Thoracic Radiology
-            <b class="text-uppercase">Comprehensive Thoracic Imaging</b>.
+            {{ config('app.desc') }}
         </p>
     </div>
 </div>

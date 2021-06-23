@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EventLevelsSeeder::class);
         $this->call(PackagesSeeder::class);
         $this->call(RegistrationSeeder::class);
-        $this->call(AccommodationsSeeder::class);
+        // $this->call(AccommodationsSeeder::class);
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasPrice;
 use Illuminate\Database\Eloquent\Model;
 
 class Package extends Model
 {
+    use HasPrice;
+
     protected $fillable = ['name', 'description'];
-    public $timestamps = false;
 
     public function fee() {
         return $this->hasMany(RegistrationFee::class, 'package_id');

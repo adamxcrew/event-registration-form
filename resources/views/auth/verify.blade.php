@@ -1,18 +1,17 @@
 @extends('layouts.auth')
 
-@section('body', 'register-page')
+@section('body', 'register')
 
 @section('content')
-<div class="container" style="margin: 7% auto">
+<div class="container" style="margin-top: -100px">
     <div class="register-logo">
         <a href="{{ url('/') }}" class="font-weight-bold">Event Registration </a>
         <p class="lead">
-            8 Annual Scientific Meeting Indonesia Society of Thoracic Radiology <br>
-            <b class="text-uppercase">Comprehensive Thoracic Imaging</b>
+            {!! config('app.desc') !!}
         </p>
     </div>
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col">
             <div class="card">
                 <div class="card-body text-center">
                     <h3 class="mb-4">Terimakasih, telah melakukan registrasi.</h3>

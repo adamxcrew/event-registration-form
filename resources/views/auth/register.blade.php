@@ -1,19 +1,18 @@
 @extends('layouts.auth')
 
-@section('body', 'register-page')
+@section('body', 'register')
 
 @section('content')
-<div class="container" style="margin: 2% auto">
+<div class="container">
     <div class="register-logo">
         <a href="{{ url('/') }}" class="font-weight-bold">Event Registration</a>
         <p class="lead">
-            8 Annual Scientific Meeting Indonesia Society of Thoracic Radiology <br>
-            <b class="text-uppercase">Comprehensive Thoracic Imaging</b>
+            {!! config('app.desc') !!}
         </p>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col">
             <form method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
                 <div class="card">
@@ -33,23 +32,23 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="title" class="col-md-3 col-form-label text-md-right">Academic Title</label>
+                            <div class="col-md-8">
+                                <input id="title" type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ old('title') }}" placeholder="Academic Title" required>
+                                @if ($errors->has('title'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('title') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="email" class="col-md-3 col-form-label text-md-right">Email</label>
                             <div class="col-md-8">
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Email" required>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="profession" class="col-md-3 col-form-label text-md-right">Profession</label>
-                            <div class="col-md-8">
-                                <input id="profession" type="text" class="form-control{{ $errors->has('profession') ? ' is-invalid' : '' }}" name="profession" value="{{ old('profession') }}" placeholder="Profession" required>
-                                @if ($errors->has('profession'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('profession') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -88,60 +87,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-3 d-flex">
-                        <h5 class="m-0 font-weight-normal">Registration</h5>
-                        <a href="#" class="text-decoration-none text-muted ml-auto" data-toggle="modal" data-target="#registrationFeeModal">
-                            <i class="far fa-question-circle"></i> Detail
-                        </a>
-                        <div class="modal fade" id="registrationFeeModal" role="dialog" aria-labelledby="registrationFeeModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header border-bottom-0">
-                                        <h5 class="modal-title" id="registrationFeeModalLabel">Registration Fee</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body p-0 table-responsive">
-                                        <table class="table table-bordered mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th class="align-middle" nowrap rowspan="2">Package</th>
-                                                    <th class="text-center" nowrap colspan="2">
-                                                        Early Bird <br>
-                                                        <span class="font-weight-light">(Until {{ $date->early_bird->format("j M Y") }})</span>
-                                                    </th>
-                                                    <th class="text-center" nowrap colspan="2">
-                                                        Normal <br>
-                                                        <span class="font-weight-light">(Start from {{ $date->normal->format("j M Y") }})</span>
-                                                    </th>
-                                                </tr>
-                                                <tr>
-                                                    <th class="text-center" nowrap>Specialist</th>
-                                                    <th class="text-center" nowrap>GP & Resident</th>
-                                                    <th class="text-center" nowrap>Specialist</th>
-                                                    <th class="text-center" nowrap>GP & Resident</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($packages as $package)
-                                                    <tr>
-                                                        <td>{{ $package->description }}</td>
-                                                        <td class="text-center">Rp. {{ number_format($package->fee[0]->early_fee) }}</td>
-                                                        <td class="text-center">Rp. {{ number_format($package->fee[1]->early_fee) }}</td>
-                                                        <td class="text-center">Rp. {{ number_format($package->fee[0]->normal_fee) }}</td>
-                                                        <td class="text-center">Rp. {{ number_format($package->fee[1]->normal_fee) }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer border-top-0">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="p-3">
+                        <h5 class="m-0 font-weight-normal">
+                            Registration
+                            @if ($date->isEarlyBird())
+                                <span class="badge badge-pill badge-warning float-right ml-2">Early Bird</span>
+                            @endif
+                            <a href="#" class="text-decoration-none text-muted float-right" data-toggle="modal" data-target="#registrationFeeModal">
+                                <i class="far fa-question-circle"></i>
+                            </a>
+                        </h5>
                     </div>
                     <div class="card-body bg-light">
                         <div class="form-group row">
@@ -150,7 +105,7 @@
                                 <select v-model="category" name="category_id" id="category_id" class="form-control" required>
                                     <option value="" hidden>Pilih</option>
                                     @foreach ($categories as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}" {{ old('category_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -187,7 +142,7 @@
                         </div>
                         <template v-if="category && package">
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label text-md-right">Stairs</label>
+                                <label class="col-md-3 col-form-label text-md-right">Profession</label>
                                 <div class="col-md-8">
                                     <select v-model="level" name="level_id" class="form-control" v-on:change="getWorkshop()" required>
                                         <option value="" hidden>Pilih</option>
@@ -201,7 +156,7 @@
                                 <label class="col-md-3 col-form-label text-md-right">Workshop</label>
                                 <div class="col-md-8 pt-2">
                                     <div class="custom-control custom-checkbox" v-for="item in workshops">
-                                        <input class="custom-control-input" :class="item.category" v-model="form.workshop" name="workshop[]" type="checkbox" :value="item.id" :id="item.id" :onclick="item.id == 1 ? 'return false' : ''">
+                                        <input class="custom-control-input" :class="[item.category, item.time]" v-model="form.workshop" name="workshop[]" type="checkbox" :value="item.id" :id="item.id" v-on:change="checkElement" :onclick="item.id == 1 ? 'return false' : ''">
                                         <label class="custom-control-label" :for="item.id">
                                             @{{ item.name }}
                                         </label>
@@ -209,21 +164,25 @@
                                 </div>
                             </div>
                         </template>
-                        <div class="form-group row pt-3 mb-0">
+                        <hr>
+                        <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-3">
                                 <button type="submit" class="btn btn-primary btn-block-xs">
-                                    {{ __('Register') }}
+                                    Register
                                 </button>
-                                <span class="ml-sm-2 d-block d-sm-inline text-center">
-                                    <a href="{{ url('/login') }}">If you have already registered, Login here.</a>
-                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+
+            <div class="text-center mt-2">
+                <a href="{{ url('/login') }}">If you have already registered, <b>Login here!</b></a>
+            </div>
         </div>
     </div>
+
+    @include('auth.register.registration_fee')
 </div>
 @endsection
 
@@ -232,12 +191,12 @@
         new Vue({
             el: '#app',
             data: {
-                category: '',
-                package: '1',
+                category: '{{ old('category_id') }}',
+                package: '{{ old('package_id', '1') }}',
                 level: '',
                 workshops: [],
                 form: {
-                    workshop: [1]
+                    workshop: [1],
                 }
             },
             watch: {
@@ -245,10 +204,33 @@
                     this.getWorkshop()
                 },
                 'form.workshop'(value) {
-                    if (value.length > 1 && value.length >= this.maxWorkshop) {
-                        $('.workshop:not(:checked)').attr('disabled', 'disabled');
+                    if (this.maxWorkshop < 3) {
+                        if (value.length >= this.maxWorkshop) {
+                            $('.workshop:not(:checked)').attr('disabled', 'disabled');
+                        } else {
+                            $('.workshop').removeAttr('disabled');
+                        }
                     } else {
-                        $('.workshop').removeAttr('disabled');
+                        let dayWorkshop = $('.day').length
+                        let nightWorkshop = $('.night').length
+
+                        if (dayWorkshop > 1) {
+                            let dayInCheck = $('.day:checked').length
+                            if (dayInCheck > 0) {
+                                $('.day:not(:checked)').attr('disabled', 'disabled');
+                            } else {
+                                $('.day:disabled').removeAttr('disabled');;
+                            }
+                        }
+
+                        if (nightWorkshop > 1) {
+                            let nightInCheck = $('.night:checked').length
+                            if (nightInCheck > 0) {
+                                $('.night:not(:checked)').attr('disabled', 'disabled');
+                            } else {
+                                $('.night:disabled').removeAttr('disabled');;
+                            }
+                        }
                     }
                 }
             },
@@ -281,8 +263,19 @@
                             this.workshops = data
                         });
                     }
+                },
+                checkElement() {
+                    // let el = event.target
+                    // let inDay = $(el).hasClass('day')
+                    // let inNight = $(el).hasClass('night')
+                    // if (inDay) {
+                    //     $('.day:not(:checked)').attr('disabled', 'disabled')
+                    // }
+                    // if (inNight) {
+                    //     $('.night:not(:checked)').attr('disabled', 'disabled')
+                    // }
                 }
-            },
+            }
         });
     </script>
 @endsection

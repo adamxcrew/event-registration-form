@@ -16,6 +16,8 @@ class CreatePackageCategoriesTable extends Migration
         Schema::create('package_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

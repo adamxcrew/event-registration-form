@@ -13,7 +13,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col">
             <form method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
                 <div class="card">

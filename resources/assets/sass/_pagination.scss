@@ -1,0 +1,18 @@
+.pagination {
+    box-shadow: $box-shadow-sm !important;
+}
+
+.page-item {
+    &:first-child .page-link {
+        border-left: 0 !important;
+    }
+
+    &:last-child .page-link {
+        border-right: 0 !important;
+    }
+
+    .page-link {
+        border-top: 0 !important;
+        border-bottom: 0 !important;
+    }
+}

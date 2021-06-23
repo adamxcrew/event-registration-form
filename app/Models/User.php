@@ -64,9 +64,11 @@ class User extends Authenticatable
     public static function boot() {
         parent::boot();
         static::created(function ($model) {
-            $id = $model->id;
-            $model->username = explode("@", $model->email)[0] . $id;
-            $model->save();
+            if (! isset($model->username)) {
+                $id = $model->id;
+                $model->username = explode("@", $model->email)[0] . $id;
+                $model->save();
+            }
         });
     }
 }

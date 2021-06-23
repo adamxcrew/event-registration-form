@@ -20,6 +20,7 @@ class CreateEventsTable extends Migration
             $table->string('additional_information')->nullable();
             $table->string('category')->nullable();
             $table->enum('time', ['day', 'night', 'none'])->default('none');
+            $table->timestamps();
             $table->softDeletes();
         });
     }

@@ -4,12 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name') }}</title>
+    <title>{{ config('app.name') }} - {{ config('app.desc') }}</title>
 
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
         table.dataTable {
             clear: both;
@@ -20,14 +21,30 @@
 </head>
 <body class="hold-transition sidebar-mini">
     <div id="app" class="wrapper">
+        @includeWhen(session('success'), 'components.alert.success')
+        @include('components.alert.confirm-before-delete')
+
         <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#">
-                        <i class="fas fa-bars"></i>
-                    </a>
-                </li>
-            </ul>
+            @if (isset($back))
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="{{ $back }}" class="nav-link" onclick="{{ $back == '#' ? 'window.history.back()' : '' }}">
+                            <i class="fas fa-arrow-left mr-2"></i> Back
+                        </a>
+                    </li>
+                </ul>
+            @else
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="{{ url('/') }}" class="nav-link text-uppercase">
+                            {{ config('app.desc') }}
+                        </a>
+                    </li>
+                </ul>
+            @endif
 
             {{-- Right Menu --}}
             <ul class="navbar-nav ml-auto">
@@ -42,7 +59,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="overflow-x: hidden;">
             <a href="{{ url('/') }}" class="brand-link">
                 <img src="{{ asset('images/logo2.png') }}" alt="{{ config('app.name') }}" class="brand-image img-circle">
-                <span class="brand-text">PIT-THORAX 2019</span>
+                <span class="brand-text">{{ config('app.name') }}</span>
             </a>
 
             <div class="sidebar">
@@ -83,16 +100,57 @@
                                     <p class="ml-1">Profile</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('modules.index') }}" class="nav-link close-sidebar">
+                                    <i class="fas fa-book nav-icon"></i>
+                                    <p class="ml-1">Module</p>
+                                </a>
+                            </li>
                         @endif
 
-                        <li class="nav-item">
-                            <a href="{{ route('modules.index') }}" class="nav-link close-sidebar">
-                                <i class="fas fa-book nav-icon"></i>
-                                <p class="ml-1">Module</p>
-                            </a>
-                        </li>
-
-                        {{-- <li class="nav-header">EVENT</li> --}}
+                        @role(['superadmin', 'admin'])
+                            <li class="nav-header">Resource</li>
+                            <li class="nav-item">
+                                <a href="{{ route('modules.index') }}" class="nav-link @activeRoute('modules.*')">
+                                    <span class="nav-icon">
+                                        <svg style="width: 1.1em; height: 1.1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                        </svg>
+                                    </span>
+                                    <p class="ml-1">Attachment</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('category.index') }}" class="nav-link @activeRoute('category.*')">
+                                    <span class="nav-icon">
+                                        <svg style="width: 1.1em; height: 1.1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                        </svg>
+                                    </span>
+                                    <p class="pl-1">Category</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('event.index') }}" class="nav-link @activeRoute('event.*')">
+                                    <span class="nav-icon">
+                                        <svg style="width: 1.1em; height: 1.1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                        </svg>
+                                    </span>
+                                    <p class="pl-1">Event</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('package.index') }}" class="nav-link @activeRoute('package.*')">
+                                    <span class="nav-icon">
+                                        <svg style="width: 1.1em; height: 1.1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                        </svg>
+                                    </span>
+                                    <p class="pl-1">Package</p>
+                                </a>
+                            </li>
+                        @endrole
 
                     </ul>
                 </nav>
@@ -100,6 +158,10 @@
         </aside>
 
         <div class="content-wrapper">
+            @if (App::environment('local') && $errors->any())
+                <x-alert.errors class="mx-3 mt-3 mb-0" />
+            @endif
+
             @yield('content')
         </div>
 
@@ -122,26 +184,8 @@
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                title: 'Sukses!',
-                text: "{{ session('success') }}",
-                type: 'success',
-            })
-        </script>
-    @endif
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                title: 'Gagal!',
-                text: "{{ session('error') }}",
-                type: 'error',
-            })
-        </script>
-    @endif
     @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

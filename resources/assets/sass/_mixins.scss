@@ -1,0 +1,17 @@
+@mixin button-default-variant($name, $color) {
+    .accent-#{$name} {
+        .btn-default {
+            background-color: $color;
+            border-color: $color;
+            color: $button-default-color;
+
+            &:hover,
+            &:active,
+            &.hover {
+                background-color: darken($color, 10%);
+                border-color: darken($color, 10%);
+                color: $button-default-color;
+            }
+        }
+    }
+}
