@@ -32,7 +32,7 @@ class PackageController extends Controller
             $package->setPrice($request->prices);
         });
 
-        return redirect()->back()->withSuccess('Created successfully.');
+        return redirect()->route('package.index')->withSuccess('Created successfully.');
     }
 
     public function edit(Package $package)

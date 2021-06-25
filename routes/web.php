@@ -27,8 +27,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/participants/{participant}', 'ParticipantController@destroy')->name('participants.destroy');
         ROute::get('/participants/{participant}/resend', 'ParticipantController@resendPaybill')->name('participant.resend');
         Route::post('/registrations/export', 'ParticipantController@export')->name('registrations.export');
-        Route::get('/user/{user}/bill', 'BillController@show')->name('bill');
-        Route::patch('/user/{user}/bill', 'BillController@verified')->name('bill.verified');
+        Route::get('/user/{id}/bill', 'BillController@show')->name('bill');
+        Route::patch('/user/{id}/bill', 'BillController@verified')->name('bill.verified');
 
         Route::resource('category', 'CategoryController')->except('show');
         Route::resource('event', 'EventController')->except('show');

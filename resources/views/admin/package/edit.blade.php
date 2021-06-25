@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1 class="m-0 text-dark display-4 d-inline">Setting</h1>
+                <h1 class="m-0 text-dark display-4 d-inline">Resource</h1>
                 <small>/ Edit Package</small>
             </div>
         </div>

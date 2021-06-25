@@ -1,3 +1,5 @@
+{{ $slot }}
+
 @isset($edit)
     <a href="{{ $edit }}" class="text-secondary text-decoration-none mx-2">
         <i class="far fa-edit"></i>
@@ -12,5 +14,3 @@
         </a>
     </form>
 @endisset
-
-{{ $slot }}

@@ -28,7 +28,9 @@
                                 </tr>
                                 <tr>
                                     <td nowrap>Paket Workshop<span class="float-right">:</span></td>
-                                    <td class="pl-2">Rp. {{ $user->registration->paybill }} - "{{ $user->registration->package->description }}" <i>for <b>{{ $user->registration->category->name }}</b></i></td>
+                                    <td class="pl-2">
+                                        {{ IDR($user->registration->paybill) }} - "{{ $user->registration->package->name ?? $user->registration->package->name }}"
+                                    </td>
                                 </tr>
                                 @if ($user->registration->booking)
                                     <tr>
@@ -71,7 +73,7 @@
                                                     {{ $user->registration->receipt->fileInfo()['filename'] }} ({{ strtoupper($user->registration->receipt->fileInfo()['extension']) }})
                                                 </a>
                                             @endif
-                                            @if ($user->registration->status <= 1)
+                                            @if ($user->registration->status <= 2)
                                                 | <a href="#" class="ml-1 text-decoration-none text-muted" data-toggle="modal" data-target="#paymentConfirmation">
                                                     <i class="far fa-edit"></i> edit
                                                 </a>
@@ -83,7 +85,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                                @if ($user->registration->status > 1)
+                                @if ($user->registration->status > 2)
                                     <tr>
                                         <td nowrap>Kupon <span class="float-right">:</span></td>
                                         <td nowrap class="pl-2">

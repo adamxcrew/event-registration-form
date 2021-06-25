@@ -2,6 +2,10 @@
 
 @section('body', 'register')
 
+@php
+    $schedule = $date->isEarlyBird() ? 'early' : 'normal';
+@endphp
+
 @section('content')
 <div class="container">
     <div class="register-logo">
@@ -87,17 +91,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-3">
-                        <h5 class="m-0 font-weight-normal">
+
+                    <div class="p-3 d-flex">
+                        <h5 class="my-0 font-weight-normal mr-auto">
                             Registration
                             @if ($date->isEarlyBird())
                                 <span class="badge badge-pill badge-warning float-right ml-2">Early Bird</span>
                             @endif
-                            <a href="#" class="text-decoration-none text-muted float-right" data-toggle="modal" data-target="#registrationFeeModal">
-                                <i class="far fa-question-circle"></i>
-                            </a>
                         </h5>
+
+                        @includeWhen($packages->count(), 'auth._pricing')
                     </div>
+
                     <div class="card-body bg-light">
                         <div class="form-group row">
                             <label for="category_id" class="col-md-3 col-form-label text-md-right">Category</label>
@@ -110,61 +115,82 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row" v-if="category">
-                            <label for="package_id" class="col-md-3 col-form-label text-md-right">Package</label>
-                            <div class="col-md-9 pt-2">
-                                <template v-if="category == {{ $categories[0]->id }}">
-                                    @foreach ($packages as $item)
-                                        <div class="custom-control custom-radio pb-2">
-                                            <input id="category{{ $loop->iteration }}" v-model="package" class="custom-control-input" type="radio" name="package_id" value="{{ $item->id }}" {{ $loop->first ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="category{{ $loop->iteration }}">
-                                                {{ $item->description }} (<b>Rp. {{ number_format($item->fee[0]->fee) }}</b>)
-                                            </label>
-                                        </div>
+
+                        @if (isset($packages) && $packages->count())
+                            <div class="form-group row" v-if="category">
+                                <label for="package_id" class="col-md-3 col-form-label text-md-right">Package</label>
+                                <div class="col-md-9 pt-2">
+                                    @foreach ($categories as $category)
+                                        <template v-if="category == {{ $category->id }}">
+                                            @foreach ($packages as $package)
+                                                <div class="custom-control custom-radio pb-2">
+                                                    <input id="package-{{ $loop->iteration }}" v-model="package" class="custom-control-input" type="radio" name="package_id" value="{{ $package->id }}" {{ $loop->first ? 'checked' : '' }}>
+                                                    <label class="custom-control-label" for="package-{{ $loop->iteration }}">
+                                                        {{ $package->name ?? $package->description }}
+                                                        (<b>Rp. {{ number_format($package->prices->where('category_id', $category->id)->pluck($schedule)->first()) }}</b>)
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </template>
                                     @endforeach
-                                </template>
-                                <template v-if="category == {{ $categories[1]->id }}">
-                                    @foreach ($packages as $item)
-                                        <div class="custom-control custom-radio pb-2">
-                                            <input id="category{{ $loop->iteration }}" v-model="package" class="custom-control-input" type="radio" name="package_id" value="{{ $item->id }}" {{ $loop->first ? 'checked' : '' }}>
-                                            <label class="custom-control-label" for="category{{ $loop->iteration }}">
-                                                {{ $item->description }} (<b>Rp. {{ number_format($item->fee[1]->fee) }}</b>)
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </template>
-                                @if ($errors->has('package_id'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('package_id') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <template v-if="category && package">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label text-md-right">Profession</label>
-                                <div class="col-md-8">
-                                    <select v-model="level" name="level_id" class="form-control" v-on:change="getWorkshop()" required>
-                                        <option value="" hidden>Pilih</option>
-                                        @foreach ($levels as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
+
+                                    @if ($errors->has('package_id'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('package_id') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
-                            <div class="form-group row" v-if="haveWorkshop">
-                                <label class="col-md-3 col-form-label text-md-right">Workshop</label>
-                                <div class="col-md-8 pt-2">
-                                    <div class="custom-control custom-checkbox" v-for="item in workshops">
-                                        <input class="custom-control-input" :class="[item.category, item.time]" v-model="form.workshop" name="workshop[]" type="checkbox" :value="item.id" :id="item.id" v-on:change="checkElement" :onclick="item.id == 1 ? 'return false' : ''">
-                                        <label class="custom-control-label" :for="item.id">
-                                            @{{ item.name }}
-                                        </label>
-                                    </div>
+                            <div class="form-group row" v-if="category && package">
+                                <label class="col-md-3 col-form-label text-md-right">Event / Workshop</label>
+                                <div class="col-md-9 pt-2">
+                                    @foreach ($categories as $category)
+                                        <div v-if="category == {{ $category->id }}" class="@error('events') is-invalid @enderror">
+                                            @foreach ($events as $event)
+                                                <div class="custom-control custom-checkbox pb-2">
+                                                    <input v-model="events" id="event-{{ $loop->iteration }}" class="custom-control-input event-checkbox" type="checkbox" name="events[]" value="{{ $event->id }}">
+                                                    <label class="custom-control-label" for="event-{{ $loop->iteration }}">
+                                                        {{ $event->name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endforeach
+                                    @error('events')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
-                        </template>
+                        @else
+                            <div class="form-group row" v-if="category">
+                                <label class="col-md-3 col-form-label text-md-right">Event / Workshop</label>
+                                <div class="col-md-9 pt-2">
+                                    @foreach ($categories as $category)
+                                        <div v-if="category == {{ $category->id }}" class="@error('event_id') is-invalid @enderror">
+                                            @foreach ($events as $event)
+                                                <div class="custom-control custom-radio pb-2">
+                                                    <input id="event{{ $loop->iteration }}" class="custom-control-input" type="radio" name="event_id" value="{{ $event->id }}" {{ old('event_id') == $event->id || $loop->first ? 'checked' : '' }}>
+                                                    <label class="custom-control-label" for="event{{ $loop->iteration }}">
+                                                        {{ $event->name }}
+                                                        (<b>Rp. {{ number_format($event->prices->where('category_id', $category->id)->pluck($schedule)->first()) }}</b>)
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endforeach
+                                    @error('event_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        @endif
+
                         <hr>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-3">
                                 <button type="submit" class="btn btn-primary btn-block-xs">
@@ -181,8 +207,6 @@
             </div>
         </div>
     </div>
-
-    @include('auth.register.registration_fee')
 </div>
 @endsection
 
@@ -191,89 +215,31 @@
         new Vue({
             el: '#app',
             data: {
-                category: '{{ old('category_id') }}',
-                package: '{{ old('package_id', '1') }}',
-                level: '',
-                workshops: [],
-                form: {
-                    workshop: [1],
-                }
+                category: @json(old('category_id', '')),
+                package: @json(old('package_id', optional($packages->first())->id)),
+                events: @json(old('events', [])),
             },
             watch: {
                 package() {
-                    this.getWorkshop()
+                    this.limitChoiceableEvent(this.events.length, this.selectedPackage.max)
                 },
-                'form.workshop'(value) {
-                    if (this.maxWorkshop < 3) {
-                        if (value.length >= this.maxWorkshop) {
-                            $('.workshop:not(:checked)').attr('disabled', 'disabled');
-                        } else {
-                            $('.workshop').removeAttr('disabled');
-                        }
-                    } else {
-                        let dayWorkshop = $('.day').length
-                        let nightWorkshop = $('.night').length
-
-                        if (dayWorkshop > 1) {
-                            let dayInCheck = $('.day:checked').length
-                            if (dayInCheck > 0) {
-                                $('.day:not(:checked)').attr('disabled', 'disabled');
-                            } else {
-                                $('.day:disabled').removeAttr('disabled');;
-                            }
-                        }
-
-                        if (nightWorkshop > 1) {
-                            let nightInCheck = $('.night:checked').length
-                            if (nightInCheck > 0) {
-                                $('.night:not(:checked)').attr('disabled', 'disabled');
-                            } else {
-                                $('.night:disabled').removeAttr('disabled');;
-                            }
-                        }
-                    }
-                }
+                events(value) {
+                    this.limitChoiceableEvent(value.length, this.selectedPackage.max)
+                },
             },
             computed: {
-                haveWorkshop() {
-                    return Object.keys(this.workshops).length > 0
-                },
-                maxWorkshop() {
-                    let value = parseInt(this.package)
-                    if (value > 1) {
-                        value = value-1
-                    }
-                    return value;
+                selectedPackage() {
+                    let packages = @json($packages);
+                    return packages.find(package => package.id == this.package);
                 }
             },
             methods: {
-                getWorkshop() {
-                    this.form.workshop = []
-                    if (this.package != 2) {
-                        this.form.workshop = [1]
+                limitChoiceableEvent(length, max) {
+                    if (length && max != null && length >= max) {
+                        $('.event-checkbox:not(:checked)').attr('disabled', 'disabled');
+                    } else {
+                        $('.event-checkbox:not(:checked)').removeAttr('disabled');
                     }
-                    if (this.package && this.level) {
-                        axios.get('/workshops', {
-                            params: {
-                                package: this.package,
-                                level: this.level,
-                            }
-                        })
-                        .then(({ data }) => {
-                            this.workshops = data
-                        });
-                    }
-                },
-                checkElement() {
-                    // let el = event.target
-                    // let inDay = $(el).hasClass('day')
-                    // let inNight = $(el).hasClass('night')
-                    // if (inDay) {
-                    //     $('.day:not(:checked)').attr('disabled', 'disabled')
-                    // }
-                    // if (inNight) {
-                    //     $('.night:not(:checked)').attr('disabled', 'disabled')
-                    // }
                 }
             }
         });

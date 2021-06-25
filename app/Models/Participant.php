@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
+use App\Traits\Orderable;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class Participant extends Model
 {
+    use Searchable, Orderable, Filterable;
+
     protected $fillable = [
         'name', 'title', 'birth_place', 'birth_date', 'gender', 'address', 'phone', 'profession', 'company', 'information', 'user_id'
     ];

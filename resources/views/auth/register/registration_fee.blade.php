@@ -29,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($packages as $package)
+                        {{-- @foreach ($packages as $package)
                             <tr>
                                 <td>{{ $package->description }}</td>
                                 <td class="text-center">Rp. {{ number_format($package->fee[0]->early_fee) }}</td>
@@ -37,7 +37,7 @@
                                 <td class="text-center">Rp. {{ number_format($package->fee[0]->normal_fee) }}</td>
                                 <td class="text-center">Rp. {{ number_format($package->fee[1]->normal_fee) }}</td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>

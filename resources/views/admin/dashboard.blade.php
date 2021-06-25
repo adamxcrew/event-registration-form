@@ -63,14 +63,11 @@
             <div class="card-body bg-light">
                 <strong><i class="fa fa-calendar-day mr-1"></i> Event</strong>
                 <p class="text-muted">
-                    8th Annual Scientific Meeting Indonesia Society of Thoracic Radiology
-                    <b class="text-uppercase">Comprehensive Thoracic Imaging</b>
+                    {{ config('app.desc') }}
                 </p>
                 <hr>
                 <strong><i class="fas fa-map-marker-alt mr-1"></i>Time & Place</strong>
-                <p class="text-muted">
-                    23-24 August 2019, Claron Hotel, Makassar.
-                </p>
+                <p class="text-muted">-</p>
             </div>
         </div>
     </div>

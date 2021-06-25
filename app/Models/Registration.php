@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
+use App\Traits\Orderable;
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class Registration extends Model
 {
+    use Searchable, Orderable, Filterable;
+
     protected $table = 'registrations';
-    protected $fillable = ['code', 'user_id', 'package_id', 'category_id', 'level_id', 'paybill', 'status'];
+    protected $fillable = ['code', 'user_id', 'category_id', 'level_id', 'paybill', 'status'];
     protected $appends = ['is_paid'];
+    protected $filterable = ['status'];
+    protected $orderable = ['code', 'created_at'];
+    protected $searchable = ['code', 'participant' => 'name'];
 
     public function getIsPaidAttribute() {
         return $this->has('receipt');
@@ -20,36 +28,28 @@ class Registration extends Model
         return now() >= $date->normal && $this->updated_at < $date->normal && $this->status == 0;
     }
 
-    public function getPaybillAttribute($value) {
-        return number_format($value,0,',','.');
-    }
-
-    public function setPaybillAttribute($value) {
-        $this->attributes['paybill'] = str_replace('.', '', $value);
-    }
-
     public function status() {
-        $status = $this->attributes['status'];
-        switch ($status) {
-            case 1:
-                $label = '<span class="badge badge-warning">Menunggu Verifikasi</span>';
-                break;
-            case 2:
-                $label = '<span class="badge badge-success">LUNAS</span>';
-                break;
-            default:
-                $label = '<span class="badge badge-secondary">Belum membayar</span>';
-                break;
-        }
-        return $label;
+        return [
+            '<span class="badge badge-secondary">Belum membayar</span>',
+            '<span class="badge badge-warning">Menunggu Verifikasi</span>',
+            '<span class="badge badge-success">LUNAS</span>',
+        ][$this->status - 1];
     }
 
     public function user() {
         return $this->belongsTo(User::class);
     }
 
+    public function participant() {
+        return $this->belongsTo(Participant::class, 'user_id', 'user_id');
+    }
+
     public function package() {
-        return $this->belongsTo(Package::class);
+        return $this->belongsTo($this->registerable_type, 'registerable_id');
+    }
+
+    public function event() {
+        return $this->belongsTo($this->registerable_type, 'registerable_id');
     }
 
     public function category() {
@@ -71,23 +71,8 @@ class Registration extends Model
     public static function boot() {
         parent::boot();
         static::created(function ($model) {
-            $id = $model->id;
             $prefix = strtoupper(substr($model->user->name, 0, 1));
-            switch (strlen($id)) {
-                case 1:
-                    $code = '000' . $id;
-                    break;
-                case 2:
-                    $code = '00' . $id;
-                    break;
-                case 3:
-                    $code = '0' . $id;
-                    break;
-                default:
-                    $code = $id;
-                    break;
-            }
-            $model->code = $prefix . Carbon::now()->format('Ymj') . $code;
+            $model->code = $prefix . now()->format('Ymj') . Str::padLeft($model->id, 4, 0);
             $model->save();
         });
     }

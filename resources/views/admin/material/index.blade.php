@@ -1,86 +1,90 @@
 @extends('layouts.app')
 
+@section('title', 'Package')
+
 @section('content')
-<div class="content-header">
+<section class="content-header">
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <form action="{{ url()->full() }}" method="GET">
-                    <div class="form-inline">
-                        <div class="input-group app-shadow">
-                            <input type="search" name="k" placeholder="Search" aria-label="Search" class="form-control form-control-navbar border-0" value="{{ request()->k }}">
-                            <div class="input-group-append">
-                                <div class="input-group-text bg-white border-0">
-                                    <i class="fa fa-search"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-auto pl-0">
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target=".modal">
-                    <i class="fas fa-upload"></i> <span class="ml-1 d-none d-sm-inline">Upload</span>
-                </button>
+                <h1 class="m-0 text-dark display-4 d-inline">Resource</h1>
+                <small>/ File</small>
             </div>
         </div>
     </div>
-</div>
+</section>
 <section class="content">
     <div class="container-fluid">
-        <div class="card mb-3">
-            <div class="card-body p-0 table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th width="1%">#</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th class="text-center">Uploaded By</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($modules as $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}.</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->description }}</td>
-                                <td class="text-center">{{ $item->createdBy->name }}</td>
-                                <td class="text-right">
-                                    <a href="{{ $item->download() }}" target="_blank" class="text-decoration-none text-secondary mx-2">
-                                        <i class="fas fa-external-link-alt"></i>
-                                    </a>
-                                    <a href="{{ $item->download() }}" download class="text-decoration-none text-secondary mx-2">
-                                        <i class="fas fa-download"></i>
-                                    </a>
-                                    <form action="{{ route('modules.destroy', $item->id) }}" method="POST" class="d-inline">
-                                        {{ method_field('delete') }}
-                                        <a href="#" class="text-secondary ml-2 text-decoration-none">
-                                            <i class="far fa-trash-alt"></i>
-                                        </a>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">
-                                    <i>Tidak ada data ditemukan...</i>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+        <div class="row mb-3">
+            <div class="col">
+                <x-search />
+            </div>
+            <div class="col-auto">
+                <a href="{{ route('package.create') }}" class="btn btn-primary shadow-sm" data-toggle="modal" data-target="#uploadModal">
+                    Upload
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header border-bottom-0 px-3">
+                        Total: {{ $modules->count() }}
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            @if ($modules->count())
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th width="1%">#</th>
+                                        <th>File</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            @endif
+                            <tbody>
+                                @forelse ($modules as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}.</td>
+                                        <td>
+                                            {{ $item->name }}
+                                            <div class="text-secondary text-sm">
+                                                {{ $item->description }}
+                                            </div>
+                                        </td>
+                                        <td nowrap class="text-right">
+                                            <x-action :delete="route('modules.destroy', $item->id)">
+                                                <a href="{{ $item->download() }}" target="_blank" class="text-decoration-none text-secondary mx-2">
+                                                    <i class="fas fa-external-link-alt"></i>
+                                                </a>
+                                                <a href="{{ $item->download() }}" download class="text-decoration-none text-secondary mx-2">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                            </x-action>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td>
+                                            <x-is-empty />
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<div class="modal fade" id="materialModal" role="dialog" aria-labelledby="materialModalLabel" aria-hidden="true">
+<div class="modal fade" id="uploadModal" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="materialModalLabel">Upload</h5>
+                <h5 class="modal-title" id="uploadModalLabel">Upload</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -133,12 +137,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-    @if ($errors->any())
-        <script>
-            $('.modal').modal('show')
-        </script>
-    @endif
 @endsection

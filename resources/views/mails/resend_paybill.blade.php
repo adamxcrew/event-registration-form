@@ -8,9 +8,9 @@ Kami mengingatkan, <br>
 Besar tagihan yang perlu kamu bayar adalah :
 @component('mail::panel')
 Paket Workshop : <b>{{ $registration->package->description }} (<i>{{ $registration->category->name }}</i>)</b> <br>
-Biaya : <b>Rp. {{ $registration->paybill }}</b>
+Biaya : <b>{{ IDR($registration->paybill) }}</b>
 
-Total tagihan : <b>Rp. {{ number_format($registration->getOriginal('paybill')) }}</b>
+Total tagihan : <b>{{ IDR($registration->paybill) }}</b>
 @endcomponent
 
 

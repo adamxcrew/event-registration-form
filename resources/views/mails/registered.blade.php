@@ -1,32 +1,23 @@
 @component('mail::message')
 # @lang('Halo'), {{ explode(" ", $name)[0] }} !
 
-Kamu telah terdaftar sebagai calon peserta dalam kegiatan <b>"8th Annual Scientific Meeting Indonesia Society of Thoracic Radiology"</b>.
+Kamu telah terdaftar sebagai calon peserta dalam kegiatan <b>"{{ config('app.desc') }}"</b>.
 <br>
 
 Besar tagihan yang perlu kamu bayar adalah :
 @component('mail::panel')
 Paket Workshop : <b>{{ $registration->package->description }} (<i>{{ $registration->category->name }}</i>)</b> <br>
-Biaya : <b>Rp. {{ $registration->paybill }}</b>
-
-@if (isset($booking))
-Akomodasi hotel selama {{ $booking->duration }} hari.<br>
-Rate kamar  : <b>{{ $booking->roomType->type }}</b> <br>
-Tarif kamar : <b>Rp. {{ $booking->fee }}</b>
-
-<br>
-Total tagihan : <b>Rp. {{ number_format($registration->getOriginal('paybill') + $booking->getOriginal('fee'),0,',','.') }}</b>
-@endif
+Biaya : <b>{{ IDR($registration->paybill) }}</b>
 @endcomponent
 
 
 <p style="text-align: center; margin-bottom: 0">
     Pembayaran dapat dilakukan dengan tranfer melalui
 </p>
-<h1 style="text-align: center"><u>Bank Mandiri</u></h1>
+<h1 style="text-align: center"><u>Nama Bank</u></h1>
 <p style="text-align: center">
-    dr. Erlin Sjahril, Sp.Rad(K) <br>
-    152-00-5223240-8
+    Atas nama pemilik rekening bank <br>
+    xxxxxxxxxxx
 </p>
 
 <p style="text-align: center">

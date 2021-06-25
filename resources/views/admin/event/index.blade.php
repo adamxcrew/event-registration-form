@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h1 class="m-0 text-dark display-4 d-inline">Setting</h1>
+                <h1 class="m-0 text-dark display-4 d-inline">Resource</h1>
                 <small>/ Event</small>
             </div>
         </div>
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table mb-0">
+                        <table class="table">
                             @if ($events->count())
                                 <thead class="thead-light">
                                     <tr>
@@ -66,7 +66,7 @@
                                 @empty
                                     <tr>
                                         <td>
-                                            <p class="text-center text-muted">Empty...</p>
+                                            <x-is-empty />
                                         </td>
                                     </tr>
                                 @endforelse

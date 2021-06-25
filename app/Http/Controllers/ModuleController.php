@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Material;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Auth;
 
@@ -44,7 +44,7 @@ class ModuleController extends Controller
 
         $file = $request->file('file');
         $ext = $file->getClientOriginalExtension();
-        $name = 'materi-' . str_slug($request->name) . '-' . date('ymds');
+        $name = 'materi-' . Str::slug($request->name) . '-' . date('ymds');
         $filename = $name  . '.' . $ext;
         $path = 'documents/' . $filename;
         $upload = $file->move('documents/', $filename);
@@ -56,6 +56,12 @@ class ModuleController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success','Materi berhasil diupload.');
+        return redirect()->back()->with('success','File berhasil diupload.');
+    }
+
+    public function destroy($id)
+    {
+        Material::destroy($id);
+        return redirect()->back()->with('success','File berhasil dihapus.');
     }
 }

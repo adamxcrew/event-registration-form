@@ -23,20 +23,36 @@ class ParticipantController extends Controller
         $filter = $request->has('filter') ? [$request->filter] : [0,1,2];
         $event = $request->e;
 
-        $participants = Participant::when($event, function ($query, $event) {
-            return $query->whereHas('user.registration.events', function ($query) use ($event) {
-                $query->where('id', $event);
-            });
-        })->whereHas('user.registration', function ($query) use ($filter) {
-            $query->whereIn('status', $filter);
-        })->orderBy('created_at', 'desc')->get();
+        // $participants = Participant::query()
+        //                 ->when($event, function ($query, $event) {
+        //                     return $query->whereHas('user.registration.events', function ($query) use ($event) {
+        //                         $query->where('id', $event);
+        //                     });
+        //                 })
+        //                 ->whereHas('user.registration', function ($query) use ($filter) {
+        //                     $query->whereIn('status', $filter);
+        //                 })
+        //                 ->orderBy('created_at', 'desc')
+        //                 ->paginate(request('perPage', 25));
+
+        $registrations = Registration::query()
+                        ->with('user', 'participant')
+                        ->order('created_at', 'desc')
+                        ->search()
+                        ->filter()
+                        ->paginate(request('perPage', 25));
+
+
 
         $events = Event::all();
-        $notpaid = DB::table('registrations')->where('status', 0)->count();
-        $waiting = DB::table('registrations')->where('status', 1)->count();
-        $paid = DB::table('registrations')->where('status', 2)->count();
+        $regs = Registration::pluck('status');
+        $counter = [
+            'notpaid' => $regs->where('status', 0)->count(),
+            'waiting' => $regs->where('status', 1)->count(),
+            'paid' => $regs->where('status', 2)->count(),
+        ];
 
-        return view('admin.participant.index', compact('participants', 'notpaid', 'waiting', 'paid', 'events', 'request'));
+        return view('admin.participant.index', compact('registrations', 'counter', 'events', 'request'));
     }
 
     public function show(Participant $participant)
@@ -65,9 +81,9 @@ class ParticipantController extends Controller
         return redirect()->back()->with('success','Perubahan disimpan.');
     }
 
-    public function destroy(Participant $participant)
+    public function destroy($id)
     {
-        $user = User::destroy($participant->user_id);
+        User::destroy($id);
         return redirect()->back()->with('success','Data registrasi peserta dihapus.');
     }
 

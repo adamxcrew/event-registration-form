@@ -27,7 +27,9 @@ class PackageRequest extends FormRequest
         return [
             'name' => ['required', 'string', Rule::unique('packages', 'name')->ignore(optional($this->package)->id)],
             'description' => ['nullable', 'string'],
-            'prices' => ['sometimes', 'required', 'array', 'min:1'],
+            'min' => ['nullable', 'integer'],
+            'max' => ['nullable', 'integer'],
+            'prices' => ['required', 'array', 'min:1'],
         ];
     }
 }

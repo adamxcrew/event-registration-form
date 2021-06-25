@@ -42,7 +42,7 @@ class PaymentController extends Controller
             ['registration_id' => $user->registration->id],
             $request->all()
         );
-        $user->registration->update(['status' => 1]);
+        $user->registration->update(['status' => 2]);
 
         return redirect()->back()->with('success','Bukti pembayaran telah di-upload dan menunggu verifikasi Admin.');
     }

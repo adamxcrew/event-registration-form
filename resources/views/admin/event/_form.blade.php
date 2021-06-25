@@ -71,7 +71,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text bg-white border-right-0">Rp.</div>
                     </div>
-                    <input id="prices" type="number" class="border-left-0 form-control @error('prices') is-invalid @enderror" name="prices[{{ $category->id }}][{{ $item }}]" placeholder="Free ({{ ucfirst($item) }})"
+                    <input type="number" class="border-left-0 form-control @error('prices') is-invalid @enderror" name="prices[{{ $category->id }}][{{ $item }}]" placeholder="Free ({{ ucfirst($item) }})"
                         value="{{ old('prices')[$category->id][$item] ?? $price }}"
                     >
                 </div>

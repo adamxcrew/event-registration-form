@@ -144,7 +144,7 @@
             </tr>
             <tr>
                 <td nowrap>Registration Fee <span class="float-right" style="padding-right: 10px">:</span></td>
-                <td colspan="2">Rp. {{ $registration->paybill }},-</td>
+                <td colspan="2">{{ IDR($registration->paybill) }}</td>
             </tr>
         </table>
 
@@ -163,11 +163,11 @@
                     <td class="text-center">1.</td>
                     <td class="text-center">{{ $registration->receipt->paid_at->format('d/m/Y') }}</td>
                     <td class="text-center">{{ $registration->receipt->bank }} - A/N: {{ $registration->receipt->name }}</td>
-                    <td class="text-center"  width="1%" nowrap>Rp. {{ $registration->paybill }},-</td>
+                    <td class="text-center"  width="1%" nowrap>{{ IDR($registration->paybill) }}</td>
                 </tr>
                 <tr>
                     <td class="text-right" colspan="3"><b>Total :</b></td>
-                    <td class="text-center"  width="1%" nowrap><b>Rp. {{ $registration->paybill }},-</b></td>
+                    <td class="text-center"  width="1%" nowrap><b>{{ IDR($registration->paybill) }}</b></td>
                 </tr>
             </tbody>
         </table>

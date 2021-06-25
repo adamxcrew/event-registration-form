@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h1 class="m-0 text-dark display-4 d-inline">Setting</h1>
+                <h1 class="m-0 text-dark display-4 d-inline">Resource</h1>
                 <small>/ Package</small>
             </div>
         </div>
@@ -35,13 +35,14 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table mb-0">
+                        <table class="table">
                             @if ($packages->count())
                                 <thead class="thead-light">
                                     <tr>
                                         <th width="1%">#</th>
                                         <th width="1%">Event</th>
                                         <th>Description</th>
+                                        <th>Choiceable Events</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -51,7 +52,11 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}.</td>
                                         <td nowrap>{{ ($package->name) }}</td>
-                                        <td>{{ $package->description ?? '...' }}</td>
+                                        <td>{{ $package->description ?? '-' }}</td>
+                                        <td>
+                                            {{ $package->min }}
+                                            {{ $package->max > $package->min ? ' - ' . $package->max : '' }}
+                                        </td>
                                         <td class="text-right">
                                             <x-action
                                                 :edit="route('package.edit', $package->id)"
@@ -62,7 +67,7 @@
                                 @empty
                                     <tr>
                                         <td>
-                                            <p class="text-center text-muted">Empty...</p>
+                                            <x-is-empty />
                                         </td>
                                     </tr>
                                 @endforelse

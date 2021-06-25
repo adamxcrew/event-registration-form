@@ -13,7 +13,7 @@ class CreatePackageCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('package_categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreatePackageCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('package_categories');
+        Schema::dropIfExists('categories');
     }
 }

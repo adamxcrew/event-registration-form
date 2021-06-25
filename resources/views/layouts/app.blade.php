@@ -58,7 +58,7 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="overflow-x: hidden;">
             <a href="{{ url('/') }}" class="brand-link">
-                <img src="{{ asset('images/logo2.png') }}" alt="{{ config('app.name') }}" class="brand-image img-circle">
+                <img src="{{ asset('images/laravel-white.png') }}" alt="{{ config('app.name') }}" class="brand-image">
                 <span class="brand-text">{{ config('app.name') }}</span>
             </a>
 
@@ -76,32 +76,40 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         @if (Auth::user()->hasRole(['superadmin', 'admin']))
                             <li class="nav-item">
-                                <a href="{{ route('home') }}" class="nav-link close-sidebar">
-                                    <i class="fas fa-tachometer-alt nav-icon"></i>
+                                <a href="{{ route('home') }}" class="nav-link @activeRoute('home')">
+                                    <span class="nav-icon">
+                                        <svg style="width: 1.1em; height: 1.1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                        </svg>
+                                    </span>
                                     <p class="ml-1">Dashboard</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('participants.index') }}" class="nav-link close-sidebar">
-                                    <i class="fas fa-user-plus nav-icon"></i>
+                                <a href="{{ route('participants.index') }}" class="nav-link @activeRoute('participants.*')">
+                                    <span class="nav-icon">
+                                        <svg style="width: 1.1em; height: 1.1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                        </svg>
+                                    </span>
                                     <p class="ml-1">Participant</p>
                                 </a>
                             </li>
                         @else
                             <li class="nav-item">
-                                <a href="{{ route('home') }}" class="nav-link close-sidebar">
+                                <a href="{{ route('home') }}" class="nav-link">
                                     <i class="fas fa-home nav-icon"></i>
                                     <p class="ml-1">Home</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('profile.index') }}" class="nav-link close-sidebar">
+                                <a href="{{ route('profile.index') }}" class="nav-link">
                                     <i class="fas fa-user-circle nav-icon"></i>
                                     <p class="ml-1">Profile</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('modules.index') }}" class="nav-link close-sidebar">
+                                <a href="{{ route('modules.index') }}" class="nav-link">
                                     <i class="fas fa-book nav-icon"></i>
                                     <p class="ml-1">Module</p>
                                 </a>
@@ -117,7 +125,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                                         </svg>
                                     </span>
-                                    <p class="ml-1">Attachment</p>
+                                    <p class="ml-1">Files</p>
                                 </a>
                             </li>
                             <li class="nav-item">
