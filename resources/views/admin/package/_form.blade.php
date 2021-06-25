@@ -45,11 +45,14 @@
 </div>
 
 
-<div class="form-group row">
-    <label class="offset-md-3 col-md-6 col-form-label text-secondary">Price (Early & Normal)</label>
-</div>
 
 @foreach ($categories as $category)
+    @if ($loop->first)
+        <div class="form-group row">
+            <label class="offset-md-3 col-md-6 col-form-label text-secondary">Price (Early & Normal)</label>
+        </div>
+    @endif
+
     <div class="form-group row">
         <label for="prices" class="col-md-3 col-form-label text-md-right">{{ $category->name }}</label>
         @foreach (['early', 'normal'] as $item)

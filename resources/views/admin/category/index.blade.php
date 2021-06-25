@@ -60,7 +60,7 @@
                                 @empty
                                     <tr>
                                         <td>
-                                            <p class="text-center text-muted">Empty...</p>
+                                            <x-is-empty />
                                         </td>
                                     </tr>
                                 @endforelse
