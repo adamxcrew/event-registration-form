@@ -16,8 +16,8 @@ class RegistrationSeeder extends Seeder
     {
         DB::table('registration_date')->truncate();
         DB::table('registration_date')->insert([
-            'early_bird' => Carbon::createFromDate(2019, 7, 31)->format("Y-m-d"),
-            'normal' => Carbon::createFromDate(2019, 8, 1)->format("Y-m-d")
+            'early_bird' => now()->format("Y-m-d"),
+            'normal' => now()->addDays(14)->format("Y-m-d")
         ]);
 
         DB::table('prices')->truncate();

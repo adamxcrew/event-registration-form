@@ -6,8 +6,6 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\Package;
 use App\Models\PackageCategory as Category;
-use App\Models\RegistrationDate;
-use App\Models\Level;
 
 use App\Mail\UserRegistered;
 
@@ -31,8 +29,8 @@ class RegisterController extends Controller
         $categories = Category::all();
         $packages = Package::with('prices')->get();
         $events = Event::with('prices')->get();
-        $date = RegistrationDate::first();
-        return view('auth.register', compact('categories', 'packages', 'date', 'events'));
+
+        return view('auth.register', compact('categories', 'packages', 'events'));
     }
 
     public function register(RegisterRequest $request)
@@ -57,7 +55,7 @@ class RegisterController extends Controller
 
             $user->assignRole('participant');
 
-            $schedule = RegistrationDate::first()->isEarlyBird() ? 'early' : 'normal';
+            $schedule = eventInfo()->isEarly() ? 'early' : 'normal';
 
             $event = isset($request->package_id)
                        ? Package::find($request->package_id)

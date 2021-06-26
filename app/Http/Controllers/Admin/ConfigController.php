@@ -6,19 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ConfigRequest;
 use App\Models\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConfigController extends Controller
 {
     public function index()
     {
-        $configs = Config::all();
-        return view('admin.config.index', compact('configs'));
+        $config = collect([]);
+        Config::all()->each(fn($item) => $config[$item->key] = $item->value);
+
+        return view('admin.config', compact('config'));
     }
 
     public function store(ConfigRequest $request)
     {
-        Config::create($request->validated());
+        collect($request->validated())->each(function ($value, $key) {
+            DB::table('config')->updateOrInsert(['key' => $key], ['value' => $value]);
+        });
 
-        return redirect()->route('configuration.index')->withSuccess('Created successfully.');
+        return redirect()->route('config.index')->withSuccess('Created successfully.');
     }
 }

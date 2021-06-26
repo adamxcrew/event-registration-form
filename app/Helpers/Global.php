@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Config;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 function wrap($value)
 {
@@ -28,4 +30,12 @@ function randomNumber($length) {
     }
 
     return $result;
+}
+
+function eventInfo($key = null){
+    $config = new Config;
+
+    return is_null($key)
+            ? $config
+            : $config->key($key);
 }

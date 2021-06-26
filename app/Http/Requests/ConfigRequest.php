@@ -13,7 +13,7 @@ class ConfigRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->user()->hasRole(['admin', 'superadmin']);
     }
 
     /**
@@ -24,7 +24,9 @@ class ConfigRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'about' => ['required', 'string'],
+            'early' => ['nullable', 'date'],
+            'normal' => ['required', 'date', 'after:early'],
         ];
     }
 }

@@ -7,7 +7,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header border-bottom-0">
-                <h5 class="modal-title" id="pricingLabel">Registration Fee</h5>
+                <h5 class="modal-title" id="pricingLabel">Pricing</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,20 +17,27 @@
                     <thead>
                         <tr>
                             <th class="align-middle" nowrap rowspan="2">Package</th>
-                            <th class="text-center" nowrap colspan="2">
-                                Early <br>
-                                <span class="font-weight-light">(Until {{ $date->early_bird->format("j M Y") }})</span>
-                            </th>
-                            <th class="text-center" nowrap colspan="2">
-                                Normal <br>
-                                <span class="font-weight-light">(Start from {{ $date->normal->format("j M Y") }})</span>
-                            </th>
+                            @if (eventInfo('early'))
+                                <th class="text-center" nowrap colspan="2">
+                                    Early <br>
+                                    <span class="font-weight-light">(Until {{ eventInfo('early')->format("j M Y") }})</span>
+                                </th>
+                            @endif
+
+                            @if (eventInfo('normal'))
+                                <th class="text-center" nowrap colspan="2">
+                                    Normal <br>
+                                    <span class="font-weight-light">(Start from {{ eventInfo('normal')->format("j M Y") }})</span>
+                                </th>
+                            @endif
                         </tr>
                         <tr>
                             @foreach (['early', 'normal'] as $item)
-                                @foreach ($categories as $category)
-                                    <th class="text-center" nowrap>{{ $category->name }}</th>
-                                @endforeach
+                                @if (eventInfo($item))
+                                    @foreach ($categories as $category)
+                                        <th class="text-center" nowrap>{{ $category->name }}</th>
+                                    @endforeach
+                                @endif
                             @endforeach
                         </tr>
                     </thead>
@@ -39,12 +46,14 @@
                             <tr>
                                 <td>{{ $package->name ?? $package->description }}</td>
                                 @foreach (['early', 'normal'] as $item)
-                                    @foreach ($categories as $category)
-                                        @php
-                                            $price = optional($package->prices->where('category_id', $category->id)->first())->{$item} ?? 0
-                                        @endphp
-                                        <td class="text-center">{{ IDR($price) }}</td>
-                                    @endforeach
+                                    @if (eventInfo($item))
+                                        @foreach ($categories as $category)
+                                            @php
+                                                $price = optional($package->prices->where('category_id', $category->id)->first())->{$item} ?? 0
+                                            @endphp
+                                            <td class="text-center">{{ IDR($price) }}</td>
+                                        @endforeach
+                                    @endif
                                 @endforeach
                             </tr>
                         @endforeach

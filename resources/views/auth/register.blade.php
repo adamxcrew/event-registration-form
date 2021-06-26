@@ -3,7 +3,7 @@
 @section('body', 'register')
 
 @php
-    $schedule = $date->isEarlyBird() ? 'early' : 'normal';
+    $schedule = eventInfo()->isEarly() ? 'early' : 'normal';
 @endphp
 
 @section('content')
@@ -95,7 +95,7 @@
                     <div class="p-3 d-flex">
                         <h5 class="my-0 font-weight-normal mr-auto">
                             Registration
-                            @if ($date->isEarlyBird())
+                            @if (eventInfo()->isEarly())
                                 <span class="badge badge-pill badge-warning float-right ml-2">Early Bird</span>
                             @endif
                         </h5>
