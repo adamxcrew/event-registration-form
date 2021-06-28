@@ -197,6 +197,8 @@
             @yield('content')
         </div>
 
+        @include('layouts._footer')
+
         <aside class="control-sidebar control-sidebar-light">
             <div class="p-3">
                 <img src="{{ asset('images/user-circle.png') }}" class="img-fluid mx-auto d-block rounded-circle" style="width: 75px">

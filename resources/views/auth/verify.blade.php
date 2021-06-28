@@ -5,7 +5,7 @@
 @section('content')
 <div class="container" style="margin-top: -100px">
     <div class="register-logo">
-        <a href="{{ url('/') }}" class="font-weight-bold">Event Registration </a>
+        <a href="{{ url('/') }}" class="font-weight-bold">Registration </a>
         <p class="lead">
             {!! config('app.desc') !!}
         </p>

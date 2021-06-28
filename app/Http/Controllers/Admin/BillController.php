@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendPaymentVerifiedEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentVerified;
 use App\Models\Registration;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
 {
@@ -28,16 +30,22 @@ class BillController extends Controller
             'paid_bank' => $registration->receipt->bank ?? null,
             'paid_struk' => $registration->receipt ? asset($registration->receipt->file) : null,
             'struk_ext' => $registration->receipt ? $registration->receipt->fileInfo()['extension'] : null,
-            'verification' => $registration->receipt ? route('bill.verified', $id) : ''
+            'verification' => $registration->receipt ? route('bill.verified', $registration->id) : ''
         ];
 
         return response()->json($bill);
     }
 
-    public function verified(User $user)
+    public function verified($id)
     {
-        Mail::to($user)->send(new PaymentVerified($user));
-        $user->registration->update(['status' => 3]);
+        $registration = Registration::findOrFail($id);
+        $user = $registration->user;
+
+        DB::transaction(function () use ($user) {
+            // $user->registration->update(['status' => 3]);
+            Mail::to($user)->send(new PaymentVerified($user));
+        });
+
         return redirect()->back()->with('success', 'Pembayaran telah diverifikasi.');
     }
 }
