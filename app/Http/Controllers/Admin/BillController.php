@@ -42,7 +42,7 @@ class BillController extends Controller
         $user = $registration->user;
 
         DB::transaction(function () use ($user) {
-            // $user->registration->update(['status' => 3]);
+            $user->registration->update(['status' => 3]);
             Mail::to($user)->send(new PaymentVerified($user));
         });
 

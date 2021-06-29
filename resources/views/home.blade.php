@@ -1,16 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.participant')
 
 @section('content')
 <div class="content-header">
-    <div class="container-fluid">
-        <h1 class="display-4">Hi, {{ explode(" ", Auth::user()->name)[0] }}!</h1>
-        <p class="lead mb-1 d-none d-md-block">
-            {{ config('app.desc') }}
+    <div class="container">
+        <h1 class="display-4">
+            Hi, <a href="{{ route('profile.index') }}">{{ explode(" ", Auth::user()->name)[0] }}!</a>
+        </h1>
+        <p class="lead mb-1 font-weight-light">
+            {{ config('app.desc') }}.
         </p>
     </div>
 </div>
 <section class="content">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
@@ -101,44 +103,54 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md">
                 <div class="card">
-                    <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Workshop</div>
-                    <div class="card-body p-2">
-                        <ol>
+                    <div class="card-header font-weight-bold">
+                        <i class="far fa-calendar-check mr-1"></i> Event / Workshop
+                    </div>
+                    <div class="card-body">
+                        <dl>
                             @foreach ($user->registration->events as $item)
                                 <li>{{ $item->name }}</li>
                             @endforeach
-                        </ol>
+                        </dl>
                     </div>
                 </div>
-                @if ($user->registration->booking)
-                    <div class="card">
-                        <div class="card-header font-weight-bold"><i class="far fa-calendar-check"></i> Accommodation</div>
-                        <div class="card-body">
-                            <b>{{ $user->registration->booking->roomType->accommodation->hotel }}</b>
-                            <p>{{ $user->registration->booking->roomType->accommodation->address }}</p>
-                            <table>
-                                <tr>
-                                    <th>Room Type <span class="float-right ml-4"> :</span></th>
-                                    <td class="px-2">{{ $user->registration->booking->roomType->type }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Durasi <span class="float-right"> :</span></th>
-                                    <td class="px-2">{{ $user->registration->booking->duration }} malam</td>
-                                </tr>
-                                <tr>
-                                    <th>Check In <span class="float-right"> :</span></th>
-                                    <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_in)) }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Check Out <span class="float-right"> :</span></th>
-                                    <td class="px-2">{{ date('d/m/Y', strtotime($user->registration->booking->check_out)) }}</td>
-                                </tr>
-                            </table>
-                        </div>
+
+                <div class="card">
+                    <div class="card-header font-weight-bold">
+                        <i class="fas fa-paperclip mr-1"></i> Attachment
                     </div>
-                @endif
+                    <div class="card-body py-2 px-3">
+                        <table class="table table-sm table-borderless">
+                            <tbody>
+                                @foreach ($files as $file)
+                                    <tr>
+                                        <td>
+                                            <b>{{ $file->name }}</b>
+                                            <p class="text-secondary text-sm mb-2">
+                                                {{ $file->description }}
+                                            </p>
+
+                                            <a href="{{ $file->download() }}" target="_blank" class="text-decoration-none text-secondary mr-2">
+                                                <i class="fas fa-external-link-alt"></i>
+                                            </a>
+                                            <a href="{{ $file->download() }}" download class="text-decoration-none text-secondary">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                                @if (! $files->count())
+                                    <p class="text-muted mb-0">
+                                        Empty...
+                                    </p>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
