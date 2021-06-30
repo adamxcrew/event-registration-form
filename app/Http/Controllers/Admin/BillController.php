@@ -31,7 +31,7 @@ class BillController extends Controller
             'paid_bank' => $receipt->bank ?? null,
             'paid_struk' => $receipt->file_url,
             'struk_ext' => $receipt->file_info['extension'],
-            'verification' => $registration->receipt ? route('bill.verified', $registration->id) : ''
+            'verification' => $receipt ? route('bill.verified', $registration->id) : ''
         ];
 
         return response()->json($bill);
