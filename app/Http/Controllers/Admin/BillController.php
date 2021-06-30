@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Jobs\SendPaymentVerifiedEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentVerified;
 use App\Models\Registration;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
