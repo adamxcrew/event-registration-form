@@ -20,8 +20,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/invoice', 'InvoiceController@index');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('account', 'AccountController')->only('index', 'store')->middleware('role:admin|superadmin');
-
     Route::namespace('Admin')->middleware('role:admin|superadmin')->group(function () {
         Route::get('/participants', 'ParticipantController@index')->name('participants.index');
         Route::get('/participants/{participant}/show', 'ParticipantController@show')->name('participants.show');
@@ -37,6 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('event', 'EventController')->except('show');
         Route::resource('package', 'PackageController')->except('show');
         Route::resource('config', 'ConfigController')->only('index', 'store');
+        Route::resource('account', 'AccountController')->only('index', 'store');
     });
 
     Route::namespace('User')->middleware('role:participant')->group(function () {
