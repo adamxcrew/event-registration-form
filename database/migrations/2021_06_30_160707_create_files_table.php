@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateMaterialsTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateMaterialsTable extends Migration
      */
     public function up()
     {
-        Schema::create('materials', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->string('path')->nullable();
             $table->integer('downloaded')->unsigned()->default(0);
-            $table->integer('created_by')->unsigned()->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateMaterialsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('materials');
+        Schema::dropIfExists('files');
     }
 }

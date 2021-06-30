@@ -1,5 +1,10 @@
 @extends('layouts.participant')
 
+@php
+    $registration = $user->registration;
+    $receipt = $registration->receipt;
+@endphp
+
 @section('content')
 <div class="content-header">
     <div class="container">
@@ -22,39 +27,22 @@
                             <tbody>
                                 <tr>
                                     <td nowrap class="border-top-0" width="20%">Kode Registrasi <span class="float-right">:</span></td>
-                                    <td class="border-top-0 pl-2">{{ $user->registration->code }}</td>
+                                    <td class="border-top-0 pl-2">{{ $registration->code }}</td>
                                 </tr>
                                 <tr>
                                     <td nowrap>Tanggal Registrasi <span class="float-right">:</span></td>
-                                    <td class="pl-2">{{ $user->registration->created_at->format('d/m/Y') }}</td>
+                                    <td class="pl-2">{{ $registration->created_at->format('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
                                     <td nowrap>Paket Workshop<span class="float-right">:</span></td>
                                     <td class="pl-2">
-                                        {{ IDR($user->registration->paybill) }} - "{{ $user->registration->package->name ?? $user->registration->package->name }}"
+                                        {{ IDR($registration->paybill) }} - "{{ $registration->package->name ?? $registration->package->name }}"
                                     </td>
                                 </tr>
-                                @if ($user->registration->booking)
-                                    <tr>
-                                        <td nowrap>Akomodasi <span class="float-right">:</span></td>
-                                        <td class="pl-2">
-                                            Rp. {{ $user->registration->booking->fee }} -
-                                            {{ $user->registration->booking->roomType->accommodation->hotel }}.
-                                            Tipe <i><u>{{ $user->registration->booking->roomType->type }}</u></i>.
-                                            Selama {{ $user->registration->booking->duration }} malam.
-                                        </td>
-                                    </tr>
-                                    <tr class="">
-                                        <td nowrap>Workshop + Akomodasi <span class="float-right">:</span></td>
-                                        <td class="pl-2">
-                                            <b>Rp. {{ number_format(($user->registration->booking->getOriginal('fee') + $user->registration->getOriginal('paybill')), 0,',','.') }},-</b>
-                                        </td>
-                                    </tr>
-                                @endif
                                 <tr>
                                     <td nowrap>Status <span class="float-right">:</span></td>
                                     <td class="pl-2">
-                                        {!! $user->registration->status() !!}
+                                        {!! $registration->status() !!}
                                         <a href="#" class="text-decoration-none text-muted" data-toggle="modal" data-target="#paymentInformation">
                                             <i class="far fa-question-circle"></i>
                                         </a>
@@ -63,19 +51,18 @@
                                 <tr>
                                     <td nowrap>Pembayaran <span class="float-right">:</span></td>
                                     <td nowrap class="pl-2">
-                                        @if ($user->registration->receipt()->exists())
-                                            @if ($user->registration->receipt->fileInfo()['extension'] == 'pdf')
-                                                <a href="{{ asset($user->registration->receipt->file) }}" class="text-decoration-none text-muted" target="_blank">
-                                                    <i class="far fa-file-pdf"></i>
-                                                    {{ $user->registration->receipt->fileInfo()['filename'] }} ({{ strtoupper($user->registration->receipt->fileInfo()['extension']) }})
+                                        @if (isset($receipt))
+                                            @if ($receipt->file_info['extension'] == 'pdf')
+                                                <a href="{{ $receipt->file_url }}" class="text-decoration-none text-muted" target="_blank">
+                                                    <i class="far fa-file-pdf mr-1"></i> Bukti pembayaran
                                                 </a>
                                             @else
-                                                <a href="#" class="text-decoration-none text-muted" v-on:click.prevent="showPhoto('{{ asset($user->registration->receipt->file) }}')">
-                                                    <i class="far fa-image"></i>
-                                                    {{ $user->registration->receipt->fileInfo()['filename'] }} ({{ strtoupper($user->registration->receipt->fileInfo()['extension']) }})
+                                                <a href="#" class="text-decoration-none text-muted" v-on:click.prevent="showPhoto('{{ $receipt->file_url }}')">
+                                                    <i class="far fa-image mr-1"></i> Bukti pembayaran
                                                 </a>
                                             @endif
-                                            @if ($user->registration->status <= 2)
+
+                                            @if ($registration->status <= 2)
                                                 | <a href="#" class="ml-1 text-decoration-none text-muted" data-toggle="modal" data-target="#paymentConfirmation">
                                                     <i class="far fa-edit"></i> edit
                                                 </a>
@@ -87,7 +74,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                                @if ($user->registration->status > 2)
+                                @if ($registration->status > 2)
                                     <tr>
                                         <td nowrap>Kupon <span class="float-right">:</span></td>
                                         <td nowrap class="pl-2">
@@ -110,7 +97,7 @@
                     </div>
                     <div class="card-body">
                         <dl>
-                            @foreach ($user->registration->events as $item)
+                            @foreach ($registration->events as $item)
                                 <li>{{ $item->name }}</li>
                             @endforeach
                         </dl>
@@ -121,34 +108,28 @@
                     <div class="card-header font-weight-bold">
                         <i class="fas fa-paperclip mr-1"></i> Attachment
                     </div>
-                    <div class="card-body py-2 px-3">
-                        <table class="table table-sm table-borderless">
-                            <tbody>
-                                @foreach ($files as $file)
-                                    <tr>
-                                        <td>
-                                            <b>{{ $file->name }}</b>
-                                            <p class="text-secondary text-sm mb-2">
-                                                {{ $file->description }}
-                                            </p>
+                    <div class="card-body">
+                        @foreach ($files as $file)
+                            <div class="{{ !$loop->last ? 'border-bottom pb-2 mb-2' : '' }}">
+                                <b>{{ $file->name }}</b>
+                                <p class="text-secondary text-sm mb-2">
+                                    {{ $file->description }}
+                                </p>
 
-                                            <a href="{{ $file->download() }}" target="_blank" class="text-decoration-none text-secondary mr-2">
-                                                <i class="fas fa-external-link-alt"></i>
-                                            </a>
-                                            <a href="{{ $file->download() }}" download class="text-decoration-none text-secondary">
-                                                <i class="fas fa-download"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <a href="{{ $file->download() }}" target="_blank" class="text-decoration-none text-secondary mr-2">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="{{ $file->download() }}" download class="text-decoration-none text-secondary">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            </div>
+                        @endforeach
 
-                                @if (! $files->count())
-                                    <p class="text-muted mb-0">
-                                        Empty...
-                                    </p>
-                                @endif
-                            </tbody>
-                        </table>
+                        @if (! $files->count())
+                            <p class="text-muted mb-0">
+                                Empty...
+                            </p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -193,7 +174,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">A/N Rekening</label>
-                            <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name', $user->registration->receipt->name ?? '') }}" placeholder="A/N Rekening" required>
+                            <input type="text" name="name" id="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name', $receipt->name ?? '') }}" placeholder="A/N Rekening" required>
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -202,7 +183,7 @@
                         </div>
                         <div class="form-group">
                             <label for="bank">Bank</label>
-                            <input type="text" name="bank" id="bank" class="form-control{{ $errors->has('bank') ? ' is-invalid' : '' }}" value="{{ old('bank', $user->registration->receipt->bank ?? '') }}" placeholder="Nama Bank" required>
+                            <input type="text" name="bank" id="bank" class="form-control{{ $errors->has('bank') ? ' is-invalid' : '' }}" value="{{ old('bank', $receipt->bank ?? '') }}" placeholder="Nama Bank" required>
                             @if ($errors->has('bank'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('bank') }}</strong>
@@ -211,7 +192,7 @@
                         </div>
                         <div class="form-group">
                             <label for="paid_at">Tanggal Transfer</label>
-                            <input type="date" name="paid_at" id="paid_at" class="form-control{{ $errors->has('paid_at') ? ' is-invalid' : '' }}" value="{{ old('paid_at', $user->registration->receipt ? $user->registration->receipt->getOriginal('paid_at') : '') }}" placeholder="Tanggal Transfer sesuai dengan struk." required>
+                            <input type="date" name="paid_at" id="paid_at" class="form-control{{ $errors->has('paid_at') ? ' is-invalid' : '' }}" value="{{ old('paid_at', $receipt ? $receipt->getOriginal('paid_at') : '') }}" placeholder="Tanggal Transfer sesuai dengan struk." required>
                             @if ($errors->has('paid_at'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('paid_at') }}</strong>
@@ -220,7 +201,7 @@
                         </div>
                         <div class="form-group">
                             <label for="struk">Bukti Transfer <small class="text-muted">(JPG/PDF, maks: 2048 KB)</small></label>
-                            <input id="struk" type="file" class="{{ $errors->has('struk') ? 'form-control is-invalid' : '' }}" accept=".png,.jpeg,.jpg,.pdf" name="struk" value="{{ old('struk') }}" placeholder="Foto Bukti Pembayaran" {{ !$user->registration->receipt ? 'required' : '' }}>
+                            <input id="struk" type="file" class="{{ $errors->has('struk') ? 'form-control is-invalid' : '' }}" accept=".png,.jpeg,.jpg,.pdf" name="struk" value="{{ old('struk') }}" placeholder="Foto Bukti Pembayaran" {{ !$receipt ? 'required' : '' }}>
                             @if ($errors->has('struk'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('struk') }}</strong>
@@ -229,8 +210,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        @if ($user->registration->status < 2)
-                            <button type="submit" class="btn btn-primary btn-block-xs"><i class="fas {{ $user->registration->receipt ? 'fa-check' : 'fa-upload' }} mr-1"></i> {{ $user->registration->receipt ? 'Update' : 'Upload' }}</button>
+                        @if ($registration->status < 3)
+                            <button type="submit" class="btn btn-primary btn-block-xs"><i class="fas {{ $receipt ? 'fa-check' : 'fa-upload' }} mr-1"></i> {{ $receipt ? 'Update' : 'Upload' }}</button>
                         @else
                             <button type="button" class="btn btn-secondary btn-block-xs" data-dismiss="modal">Close</button>
                         @endif
@@ -246,7 +227,7 @@
 @section('scripts')
     @if ($errors->any())
         <script>
-            // $('#paymentConfirmation').modal('show')
+            $('#paymentConfirmation').modal('show')
         </script>
     @endif
     <script>

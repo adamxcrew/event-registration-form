@@ -20,21 +20,21 @@
                 <x-search />
             </div>
             <div class="col-auto">
-                <a href="{{ route('package.create') }}" class="btn btn-primary shadow-sm" data-toggle="modal" data-target="#uploadModal">
+                <button class="btn btn-primary shadow-sm" data-toggle="modal" data-target="#uploadModal">
                     Upload
-                </a>
+                </button>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-header border-bottom-0 px-3">
-                        Total: {{ $modules->count() }}
+                        Total: {{ $files->count() }}
                     </div>
 
                     <div class="table-responsive">
                         <table class="table">
-                            @if ($modules->count())
+                            @if ($files->count())
                                 <thead class="thead-light">
                                     <tr>
                                         <th width="1%">#</th>
@@ -44,7 +44,7 @@
                                 </thead>
                             @endif
                             <tbody>
-                                @forelse ($modules as $item)
+                                @forelse ($files as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}.</td>
                                         <td>
@@ -54,7 +54,7 @@
                                             </div>
                                         </td>
                                         <td nowrap class="text-right">
-                                            <x-action :delete="route('modules.destroy', $item->id)">
+                                            <x-action :delete="route('files.destroy', $item->id)">
                                                 <a href="{{ $item->download() }}" target="_blank" class="text-decoration-none text-secondary mx-2">
                                                     <i class="fas fa-external-link-alt"></i>
                                                 </a>
@@ -89,7 +89,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('modules.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('files.store') }}" method="POST" enctype="multipart/form-data">
                 <div class="modal-body pb-0">
                     {{ csrf_field() }}
                     <div class="form-group row">

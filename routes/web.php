@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/user/{id}/bill', 'BillController@show')->name('bill');
         Route::patch('/user/{id}/bill', 'BillController@verified')->name('bill.verified');
 
+        Route::resource('files', 'FileController')->only('index', 'store', 'destroy');
         Route::resource('category', 'CategoryController')->except('show');
         Route::resource('event', 'EventController')->except('show');
         Route::resource('package', 'PackageController')->except('show');
@@ -44,6 +45,4 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', 'ProfileController@index')->name('profile.index');
         Route::patch('/profile', 'ProfileController@update')->name('profile.update');
     });
-
-    Route::resource('modules', 'ModuleController');
 });

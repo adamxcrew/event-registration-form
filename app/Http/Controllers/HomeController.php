@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Material;
+use App\Models\File;
 use Illuminate\Http\Request;
 
 use App\Models\Registration;
@@ -30,7 +30,11 @@ class HomeController extends Controller
     {
         if ($request->user()->hasRole('participant')) {
             $user = $request->user();
-            $files = Material::all();
+            $registration = $user->registration;
+            $receipt = $registration->receipt;
+
+            // dd($receipt->fileinfo);
+            $files = File::all();
             return view('home', compact('user', 'files'));
         }
 

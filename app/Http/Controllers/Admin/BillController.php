@@ -16,6 +16,7 @@ class BillController extends Controller
     public function show($id)
     {
         $registration = Registration::findOrFail($id);
+        $receipt = optional($registration->receipt);
         $bill = [
             'id' => $registration->id,
             'code' => $registration->code,
@@ -25,11 +26,11 @@ class BillController extends Controller
             'fee' => IDR($registration->paybill),
             'status' => $registration->status(),
             'status_code' => $registration->status,
-            'paid_at' => $registration->receipt ? $registration->receipt->paid_at->format('d/m/Y') : null,
-            'paid_by' => $registration->receipt->name ?? null,
-            'paid_bank' => $registration->receipt->bank ?? null,
-            'paid_struk' => $registration->receipt ? asset($registration->receipt->file) : null,
-            'struk_ext' => $registration->receipt ? $registration->receipt->fileInfo()['extension'] : null,
+            'paid_at' => $receipt->paid_at->format('d/m/Y'),
+            'paid_by' => $receipt->name ?? null,
+            'paid_bank' => $receipt->bank ?? null,
+            'paid_struk' => $receipt->file_url,
+            'struk_ext' => $receipt->file_info['extension'],
             'verification' => $registration->receipt ? route('bill.verified', $registration->id) : ''
         ];
 
