@@ -26,6 +26,3 @@ jobs:
       # Runs a single command using the runners shell
       - name: Install Dependencies
         run: npm install
-        
-      - name: Mix Production Assets
-      - run: npm run prod
