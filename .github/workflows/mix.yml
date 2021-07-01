@@ -1,4 +1,4 @@
-name: Laravel
+name: Mix
 
 on:
   push:
@@ -6,9 +6,10 @@ on:
 
 jobs:  
   build-assets:
+    name: build asset with laravel-mix
     runs-on: ubuntu-latest
     steps:
-    - name: npm install and build
+    - name: build-asset
     - run: |
         npm install
         npm run prod
