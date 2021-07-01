@@ -18,12 +18,11 @@ Route::middleware('auth')->group(function () {
 
     Route::namespace('Admin')->middleware('role:admin|superadmin')->group(function () {
         Route::resource('participants', 'ParticipantController')->except('create', 'store', 'edit');
-
         ROute::get('/participants/{participant}/resend', 'ParticipantController@resendPaybill')->name('participant.resend');
-        Route::post('/registrations/export', 'ParticipantController@export')->name('registrations.export');
+        Route::post('/participants/export', 'ParticipantController@export')->name('participants.export');
 
-        Route::get('/user/{id}/bill', 'BillController@show')->name('bill');
-        Route::patch('/user/{id}/bill', 'BillController@verified')->name('bill.verified');
+        Route::get('registration/{registration}', 'RegistrationController@show')->name('registration.show');
+        Route::post('registration/{registration}', 'RegistrationController@verify')->name('registration.verify');
 
         Route::resource('files', 'FileController')->only('index', 'store', 'destroy');
         Route::resource('category', 'CategoryController')->except('show');

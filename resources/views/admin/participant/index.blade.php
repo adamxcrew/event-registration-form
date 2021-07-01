@@ -67,7 +67,7 @@
                                         <td>{{ ($registrations->perPage() * ($registrations->currentPage() - 1)) + $loop->iteration }}.</td>
                                         <td nowrap>{{ $registration->created_at->format('d/m/Y (H:i)') }}</td>
                                         <td nowrap>
-                                            <a href="#" @click.prevent="showBilling('{{ route('bill', $registration->id) }}')">
+                                            <a href="#" @click.prevent="showBilling('{{ route('registration.show', $registration->id) }}')">
                                                 {{ $registration->code }}
                                             </a>
                                         </td>
@@ -88,11 +88,11 @@
                                                     </svg>
                                                     Profile
                                                 </a>
-                                                <a href="#" class="dropdown-item" @click.prevent="showBilling('{{ route('bill', $registration->id) }}')">
+                                                <a href="#" class="dropdown-item" @click.prevent="showBilling('{{ route('registration.show', $registration->id) }}')">
                                                     <svg class="icon fa-fw mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                                     </svg>
-                                                    Payment Info
+                                                    Registration Info
                                                 </a>
                                             </x-action-dropdown>
                                         </td>
@@ -115,7 +115,7 @@
     </div>
 </section>
 
-@include('admin.participant._bill')
+@include('admin.participant._registration')
 @include('admin.participant._export')
 
 <light-box ref="lightbox"></light-box>
@@ -131,7 +131,7 @@
                     checked: [],
                     checkAll: false,
                     exportAll: true,
-                    bill: {},
+                    registration: {},
                 }
             },
             watch: {
@@ -146,9 +146,9 @@
             methods: {
                 showBilling(route) {
                     axios.get(route).then(({ data }) => {
-                        this.bill = data
-                        $('#billModal').modal('show')
-                        $('#billModal .modal-footer form').attr('action', data.verification)
+                        this.registration = data
+                        $('#registration').modal('show')
+                        $('#registration .modal-footer form').attr('action', data.verification)
                     })
                 },
                 showPhoto(src, ext=null) {

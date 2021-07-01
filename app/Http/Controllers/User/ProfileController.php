@@ -19,7 +19,8 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
-        $this->validate($request, [
+
+        $data = $request->validate([
             'name' => 'required|string|max:255',
             'title' => 'nullable|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
@@ -31,8 +32,10 @@ class ProfileController extends Controller
             'phone' => 'required|string|max:13',
             'information' => 'nullable|string|max:255'
         ]);
-        $user->update($request->all());
-        $user->participant->update($request->all());
+
+        $user->update($data);
+        $user->participant->update($data);
+
         return redirect()->back()->with('success','Perubahan disimpan.');
     }
 }

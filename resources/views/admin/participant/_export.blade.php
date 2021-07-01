@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('registrations.export') }}" method="POST" download>
+                <form action="{{ route('participants.export') }}" method="POST" download>
                     {{ csrf_field() }}
                     {{-- <div class="form-group">
                         <div class="custom-control custom-checkbox">

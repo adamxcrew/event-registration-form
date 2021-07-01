@@ -27,7 +27,7 @@ class HomeController extends Controller
         $registrations = Registration::all();
         $allRegistrations = $registrations->count();
         $waitingVerifications = $registrations->where('status', 1)->count();
-        $totalPayments = DB::table('registrations')->where('status', 2)->sum('paybill');
+        $totalPayments = DB::table('registrations')->where('status', 3)->sum('paybill');
 
         return view('admin.dashboard', compact('allRegistrations', 'waitingVerifications', 'totalPayments'));
     }

@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentVerified;
 use App\Models\Registration;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
-class BillController extends Controller
+class RegistrationController extends Controller
 {
-    public function show($id)
+    public function show(Registration $registration)
     {
-        $registration = Registration::findOrFail($id);
         $receipt = optional($registration->receipt);
         $bill = [
             'id' => $registration->id,
@@ -25,23 +24,23 @@ class BillController extends Controller
             'status' => $registration->status(),
             'status_code' => $registration->status,
             'paid_at' => $receipt->paid_at->format('d/m/Y'),
-            'paid_by' => $receipt->name ?? null,
-            'paid_bank' => $receipt->bank ?? null,
+            'paid_by' => $receipt->name,
+            'paid_bank' => $receipt->bank,
             'paid_struk' => $receipt->file_url,
             'struk_ext' => $receipt->file_info['extension'],
-            'verification' => $receipt ? route('bill.verified', $registration->id) : ''
+            'verification' => $receipt ? route('registration.verify', $registration->id) : '',
         ];
 
         return response()->json($bill);
     }
 
-    public function verified($id)
+    public function verify(Registration $registration)
     {
-        $registration = Registration::findOrFail($id);
-        $user = $registration->user;
 
-        DB::transaction(function () use ($user) {
-            $user->registration->update(['status' => 3]);
+        DB::transaction(function () use ($registration) {
+            $registration->update(['status' => 3]);
+
+            $user = $registration->user;
             Mail::to($user)->send(new PaymentVerified($user));
         });
 
