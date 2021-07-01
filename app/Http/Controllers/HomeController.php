@@ -12,16 +12,6 @@ use PDF;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth')->except('ticket');
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
@@ -30,10 +20,6 @@ class HomeController extends Controller
     {
         if ($request->user()->hasRole('participant')) {
             $user = $request->user();
-            $registration = $user->registration;
-            $receipt = $registration->receipt;
-
-            // dd($receipt->fileinfo);
             $files = File::all();
             return view('home', compact('user', 'files'));
         }
@@ -45,15 +31,4 @@ class HomeController extends Controller
 
         return view('admin.dashboard', compact('allRegistrations', 'waitingVerifications', 'totalPayments'));
     }
-
-    // public function invoice(Request $request)
-    // {
-    //     $code = $request->c;
-    //     $registration = Registration::where('code', $code)->first();
-    //     if ($registration) {
-    //         $pdf = PDF::loadView('reports.ticket2', compact('registration'))->setPaper('A4');
-    //         return $pdf->download($registration->code . '.pdf');
-    //     }
-    //     abort(404);
-    // }
 }

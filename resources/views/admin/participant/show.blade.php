@@ -1,29 +1,29 @@
 @extends('layouts.app')
 
+@section('title', 'Participant')
+
+@php
+    $back = route('participants.index');
+@endphp
+
 @section('content')
-<div class="content-header">
+<section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark display-4">Participant Profile</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('participants.index') }}">Participants</a></li>
-                    <li class="breadcrumb-item active">Profile</li>
-                </ol>
+        <div class="row">
+            <div class="col">
+                <h1 class="m-0 text-dark display-4 d-inline">Participan</h1>
+                <small>/ Profile</small>
             </div>
         </div>
     </div>
-</div>
+</section>
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header p-2 border-bottom-0">
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-custom">
                             <li class="nav-item"><a class="nav-link {{ $errors->any() ? '' : 'active' }}" href="#personal" data-toggle="tab">Personal Information</a></li>
                             <li class="nav-item"><a class="nav-link {{ $errors->any() ? 'active' : '' }}" href="#setting" data-toggle="tab"><i class="far fa-edit"></i></a></li>
                         </ul>

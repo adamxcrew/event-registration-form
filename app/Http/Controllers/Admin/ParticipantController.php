@@ -90,6 +90,7 @@ class ParticipantController extends Controller
     public function export(Request $request)
     {
         $events = $request->events;
+
         if (!empty($events)) {
             $registration = Registration::whereHas('events', function ($query) use ($events) {
                 $query->whereIn('id', $events);
@@ -104,6 +105,7 @@ class ParticipantController extends Controller
             // $registrations = $registration;
             // return view('exports.registration', compact('registrations', 'events'));
         }
+
         return redirect()->back()->with('error', 'Tidak ada peserta untuk seminar yang kamu pilih.');
     }
 

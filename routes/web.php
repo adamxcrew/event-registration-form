@@ -1,12 +1,5 @@
 <?php
 
-Route::get('/workshops', 'AjaxController@workshop');
-Route::get('/room-types', 'AjaxController@roomTypes');
-
-Route::get('/datetime', function() {
-    dd(now());
-});
-
 Route::namespace('Auth')->group(function () {
     Route::get('/', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
     Route::get('/register', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
@@ -16,17 +9,19 @@ Route::namespace('Auth')->group(function () {
     Route::post('/logout', 'LoginController@logout')->name('logout');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/invoice', 'InvoiceController@index');
+Route::get('/workshops', 'AjaxController@workshop');
+Route::get('/room-types', 'AjaxController@roomTypes');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+
     Route::namespace('Admin')->middleware('role:admin|superadmin')->group(function () {
-        Route::get('/participants', 'ParticipantController@index')->name('participants.index');
-        Route::get('/participants/{participant}/show', 'ParticipantController@show')->name('participants.show');
-        Route::patch('/participants/{participant}', 'ParticipantController@update')->name('participants.update');
-        Route::delete('/participants/{participant}', 'ParticipantController@destroy')->name('participants.destroy');
+        Route::resource('participants', 'ParticipantController')->except('create', 'store', 'edit');
+
         ROute::get('/participants/{participant}/resend', 'ParticipantController@resendPaybill')->name('participant.resend');
         Route::post('/registrations/export', 'ParticipantController@export')->name('registrations.export');
+
         Route::get('/user/{id}/bill', 'BillController@show')->name('bill');
         Route::patch('/user/{id}/bill', 'BillController@verified')->name('bill.verified');
 
