@@ -53828,7 +53828,7 @@ console.log('%cFind us on https://caesarali.com & https://smartinovasi.com', war
 /***/ (function(module, exports) {
 
 $(function () {
-  var submitButton = $('form button[type=submit]');
+  var submitButton = $('form button[type=submit]:not([name])');
   submitButton.on('click', function (event) {
     if (!this.hasAttribute('confirm') && this.form.reportValidity()) {
       this.disabled = true;

@@ -1,5 +1,5 @@
 $(function () {
-    let submitButton = $('form button[type=submit]');
+    let submitButton = $('form button[type=submit]:not([name])');
 
     submitButton.on('click', function (event) {
         if (! this.hasAttribute('confirm') && this.form.reportValidity()) {
