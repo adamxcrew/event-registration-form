@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (!App::environment('local')) {
+            Schema::defaultStringLength(191);
+        }
+        
         Blade::directive('activeRoute', function ($expression) {
             return "<?= request()->routeIs($expression) ? 'active' : ''; ?>";
         });
