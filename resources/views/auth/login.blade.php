@@ -3,13 +3,14 @@
 @section('body', 'login')
 
 @section('content')
-<div class="container" style="margin-top: -100px">
+<div class="container">
     <div class="register-logo">
-        <a href="{{ url('/') }}" class="font-weight-bold">Registration</a>
+        <a href="{{ url('/') }}" class="font-weight-bold">{!! config('app.name') !!}</a>
         <p class="lead">
             {!! config('app.desc') !!}
         </p>
     </div>
+
     <div class="row justify-content-center">
         <div class="col">
             <div class="card">
@@ -74,6 +75,17 @@
                         </div>
                     </form>
                 </div>
+            </div>
+
+
+
+            <div class="text-center mt-2">
+                <a href="{{ url('/') }}">
+                    <svg class="icon mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                    </svg>
+                    Back to Registration Page
+                </a>
             </div>
         </div>
     </div>

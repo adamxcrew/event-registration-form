@@ -7,7 +7,7 @@
 @endphp
 
 @section('content')
-<div class="container mb-4">
+<div class="container">
     <div class="register-logo">
         <a href="{{ url('/') }}" class="font-weight-bold">Registration</a>
         <p class="lead">

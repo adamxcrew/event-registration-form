@@ -3,7 +3,7 @@
 @section('body', 'register')
 
 @section('content')
-<div class="container" style="margin-top: -100px">
+<div class="container">
     <div class="register-logo">
         <a href="{{ url('/') }}" class="font-weight-bold">Registration </a>
         <p class="lead">

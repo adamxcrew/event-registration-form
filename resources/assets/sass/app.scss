@@ -53,13 +53,5 @@ svg.icon {
     .login-page, .register-page {
         max-width: 650px;
         margin: auto;
-
-        #app {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
-        }
     }
 }
