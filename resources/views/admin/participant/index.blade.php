@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h1 class="m-0 text-dark display-4 d-inline">Participan</h1>
+                <h1 class="m-0 text-dark display-4 d-inline">Participant</h1>
                 <small>/ List</small>
             </div>
         </div>
@@ -51,12 +51,12 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th width="1%">#</th>
-                                        <th width="1%"><x-order by="created_at">Tanggal</x-order></th>
-                                        <th><x-order by="code">Kode</x-order></th>
-                                        <th>A\N</th>
-                                        <th>Telp.</th>
+                                        <th width="1%"><x-order by="created_at">Date</x-order></th>
+                                        <th><x-order by="code">Code</x-order></th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
                                         <th>Email</th>
-                                        <th class="text-center">Pembayaran</th>
+                                        <th class="text-center">Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>

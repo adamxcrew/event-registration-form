@@ -11,7 +11,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="hold-transition @yield('body')-page">
-    <div id="app" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center">
+    <div id="app">
         @if (App::environment('local') && $errors->any())
             <x-alert.errors class="mx-3 mt-3 mb-0" />
         @endif

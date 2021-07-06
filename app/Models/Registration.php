@@ -30,9 +30,14 @@ class Registration extends Model
 
     public function status() {
         return [
-            '<span class="badge badge-secondary">Belum membayar</span>',
-            '<span class="badge badge-warning">Menunggu Verifikasi</span>',
-            '<span class="badge badge-success">LUNAS</span>',
+            '<span class="badge badge-secondary">Unpaid</span>',
+            '<span class="badge badge-warning">Verifying</span>',
+            '<span class="badge badge-success">
+                <svg class="icon mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Paid
+            </span>',
         ][$this->status - 1];
     }
 
@@ -72,7 +77,7 @@ class Registration extends Model
         parent::boot();
         static::created(function ($model) {
             $prefix = strtoupper(substr($model->user->name, 0, 1));
-            $model->code = $prefix . now()->format('Ymj') . Str::padLeft($model->id, 4, 0);
+            $model->code = $prefix . now()->format('Ymj') . Str::padLeft($model->id, 3, 0);
             $model->save();
         });
     }
