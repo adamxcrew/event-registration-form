@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="content-header">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
@@ -52,18 +52,19 @@
     </div>
 </div>
 <section class="content">
-    <div class="container-fluid">
+    <div class="container">
         <div class="card">
             <div class="card-header border-bottom-0 d-flex">
-                <h5 class="card-title d-inline-block text-muted">Event Information</h5>
+                <h5 class="card-title d-inline-block text-muted">
+                    About!
+                </h5>
                 <a href="{{ route('config.index') }}" class="text-muted ml-auto">
                     <i class="fas fa-cog ml-auto"></i>
                 </a>
             </div>
             <div class="card-body bg-light">
-                <strong><i class="fa fa-calendar-day mr-1"></i> Event</strong>
-                <p class="text-muted">
-                    {{ eventInfo('about') }}
+                <p>
+                    {!! linkify(eventInfo('about')) !!}
                 </p>
             </div>
         </div>

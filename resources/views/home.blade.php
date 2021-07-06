@@ -11,9 +11,20 @@
         <h1 class="display-4">
             Hi, <a href="{{ route('profile.index') }}">{{ explode(" ", Auth::user()->name)[0] }}!</a>
         </h1>
+
         <p class="lead mb-1 font-weight-light">
             {{ config('app.desc') }}.
         </p>
+
+        @if (eventInfo('about'))
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                {!! linkify(eventInfo('about')) !!}
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
     </div>
 </div>
 <section class="content">
@@ -21,27 +32,33 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header font-weight-bold"><i class="far fa-money-bill-alt"></i> Bill</div>
+                    <div class="card-header border-bottom-0 font-weight-bold">
+                        <i class="far fa-money-bill-alt mr-1"></i> Bill
+                    </div>
                     <div class="card-body p-0 table-responsive">
                         <table class="table mb-2">
                             <tbody>
                                 <tr>
-                                    <td nowrap class="border-top-0" width="20%">Kode Registrasi <span class="float-right">:</span></td>
-                                    <td class="border-top-0 pl-2">{{ $registration->code }}</td>
+                                    <td nowrap>Kode Registrasi</td>
+                                    <td width="1%">:</td>
+                                    <td>{{ $registration->code }}</td>
                                 </tr>
                                 <tr>
-                                    <td nowrap>Tanggal Registrasi <span class="float-right">:</span></td>
-                                    <td class="pl-2">{{ $registration->created_at->format('d/m/Y') }}</td>
+                                    <td nowrap>Tanggal Registrasi</td>
+                                    <td width="1%">:</td>
+                                    <td>{{ $registration->created_at->format('d/m/Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <td nowrap>Paket Workshop<span class="float-right">:</span></td>
-                                    <td class="pl-2">
+                                    <td nowrap>Paket Worksho</td>
+                                    <td width="1%">:</td>
+                                    <td>
                                         {{ IDR($registration->paybill) }} - "{{ $registration->package->name ?? $registration->package->name }}"
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td nowrap>Status <span class="float-right">:</span></td>
-                                    <td class="pl-2">
+                                    <td nowrap>Status</td>
+                                    <td width="1%">:</td>
+                                    <td>
                                         {!! $registration->status() !!}
                                         <a href="#" class="text-decoration-none text-muted" data-toggle="modal" data-target="#paymentInformation">
                                             <i class="far fa-question-circle"></i>
@@ -49,8 +66,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td nowrap>Pembayaran <span class="float-right">:</span></td>
-                                    <td nowrap class="pl-2">
+                                    <td nowrap>Pembayaran</td>
+                                    <td width="1%">:</td>
+                                    <td nowrap>
                                         @if (isset($receipt))
                                             @if ($receipt->file_info['extension'] == 'pdf')
                                                 <a href="{{ $receipt->file_url }}" class="text-decoration-none text-muted" target="_blank">
@@ -76,8 +94,9 @@
                                 </tr>
                                 @if ($registration->status > 2)
                                     <tr>
-                                        <td nowrap>Kupon <span class="float-right">:</span></td>
-                                        <td nowrap class="pl-2">
+                                        <td nowrap>Kupon</td>
+                                        <td width="1%">:</td>
+                                        <td nowrap>
                                             <a href="{{ route('my.ticket') }}" class="text-decoration-none text-muted">
                                                 <i class="fas fa-print mr-1"></i>
                                                 Cetak Kupon

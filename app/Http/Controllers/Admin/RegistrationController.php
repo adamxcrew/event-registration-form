@@ -23,11 +23,11 @@ class RegistrationController extends Controller
             'fee' => IDR($registration->paybill),
             'status' => $registration->status(),
             'status_code' => $registration->status,
-            'paid_at' => $receipt->paid_at->format('d/m/Y'),
+            'paid_at' => optional($receipt->paid_at)->format('d/m/Y'),
             'paid_by' => $receipt->name,
             'paid_bank' => $receipt->bank,
             'paid_struk' => $receipt->file_url,
-            'struk_ext' => $receipt->file_info['extension'],
+            'struk_ext' => $receipt->file_info['extension'] ?? null,
             'verification' => $receipt ? route('registration.verify', $registration->id) : '',
         ];
 
