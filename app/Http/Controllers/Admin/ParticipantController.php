@@ -20,21 +20,6 @@ class ParticipantController extends Controller
 {
     public function index(Request $request)
     {
-        $filter = $request->has('filter') ? [$request->filter] : [0,1,2];
-        $event = $request->e;
-
-        // $participants = Participant::query()
-        //                 ->when($event, function ($query, $event) {
-        //                     return $query->whereHas('user.registration.events', function ($query) use ($event) {
-        //                         $query->where('id', $event);
-        //                     });
-        //                 })
-        //                 ->whereHas('user.registration', function ($query) use ($filter) {
-        //                     $query->whereIn('status', $filter);
-        //                 })
-        //                 ->orderBy('created_at', 'desc')
-        //                 ->paginate(request('perPage', 25));
-
         $registrations = Registration::query()
                         ->with('user', 'participant')
                         ->order('created_at', 'desc')
@@ -42,14 +27,12 @@ class ParticipantController extends Controller
                         ->filter()
                         ->paginate(request('perPage', 25));
 
-
-
         $events = Event::all();
         $regs = Registration::pluck('status');
         $counter = [
-            'notpaid' => $regs->where('status', 0)->count(),
-            'waiting' => $regs->where('status', 1)->count(),
-            'paid' => $regs->where('status', 2)->count(),
+            'notpaid' => $regs->where('status', 1)->count(),
+            'waiting' => $regs->where('status', 2)->count(),
+            'paid' => $regs->where('status', 3)->count(),
         ];
 
         return view('admin.participant.index', compact('registrations', 'counter', 'events', 'request'));
