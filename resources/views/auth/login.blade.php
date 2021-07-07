@@ -1,13 +1,15 @@
 @extends('layouts.auth')
 
+@section('title ', 'login')
+
 @section('body', 'login')
 
 @section('content')
 <div class="container">
     <div class="register-logo">
-        <a href="{{ url('/') }}" class="font-weight-bold">{!! config('app.name') !!}</a>
+        <a href="{{ url('/') }}" class="font-weight-bold">{!! site('name', config('app.name'), true) !!}</a>
         <p class="lead">
-            {!! config('app.desc') !!}
+            {!! site('description', config('app.desc'), true) !!}
         </p>
     </div>
 

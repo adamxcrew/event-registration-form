@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('package', 'PackageController')->except('show');
         Route::resource('config', 'ConfigController')->only('index', 'store');
         Route::resource('account', 'AccountController')->only('index', 'store');
+
+        Route::post('site', 'SiteController@store')->name('site.store');
     });
 
     Route::namespace('User')->middleware('role:participant')->group(function () {

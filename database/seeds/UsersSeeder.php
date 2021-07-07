@@ -20,10 +20,10 @@ class UsersSeeder extends Seeder
             ['username' => 'caesarali', 'email' => 'caesaralilamondo@gmail.com'],
             [
                 'name' => 'Caesar Ali L.',
-                'email_verified_at' => Carbon::now(),
-                'password' => bcrypt('caesarali'),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'email_verified_at' => now(),
+                'password' => '$2y$10$hxZzoTrUSgSEQMITk0AOOu9VALtWApCXM1ib27ZAs/AeXzYFzApOm',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         );
         $su->assignRole('superadmin');
@@ -32,10 +32,10 @@ class UsersSeeder extends Seeder
             ['username' => 'admin', 'email' => 'admin@gmail.com'],
             [
                 'name' => 'Administrator',
-                'email_verified_at' => Carbon::now(),
-                'password' => bcrypt('admin'),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'email_verified_at' => now(),
+                'password' => '$2y$10$cdUDR8LZ9NQ3GCvIPnGAJeezSKt1sitzH0LiRh.DUcX8bkGeGqga.',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         );
         $admin->assignRole('admin');

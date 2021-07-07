@@ -24,6 +24,6 @@ class ConfigController extends Controller
             DB::table('config')->updateOrInsert(['key' => $key], ['value' => $value]);
         });
 
-        return redirect()->route('config.index')->withSuccess('Created successfully.');
+        return redirect()->route('config.index')->withSuccess('Updated successfully.');
     }
 }

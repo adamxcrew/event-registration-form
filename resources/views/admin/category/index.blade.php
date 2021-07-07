@@ -4,7 +4,7 @@
 
 @section('content')
 <section class="content-header">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col">
                 <h1 class="m-0 text-dark display-4 d-inline">Resource</h1>
@@ -14,7 +14,7 @@
     </div>
 </section>
 <section class="content">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row mb-3">
             <div class="col">
                 <x-search />

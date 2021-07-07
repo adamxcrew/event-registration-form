@@ -63,8 +63,8 @@
                 </a>
             </div>
             <div class="card-body bg-light">
-                <p>
-                    {!! linkify(eventInfo('about')) !!}
+                <p class="text-secondary">
+                    {!! linkify(eventInfo('about') ?? '...') !!}
                 </p>
             </div>
         </div>

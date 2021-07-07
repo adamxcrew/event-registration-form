@@ -11,7 +11,7 @@
     <div class="register-logo">
         <a href="{{ url('/') }}" class="font-weight-bold">Registration</a>
         <p class="lead">
-            {!! config('app.desc') !!}
+            {!! site('description', config('app.desc'), true) !!}
         </p>
     </div>
 

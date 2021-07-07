@@ -94,12 +94,12 @@
                                 </tr>
                                 @if ($registration->status > 2)
                                     <tr>
-                                        <td nowrap>Kupon</td>
+                                        <td nowrap>Invoice</td>
                                         <td width="1%">:</td>
                                         <td nowrap>
                                             <a href="{{ route('my.ticket') }}" class="text-decoration-none text-muted">
                                                 <i class="fas fa-print mr-1"></i>
-                                                Cetak Kupon
+                                                Cetak Invoice
                                             </a>
                                         </td>
                                     </tr>
@@ -243,7 +243,7 @@
 <light-box ref="lightbox"></light-box>
 @endsection
 
-@section('scripts')
+@push('scripts')
     @if ($errors->any())
         <script>
             $('#paymentConfirmation').modal('show')
@@ -262,4 +262,4 @@
             }
         })
     </script>
-@endsection
+@endpush

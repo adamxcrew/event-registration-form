@@ -4,12 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name') }} - {{ config('app.desc') }}</title>
+    <meta name="msapplication-TileImage" content="{{ site('logo', asset('images/laravel-white.png')) }}" />
 
+    <title>{{ site('name', config('app.name')) }} - @yield('title', site('description', config('app.desc')))</title>
+
+    <link rel="icon" href="{{ site('logo', asset('images/laravel-white.png')) }}" sizes="32x32" />
+    <link rel="icon" href="{{ site('logo', asset('images/laravel-white.png')) }}" sizes="192x192" />
+    <link rel="apple-touch-icon" href="{{ site('logo', asset('images/laravel-white.png')) }}" />
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     @stack('styles')
 </head>
 <body class="hold-transition layout-top-nav">
@@ -18,9 +24,7 @@
             <div class="container">
 
                 <a href="{{ url('/') }}" class="navbar-brand ml-2 ml-md-0 mr-md-3">
-                    {{-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
-                        class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
-                    <span class="brand-text font-weight-bold text-uppercase text-primary">{{ config('app.name') }}</span>
+                    <span class="brand-text font-weight-bold text-uppercase text-primary">{{ site('name', config('app.name')) }}</span>
                 </a>
 
                 <div class="collapse navbar-collapse order-3 border-left ml-2 ml-md-0 pl-2 pl-md-0" id="navbarCollapse">
@@ -69,8 +73,6 @@
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
-
-    @yield('scripts')
     @stack('scripts')
 </body>
 </html>

@@ -2,7 +2,6 @@
 
 use App\Models\Config;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 function wrap($value)
 {
@@ -66,4 +65,32 @@ function linkify($value, $protocols = array('http', 'mail'), array $attributes =
 
     // Insert all link
     return preg_replace_callback('/<(\d+)>/', function ($match) use (&$links) { return $links[$match[1] - 1]; }, $value);
+}
+
+function htmltotext($html, $enable = true)
+{
+    return $enable ? strip_tags($html) : $html;
+}
+
+function site($key = null, $default = null, $allowHtml = false)
+{
+    try {
+        $file = file_get_contents(base_path('site.json'));
+        $data = json_decode($file, true);
+
+        $data['logo'] = optional($data['logo'], fn ($logo) => $data['logo'] = Storage::disk('public')->url($logo));
+
+        return $data[$key]
+                ? htmltotext($data[$key], ! $allowHtml)
+                : $default;
+
+    } catch (\Throwable $th) {
+
+        return $default;
+    }
+}
+
+function siteUpdate(array $data)
+{
+    return file_put_contents(base_path('site.json'), json_encode($data));
 }

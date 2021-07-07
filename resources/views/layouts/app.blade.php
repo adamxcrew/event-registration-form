@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name') }} - {{ config('app.desc') }}</title>
+    <meta name="msapplication-TileImage" content="{{ site('logo', asset('images/laravel-white.png')) }}" />
 
+    <title>{{ site('name', config('app.name')) }} - @yield('title', site('description', config('app.desc')))</title>
+
+    <link rel="icon" href="{{ site('logo', asset('images/laravel-white.png')) }}" sizes="32x32" />
+    <link rel="icon" href="{{ site('logo', asset('images/laravel-white.png')) }}" sizes="192x192" />
+    <link rel="apple-touch-icon" href="{{ site('logo', asset('images/laravel-white.png')) }}" />
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        table.dataTable {
-            clear: both;
-            margin-top: 0 !important;
-            border-collapse: collapse !important;
-        }
-    </style>
+
+    @stack('styles')
 </head>
 <body class="hold-transition sidebar-mini">
     <div id="app" class="wrapper">
@@ -40,7 +39,7 @@
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="{{ url('/') }}" class="nav-link text-uppercase">
-                            {{ config('app.desc') }}
+                            {{ site('description', config('app.desc')) }}
                         </a>
                     </li>
                 </ul>
@@ -58,8 +57,8 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="overflow-x: hidden;">
             <a href="{{ url('/') }}" class="brand-link">
-                <img src="{{ asset('images/laravel-white.png') }}" alt="{{ config('app.name') }}" class="brand-image">
-                <span class="brand-text">{{ config('app.name') }}</span>
+                <img src="{{ site('logo', asset('images/laravel-white.png')) }}" alt="{{ site('name', config('app.name')) }}" class="brand-image">
+                <span class="brand-text">{{ site('name', config('app.name')) }}</span>
             </a>
 
             <div class="sidebar">
