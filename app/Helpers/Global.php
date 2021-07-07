@@ -78,8 +78,6 @@ function site($key = null, $default = null, $allowHtml = false)
         $file = file_get_contents(base_path('site.json'));
         $data = json_decode($file, true);
 
-        $data['logo'] = optional($data['logo'], fn ($logo) => $data['logo'] = Storage::disk('public')->url($logo));
-
         return $data[$key]
                 ? htmltotext($data[$key], ! $allowHtml)
                 : $default;

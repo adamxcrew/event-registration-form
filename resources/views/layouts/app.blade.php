@@ -192,8 +192,19 @@
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
     @yield('scripts')
     @stack('scripts')
+
+    <script>
+        bsCustomFileInput.init()
+
+        function openWindow(url) {
+            event.preventDefault();
+            var windowObjectReference;
+            windowObjectReference = window.open(url, '_blank', 'width=700, height=600, top=35, left=350, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no')
+        }
+    </script>
 </body>
 </html>

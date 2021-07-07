@@ -101,6 +101,17 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (site('logo'))
+                                <div class="form-group">
+                                    <div style="width: 105px" class="position-relative">
+                                        <button type="submit" name="logo" class="close position-absolute" style="right: 0" data-toggle="tooltip" title="Remove Logo" data-placement="right">
+                                            <i class="fas fa-times-circle text-danger"></i>
+                                        </button>
+
+                                        <img src="{{ site('logo') }}" alt="logo_preview" style="width: 100px" class="img-thumbnail mt-1">
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Save</button>
