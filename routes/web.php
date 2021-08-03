@@ -1,15 +1,13 @@
 <?php
 
-Route::namespace('Auth')->group(function () {
-    Route::get('/', 'RegisterController@showRegistrationForm')->middleware('guest');
-    Route::get('/register', 'RegisterController@showRegistrationForm')->middleware('guest')->name('register');
-    Route::post('/register', 'RegisterController@register')->middleware('guest');
-    Route::get('/login', 'LoginController@showLoginForm')->middleware('guest')->name('login');
-    Route::post('/login', 'LoginController@login')->middleware('guest');
-    Route::post('/logout', 'LoginController@logout')->name('logout');
-});
+Auth::routes(['reset' => false, 'confirm' => false]);
 
-Route::get('/invoice', 'InvoiceController@index');
+Route::get('/', 'Auth\RegisterController@showRegistrationForm')->middleware('guest');
+
+Route::view('/confirm', 'confirm');
+Route::post('/confirm', 'PaymentController@confirm')->name('confirm');
+Route::get('/invoice', 'InvoiceController');
+
 Route::get('/workshops', 'AjaxController@workshop');
 Route::get('/room-types', 'AjaxController@roomTypes');
 
@@ -34,9 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('site', 'SiteController@store')->name('site.store');
     });
 
-    Route::namespace('User')->middleware('role:participant')->group(function () {
-        Route::get('/my-ticket', 'PaymentController@ticket')->name('my.ticket');
-        Route::post('/upload-payment-receipt', 'PaymentController@pay')->name('payment.receipt');
+    Route::middleware('role:participant')->group(function () {
         Route::get('/profile', 'ProfileController@index')->name('profile.index');
         Route::patch('/profile', 'ProfileController@update')->name('profile.update');
     });

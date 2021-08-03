@@ -20,7 +20,7 @@
     <div class="container">
         <div class="card mb-3">
             <div class="card-header p-2 border-bottom-0">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-custom">
                     <li class="nav-item"><a class="nav-link {{ $errors->any() ? '' : 'active' }}" href="#personal" data-toggle="tab">Personal Information</a></li>
                     <li class="nav-item"><a class="nav-link {{ $errors->any() ? 'active' : '' }}" href="#setting" data-toggle="tab"><i class="far fa-edit"></i></a></li>
                 </ul>

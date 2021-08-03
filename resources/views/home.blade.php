@@ -13,7 +13,7 @@
         </h1>
 
         <p class="lead mb-1 font-weight-light">
-            {{ config('app.desc') }}.
+            {{ site('description', config('app.desc')) }}.
         </p>
 
         @if (eventInfo('about'))
@@ -97,7 +97,7 @@
                                         <td nowrap>Invoice</td>
                                         <td width="1%">:</td>
                                         <td nowrap>
-                                            <a href="{{ route('my.ticket') }}" class="text-decoration-none text-muted">
+                                            <a href="{{ url('/invoice') }}" class="text-decoration-none text-muted">
                                                 <i class="fas fa-print mr-1"></i>
                                                 Cetak Invoice
                                             </a>
@@ -188,8 +188,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('payment.receipt') }}" method="POST" enctype="multipart/form-data">
-                    {{ csrf_field() }}
+                <form action="{{ route('confirm') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">A/N Rekening</label>

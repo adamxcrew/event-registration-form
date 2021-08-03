@@ -2,9 +2,9 @@
 
 # @lang('Halo'), {{ explode(" ", $user->name)[0] }} !
 
-Terimakasih telah melakukan pembayaran registrasi <b>"{{ config('app.desc') }}"</b>.
+Terimakasih telah melakukan pembayaran registrasi <b>"{{ site('description', config('app.desc')) }}"</b>.
 
-<a href="{{ config('app.url') }}/invoice?c={{ $user->registration->code }}">Download kwitansi kamu disini.</a>
+<a href="{{ config('app.url') }}/invoice?c={{ $user->registration->code }}">Download invoice.</a>
 
 <br>
 Untuk informasi lebih lanjut seputan kegiatan ini, silahkan kunjungi website kami. <br>

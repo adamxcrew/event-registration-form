@@ -1,7 +1,7 @@
 @component('mail::message')
 # @lang('Halo'), {{ explode(" ", $name)[0] }} !
 
-Kamu telah terdaftar sebagai calon peserta dalam kegiatan <b>"{{ config('app.desc') }}"</b>.
+Kamu telah terdaftar sebagai calon peserta dalam kegiatan <b>"{{ site('description', config('app.desc')) }}"</b>.
 <br>
 
 Besar tagihan yang perlu kamu bayar adalah :
@@ -30,9 +30,9 @@ Password : {{ $password }}
 
 
 <br>
-@lang('Regards'),<br>Admin, {{ config('app.name') }}.
+@lang('Regards'),<br>Admin, {{ site('name', config('app.name')) }}.
 
 @component('mail::subcopy')
-{{ config('app.name') }} : {{ config('app.url') }}
+{{ site('name', config('app.name')) }} : {{ config('app.url') }}
 @endcomponent
 @endcomponent

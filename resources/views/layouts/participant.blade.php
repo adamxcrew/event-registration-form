@@ -28,26 +28,37 @@
                 </a>
 
                 <div class="collapse navbar-collapse order-3 border-left ml-2 ml-md-0 pl-2 pl-md-0" id="navbarCollapse">
-                    <!-- Left navbar links -->
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link @activeRoute('home')">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('profile.index') }}" class="nav-link @activeRoute('profile.*')">Profile</a>
-                        </li>
-                    </ul>
+                    @auth
+                        <!-- Left navbar links -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a href="{{ route('home') }}" class="nav-link @activeRoute('home')">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('profile.index') }}" class="nav-link @activeRoute('profile.*')">Profile</a>
+                            </li>
+                        </ul>
+                    @endauth
 
                     <!-- Right navbar links -->
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                               Logout
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
-                        </li>
+                        @auth
+                            <li class="nav-item">
+                                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a href="{{ route('login') }}" class="nav-link @activeRoute('login')">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('register') }}" class="nav-link @activeRoute('register')">Registrasi</a>
+                            </li>
+                        @endauth
                     </ul>
                 </div>
 

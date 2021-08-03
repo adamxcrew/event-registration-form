@@ -181,13 +181,16 @@
                     <p>{{ Auth::user()->roles[0]->display_name ?? '-' }}</p>
                 </div>
                 <hr class="mt-0">
-                <button class="btn btn-outline-secondary border-0 btn-block" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                <button type="submit" class="btn btn-outline-secondary border-0 btn-block" form="logout-form">
                     <i class="fas fa-sign-out-alt mr-1"></i> Logout
                 </button>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                 </form>
             </div>
+            <p class="text-black-50 text-center mt-4">
+                Laravel v{{ Illuminate\Foundation\Application::VERSION }} <br> (PHP v{{ PHP_VERSION }})
+            </p>
         </aside>
     </div>
 
